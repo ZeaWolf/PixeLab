@@ -10,7 +10,7 @@ const ResourceSchema = new Schema(
         Author:         {type: String, required: true},
         Image:          {type: String, required: true},
         Like:           {type: Number, required: true},
-        Comments:       {type: [{String, Date}], required: true},
+        Comments:       {type: [{String, String}], required: true},
         PublishTime:    {type: Date, required: true, default: Date.now()},
         Description:    {type: String, required: true}
     },

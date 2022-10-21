@@ -1,3 +1,4 @@
+const { resourceUsage } = require('process');
 const Resource = require('../models/resource-model');
 const User = require('../models/user-model');
 
@@ -40,7 +41,7 @@ createResource = (req, res) => {
     })
 }
 
-// updating the number of likes and comments to the 
+// updating the number of likes and comments of the 
 updateResource = async(req, res) => {
     const body = req.body;
     console.log("updateResource: " + JSON.stringify(body));
@@ -69,5 +70,36 @@ updateResource = async(req, res) => {
         resource.Comments = body.Comments;
         resource.PublishTime = body.PublishTime;
         resource.Description = body.Description;
+
+        resource
+            .save()
+            .then(() => {
+                console.log("SUCESS!!!");
+                return res.status(200).json({
+                    success: true,
+                    id: resource._id,
+                    message: 'Resource updated!',
+                })
+            })
+            .catch(error => {
+                console.log("FAILURE: " + JSON.stringify(error));
+                return res.status(404).json({
+                    error,
+                    message: "Resource not updated"
+                })
+            })
     })
 }
+
+// get resource by ID
+getResourceById = async (req, res) => {
+    await Resource.findById({_id: req.params.id}, (err, resourceByID) => {
+        if(err){
+            return res.status(400).json({success: false, error: err})
+        }
+        return res.status(200).json({success: true, resource: resourceByID})
+    }).catch(err => console.log(err))
+}
+
+// get resourceLists
+// getResourceLists = async (req, res)
