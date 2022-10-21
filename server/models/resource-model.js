@@ -17,3 +17,5 @@ constResourceSchema = new Schema(
     },
     {timestamps: true}
 );
+
+module.exports = mongoose.model("Resource", UserSchema);
