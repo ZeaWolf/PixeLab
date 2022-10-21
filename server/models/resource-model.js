@@ -4,7 +4,6 @@ const ObjectId = Schema.Types.ObjectId
 
 const ResourceSchema = new Schema(
     {
-        Id:             {type: ObjectId, required: true},
         Type:           {type: String, required: true},
         TypeId:         {type: ObjectId, required: true},
         MapTilesetName: {type: String, required: true},

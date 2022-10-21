@@ -41,4 +41,33 @@ createResource = (req, res) => {
 }
 
 // updating the number of likes and comments to the 
-//updateResource
+updateResource = async(req, res) => {
+    const body = req.body;
+    console.log("updateResource: " + JSON.stringify(body));
+    if(!body){
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a body to update'
+        })
+    }
+    // find the resource based on _id
+    Resource.findOne({ _id: req.params.id}, (err, resource) => {
+        console.log("resource found: " + JSON.stringify(resource));
+        if(err){
+            return res.status(404).json({
+                err,
+                message: 'Resource not found!'
+            })
+        }
+        
+        resource.Type = body.Type;
+        resource.TypeId = body.TypeId;
+        resource.MapTilesetName = body.MapTilesetName;
+        resource.Author = body.Author;
+        resource.Image = body.Image;
+        resource.Like = body.Like;
+        resource.Comments = body.Comments;
+        resource.PublishTime = body.PublishTime;
+        resource.Description = body.Description;
+    })
+}
