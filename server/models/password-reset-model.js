@@ -4,7 +4,7 @@ const ObjectId = Schema.Types.ObjectId
 
 const PasswordResetSchema = new Schema(
     {
-        userId:     {type: ObjectId, required: ture},
+        userId:     {type: ObjectId, required: true},
         resetToken: {type: String, required: true},
         createAt:   {type: Date, expires: 3600, default: Date.now()}
     },
