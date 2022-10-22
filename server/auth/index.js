@@ -17,6 +17,7 @@ function authManager(){
 
             next();
         }catch(err){
+            console.error(err);
             return res.status(401).json({
                 errorMessage: "Unauthorized"
             });

@@ -25,4 +25,4 @@ const PasswordResetSchema = new Schema(
 );
 
 module.exports = mongoose.model("User", UserSchema);
-module.exports = mongoose.model("PasswordRest", PasswordResetSchema)
+module.exports = mongoose.model("PasswordRest", PasswordResetSchema);
