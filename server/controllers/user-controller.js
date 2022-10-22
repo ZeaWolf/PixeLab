@@ -1,6 +1,6 @@
 const auth = require("../auth")
 const User = require("../models/user-model")
-const PasswordRest = require("../models/user-model")
+const PasswordRest = require("../models/password-reset-model")
 const createRandomToken = require("../utils/helper")
 const {mailTransport, passwordResetEmailTemple} = require("../utils/helper")
 const bcrypt = require("bcryptjs")
@@ -186,7 +186,7 @@ forgotPassword = async(req, res) => {
         }
 
         const randToken = await createRandomToken();
-        const resetToken = new ResetToken({userId: user._id, resetToken: randToken})
+        const resetToken = new PasswordRest({userId: user._id, resetToken: randToken})
         await resetToken.save();
 
         mailTransport.sendMail({
@@ -194,10 +194,97 @@ forgotPassword = async(req, res) => {
             to: email,
             subject: "PixeLab Password Reset",
             html: passwordResetEmailTemple(`https://sbupixelab.herokuapp.com/
-            reset-password?token=${resetToken}`),
-        })
-    }
+            reset-password?token=${resetToken}&id=${user_.id}`),
+        });
 
+        return res.status(200).json({success: true, message: "Password reset link is sent!"});
+    }catch(err){
+        console.error(err);
+        res.status(500).send();
+    }
+}
+
+resetPassword = async(req, res) => {
+    try{
+        const {password, passwordVerify} = req.body;
+
+        if (!password || !passwordVerify) return res.status(400).json({ errorMessage: "Please enter all required fields."});
+
+        const user = await User.findById(req.userId);
+        if(!user) if(!user) return res.status(400).json({ errorMessage: "User not found!"});
+
+        // Compare old password?
+
+        if (password.length < 8) return res.status(400).json({ errorMessage: "Please enter a password of at least 8 characters." });
+
+        if (password !== passwordVerify) return res.status(400).json({ errorMessage: "Please enter the same password twice." });
+
+        user.password = password;
+        const savedUser = await user.save();
+
+        await PasswordRest.findOneAndDelete({userId: user._id});
+
+        return res.status(200).json({success: true, message: "Password Reset Successfully!"});
+    }catch(err){
+        console.error(err);
+        res.status(500).send();
+    }
+    // mailTransport.sendMail({
+    //     from: "sbupixelab@gmail.com"
+    //     to: email,
+    //     subject: "Password Reset Successfully",
+    //     html: passwordResetEmailTemple(`https://sbupixelab.herokuapp.com/
+    //     reset-password?token=${resetToken}&id=${user_.id}`),
+    // });
+}
+
+
+updateLists = async(req, res) => {
+    try{
+
+        const {id, list, itemId} = req.body;
+        if(id != req.userId) return res.status(400).json({ errorMessage: "Unauthorized!"});
+
+        const user = await User.findById(req.userId);
+        if(!user) return res.status(400).json({ errorMessage: "User not found!"});
+
+        var index;
+        switch(list){
+            case "collectionList":
+                if( (index = user.collectionList.indexOf(itemId)) == -1){
+                    user.collectionList.push(itemId);
+                }else{
+                    user.collectionList.slice(index, 1);
+                }
+                break;
+            case "likeList":
+                if( (index = user.likeList.indexOf(itemId)) == -1){
+                    user.likeList.push(itemId);
+                }else{
+                    user.likeList.slice(index, 1);
+                }
+                break;
+            case "mapList":
+                if( (index = user.mapList.indexOf(itemId)) == -1){
+                    user.mapList.push(itemId);
+                }else{
+                    user.mapList.slice(index, 1);
+                }
+                break;
+            case "tilesetList":
+                if( (index = user.tilesetList.indexOf(itemId)) == -1){
+                    user.tilesetList.push(itemId);
+                }else{
+                    user.tilesetList.slice(index, 1);
+                }
+                break;
+        }
+
+        return res.status(200).json({success: true, message: "Lists Updated Successfully!"});
+    }catch(err){
+        console.error(err);
+        res.status(500).send();
+    }
 }
 
 module.exports = {
@@ -206,5 +293,6 @@ module.exports = {
     loginUser,
     logoutUser,
     forgotPassword,
-    
+    resetPassword,
+    updateLists
 }
