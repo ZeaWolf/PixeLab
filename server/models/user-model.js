@@ -15,14 +15,4 @@ constUserSchema = new Schema(
     {timestamps: true}
 );
 
-const PasswordResetSchema = new Schema(
-    {
-        userId:     {type: ObjectId, required: ture},
-        resetToken: {type: String, required: true},
-        createAt:   {type: Date, expires: 3600, default: Date.now()}
-    },
-    {timestamps: true}
-);
-
 module.exports = mongoose.model("User", UserSchema);
-module.exports = mongoose.model("PasswordRest", PasswordResetSchema)
