@@ -49,7 +49,7 @@ updateMap = async(req, res) => {
             error: 'You must provide a body to update'
         })
     }
-    // find the resource based on _id
+    // find the map based on _id
     Map.findOne({ _id: req.params.id}, (err, map) => {
         console.log("map found: " + JSON.stringify(map));
         if(err){
@@ -96,7 +96,22 @@ updateMap = async(req, res) => {
     })
 }
 
-// get resource by ID
+// delete the map by ID
+deleteMap = async (req, res) => {
+    Map.findById({ _id: req.params.id }, (err, map) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'map not found!',
+            })
+        }
+        Map.findOneAndDelete({ _id: req.params.id }, () => {
+            return res.status(200).json({ success: true, data: map })
+        }).catch(err => console.log(err))
+    })
+}
+
+// get map by ID
 getMapById = async (req, res) => {
     await Map.findById({_id: req.params.id}, (err, mapByID) => {
         if(err){
@@ -106,7 +121,7 @@ getMapById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
-// get resourceLists
+// get MapLists
 getMapLists = async (req, res) => {
     await Map.find({}, (err, map) => {
         if(err){
@@ -123,7 +138,7 @@ getMapLists = async (req, res) => {
             for(let key in map){
                 let list = map[key];
                 let pair = {
-                    
+
                     _id: list._id,
                     OwnerEmail: list.OwnerEmail,
                     Name: list.Name,

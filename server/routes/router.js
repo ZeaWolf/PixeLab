@@ -16,15 +16,17 @@ router.put('/reset-password', auth.isResetTokenValid, UserController.resetPasswo
 router.put('/lists', auth.verify, UserController.updateLists)
 
 //For resource controllers
-router.post('/resource', ResourceController.createResource)
-router.put('/resource/:id', ResourceController.updateResource)
-router.get('/resource/:id', ResourceController.getResourceById)
-router.get('/resources', ResourceController.getResourceLists)
+router.post('/resource',auth.verify, ResourceController.createResource)
+router.put('/resource/:id', auth.verify, ResourceController.updateResource)
+router.get('/resource/:id', auth.verify, ResourceController.getResourceById)
+router.get('/resources', auth.verify, ResourceController.getResourceLists)
 
 //For map controllers
-router.post('/map', MapController.createMap)
-router.put('/map/:id', MapController.updateMap)
-router.get('/map/:id', MapController.getMapById)
-router.get('/maps', MapController.getMapLists)
+router.post('/map', auth.verify, MapController.createMap)
+router.put('/map/:id', auth.verify, MapController.updateMap)
+router.delete('/map/:id', auth.verify, MapController.deleteMap)
+router.get('/map/:id', auth.verify, MapController.getMapById)
+router.get('/maps', auth.verify, MapController.getMapLists)
+
 
 module.exports = router
