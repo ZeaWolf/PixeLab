@@ -1,4 +1,7 @@
 const jwt = require("jsonwebtoken")
+const {isValidObjectId} = require("mongoose")
+const PasswordRest = require("../models/password-reset-model")
+
 
 function authManager(){
     verify = function (req, res, next){
@@ -17,6 +20,7 @@ function authManager(){
 
             next();
         }catch(err){
+            console.error(err);
             return res.status(401).json({
                 errorMessage: "Unauthorized"
             });
@@ -26,6 +30,32 @@ function authManager(){
         return jwt.sign({
             userId: user._id
         }, process.env.JWT_SECRET);
+    }
+
+    isResetTokenValid = async(req, res, next) =>{
+        try{
+            const{token, id} = req.query;
+            if(!token || !id) return res.status(400).json({ errorMessage: "Invalid request!"});
+            
+            if(!isValidObjectId(id)) return res.status(400).json({ errorMessage: "Invalid request!"});
+            
+            const user = await User.findById(id);
+            if(!user) return res.status(400).json({ errorMessage: "Invalid request!"});
+    
+            const resetToken = await PasswordRest.findOne({userId: user._id});
+            if(!resetToken) return res.status(400).json({ errorMessage: "Invalid request!"});
+            
+            const isValid = await resetToken.compareToken(token)
+            if(!isValid) return res.status(400).json({ errorMessage: "Invalid request!"});
+    
+            req.userId = user._id;
+            next();
+        }catch(err){
+            console.error(err);
+            return res.status(401).json({
+                errorMessage: "Unauthorized"
+            });
+        }
     }
     return this;
 }
