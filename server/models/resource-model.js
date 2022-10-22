@@ -28,4 +28,4 @@ const ResourceSchema = new Schema(
 
 
 module.exports = mongoose.model("Resource", ResourceSchema);
-// module.exports = mongoose.model("Comment", CommentSchema);
+// module.exports = mongoose.model("Comment", CommentSchema); 
