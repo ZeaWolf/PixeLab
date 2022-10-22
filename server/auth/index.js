@@ -30,5 +30,6 @@ function authManager(){
     return this;
 }
 
+
 const auth = authManager();
 module.exports = auth;
