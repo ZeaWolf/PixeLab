@@ -1,5 +1,4 @@
 const Map = require('../models/map-model');
-// const User = require('../models/user-model');
 
 // create a new map in the server
 createMap = (req, res) => {
@@ -168,6 +167,7 @@ getMapLists = async (req, res) => {
 module.exports = {
     createMap,
     updateMap,
+    deleteMap,
     getMapById,
     getMapLists
 }
