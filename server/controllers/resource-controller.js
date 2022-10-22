@@ -135,3 +135,10 @@ getResourceLists = async (req, res) => {
         }
     }).catch(err => console.log(err))
 }
+
+module.exports = {
+    createResource,
+    updateResource,
+    getResourceById,
+    getResourceLists
+}
