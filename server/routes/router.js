@@ -10,3 +10,6 @@ router.post('/resource', ResourceController.createResource)
 router.put('/resource/:id', ResourceController.updateResource)
 router.get('/resource/:id', ResourceController.getResourceById)
 router.get('/resources', ResourceController.getResourceLists)
+
+
+module.exports = router
