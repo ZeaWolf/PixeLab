@@ -1,7 +1,7 @@
 const Tileset = require('../models/tileset-model');
 
 // create a new tileset in the server
-createTileset = (req, res) => {
+createTileset = async(req, res) => {
     const body = req.body;
     if(!body){
         return res.status(400).json({
@@ -149,18 +149,6 @@ getTilesetLists = async (req, res) => {
                     TileWidth: list.TileWidth,
                     Tiles: list.Tiles,
                     source: list.source
-
-                  
-        tileset.SharedList = body.SharedList;
-        tileset.IsPublished = body.IsPublished;
-        tileset.BackgroundColor = body.BackgroundColor;
-        tileset.Columns = body.Columns;
-        tileset.Rows = body.Rows;
-        tileset.Spacing = body.Spacing;
-        tileset.TileHeight = body.TileHeight;
-        tileset.TileWidth = body.TileWidth;
-        tileset.Tiles = body.Tiles;
-        tileset.source = body.source;
 
                 };
                 pairs.push(pair);
