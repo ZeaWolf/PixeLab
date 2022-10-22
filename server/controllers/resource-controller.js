@@ -102,4 +102,36 @@ getResourceById = async (req, res) => {
 }
 
 // get resourceLists
-// getResourceLists = async (req, res)
+getResourceLists = async (req, res) => {
+    await Resource.find({}, (err, resources) => {
+        if(err){
+            return res.status(400).json({ success: false, error: err})
+        }
+        if(!resources){
+            console.log("no resource");
+            return res
+                .status(404)
+                .json({success: false, error: 'Resources not found'})
+        }
+        else{
+            let pairs = [];
+            for(let key in resources){
+                let list = resources[key];
+                let pair = {
+                    _id: list._id,
+                    Type: list.Type,
+                    TypeId: list.TypeId,
+                    MapTilesetName: list.MapTilesetName,
+                    Author: list.Author,
+                    Image: list.Image,
+                    Like: list.Like,
+                    Comments: list.Comments,
+                    PublishTime: list.PublishTime,
+                    Description: list.Description
+                };
+                pairs.push(pair);
+            }
+            return res.status(200).json({success: true, idInfoPairs: pairs})
+        }
+    }).catch(err => console.log(err))
+}
