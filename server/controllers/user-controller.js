@@ -58,10 +58,10 @@ resigterUser = async(req, res) => {
             user: {
                 userName: savedUser.userName,
                 email: savedUser.email,
-                collectionList = savedUser.collectionList,
-                likeList = savedUser.likeList,
-                mapList = savedUser.mapList,
-                tilesetList = savedUser.tilesetList,
+                collectionList: savedUser.collectionList,
+                likeList: savedUser.likeList,
+                mapList: savedUser.mapList,
+                tilesetList: savedUser.tilesetList,
             }
         }).send();
     } catch (err) {
@@ -79,10 +79,10 @@ getLoggedIn = async (req, res) => {
                 user: {
                     userName: savedUser.userName,
                     email: savedUser.email,
-                    collectionList = savedUser.collectionList,
-                    likeList = savedUser.likeList,
-                    mapList = savedUser.mapList,
-                    tilesetList = savedUser.tilesetList,
+                    collectionList: savedUser.collectionList,
+                    likeList: savedUser.likeList,
+                    mapList: savedUser.mapList,
+                    tilesetList: savedUser.tilesetList,
                 }
             }).send();
         }catch(err){
@@ -137,10 +137,10 @@ loginUser = async (req, res) => {
             user: {
                 userName: savedUser.userName,
                 email: savedUser.email,
-                collectionList = savedUser.collectionList,
-                likeList = savedUser.likeList,
-                mapList = savedUser.mapList,
-                tilesetList = savedUser.tilesetList,
+                collectionList: savedUser.collectionList,
+                likeList: savedUser.likeList,
+                mapList: savedUser.mapList,
+                tilesetList: savedUser.tilesetList,
             }
         }).send();
     }catch (err) {
@@ -190,7 +190,7 @@ forgotPassword = async(req, res) => {
         await resetToken.save();
 
         mailTransport.sendMail({
-            from: "sbupixelab@gmail.com"
+            from: "sbupixelab@gmail.com",
             to: email,
             subject: "PixeLab Password Reset",
             html: passwordResetEmailTemple(`https://sbupixelab.herokuapp.com/

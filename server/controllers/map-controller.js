@@ -2,7 +2,7 @@ const Map = require('../models/map-model');
 const Layer = require('../models/layer-model');
 
 // create a new map in the server
-createMap = (req, res) => {
+createMap = async(req, res) => {
     const body = req.body;
     if(!body){
         return res.status(400).json({
