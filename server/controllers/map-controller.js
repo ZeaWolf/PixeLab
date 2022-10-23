@@ -62,18 +62,11 @@ updateMap = async(req, res) => {
         map.OwnerEmail = body.OwnerEmail;
         map.Name = body.Name;
         map.Type = body.Type;
-        map.IsPublished = body.IsPublished;
         map.ShareList = body.ShareList;
         map.Source = body.Source;
-        map.BackgroundColor = body.BackgroundColor;
         map.Height = body.Height;
         map.Width = body.Width;
         map.Layers = body.Layers;
-        map.NextLayerIndex = body.NextLayerIndex;
-        map.Xcoordinate = body.Xcoordinate;
-        map.Ycoordinate = body.Ycoordinate;
-        map.Tileheight = body.Tileheight;
-        map.Tilewidth = body.Tilewidth;
         map.Tileset = body.Tileset;
 
         map
@@ -143,18 +136,11 @@ getMapLists = async (req, res) => {
                     OwnerEmail: list.OwnerEmail,
                     Name: list.Name,
                     Type: list.Type,
-                    IsPublished: list.IsPublished,
                     ShareList: list.ShareList,
                     Source: list.Source,
-                    BackgroundColor: list.BackgroundColor,
                     Height: list.Height,
                     Width: list.Width,
                     Layers: list.Layers,
-                    NextLayerIndex: list.NextLayerIndex,
-                    Xcoordinate: list.Xcoordinate,
-                    Ycoordinate: list.Ycoordinate,
-                    Tileheight: list.Tileheight,
-                    Tilewidth: list.Tilewidth,
                     Tileset: list.Tileset
 
                 };
@@ -231,18 +217,12 @@ updateLayer = async(req, res) => {
         layer.Type = body.Type;
         layer.Height = body.Height;
         layer.Width = body.Width;
-        layer.Image = body.Image;
+        layer.Content = body.Content;
         layer.Locked = body.Locked;
         layer.Opacity = body.Opacity;
-        layer.TransparentColor = body.TransparentColor;
         layer.Visible = body.Visible;
-        layer.OffsetX = body.OffsetX;
-        layer.OffsetY = body.OffsetY;
-        layer.Parallaxx = body.Parallaxx;
-        layer.Parallaxy = body.Parallaxy;
         layer.X = body.X;
         layer.Y = body.Y;
-        //Layers:         {type: [Layer], required: true},
 
         layer
         .save()
@@ -309,20 +289,15 @@ getLayerLists = async (req, res) => {
 
                     _id: list._id,
                     Name: list.Name,
+                    Type: list.Type,
                     Height: list.Height,
                     Width: list.Width,
-                    Image: list.Image,
+                    Content: list.Content,
                     Locked: list.Locked,
                     Opacity: list.Opacity,
-                    TransparentColor: list.TransparentColor,
                     Visible: list.Visible,
-                    OffsetX: list.OffsetX,
-                    OffsetY: list.OffsetY,
-                    Parallaxx: list.Parallaxx,
-                    Parallaxy: list.Parallaxy,
                     X: list.X,
                     Y: list.Y
-                    //Layers:         {type: [Layer], required: true},
 
                 };
                 pairs.push(pair);
