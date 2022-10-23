@@ -14,10 +14,10 @@ const ObjectId = Schema.Types.ObjectId
 const ResourceSchema = new Schema(
     {
         Type:           {type: String, required: true},
-        TypeId:         {type: ObjectId, required: true},
-        MapTilesetName: {type: String, required: true},
+        Name:           {type: String, required: true},
         Author:         {type: String, required: true},
         Image:          {type: String, required: true},
+        Source:         {type: String, required: true},
         Like:           {type: Number, required: true},
         Comments:       {type: [[String]], required: true},
         PublishTime:    {type: Date, required: true, default: Date.now()},

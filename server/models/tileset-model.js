@@ -1,22 +1,19 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
+const Tile = require('./tile-model').schema
 
 const TilesetSchema = new Schema(
     {
         OwnerEmail:     {type: String, required: true},
-        Name:           {type: Number, required: true},
+        Name:           {type: String, required: true},
         Type:           {type: String, required: true},
         SharedList:     {type: [String], required: true},
-        IsPublished:    {type: Boolean, required: true},
-        BackgroundColor:{type: String, required: true},
         Columns:        {type: Number, required: true},
         Rows:           {type: Number, required: true},
         Spacing:        {type: Number, required: true},
-        TileHeight:     {type: Number, required: true},
-        TileWidth:      {type: Number, required: true},
-        Tiles:          {type: [Number], required: true},
-        source:         {type: String, required: true}
+        Tiles:          {type: [Tile], required: true},
+        Source:         {type: String, required: true}     // used for download/export
     },
     {timestamps: true}
 );

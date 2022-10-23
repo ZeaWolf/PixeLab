@@ -2,7 +2,7 @@ const Resource = require('../models/resource-model');
 const User = require('../models/user-model');
 
 // posting the resource to community => create a new resource in the server
-createResource = (req, res) => {
+createResource = async(req, res) => {
     // check if it is correct format
     const body = req.body;
     if(!body){

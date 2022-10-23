@@ -1,4 +1,5 @@
 const Tileset = require('../models/tileset-model');
+const Tile = require('../models/tile-model');
 
 // create a new tileset in the server
 createTileset = async(req, res) => {
@@ -158,10 +159,78 @@ getTilesetLists = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+createTile = async(req, res) => {
+    const body = req.body;
+    if(!body){
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide correct format for tile',
+        });
+    }
+
+    // create a tile based on the request's body
+    const tile = new Tile(body);
+    console.log("creating tileset: " + JSON.stringify(tile));
+    
+    // if creation of the tile not success
+    if(!tile){
+        return res.status(400).json({success: false, error: err});
+    }
+
+    // if success
+    tile
+    .save()
+    .then(() =>{
+        return res.status(201).json({
+            success: true,
+            tile: tile,
+            message: 'tile success created'
+        })
+
+    })
+    .catch(error => {
+        return res.status(400).json({
+            error,
+            message: 'tileset is not created'
+        })
+    })
+}
+
+// delete the tile by ID
+deleteTile = async (req, res) => {
+    Tile.findById({ _id: req.params.id }, (err, tile) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'tile not found!',
+            })
+        }
+        Tile.findOneAndDelete({ _id: req.params.id }, () => {
+            return res.status(200).json({ success: true, data: tile })
+        }).catch(err => console.log(err))
+    })
+}
+
+// get tile by ID
+getTileById = async (req, res) => {
+    await Tile.findById({_id: req.params.id}, (err, tileByID) => {
+        if(err){
+            return res.status(400).json({success: false, error: err})
+        }
+        return res.status(200).json({success: true, tile: tileByID})
+    }).catch(err => console.log(err))
+}
+
+
+
+
 module.exports = {
     createTileset,
     updateTileset,
     deleteTileset,
     getTilesetById,
-    getTilesetLists
+    getTilesetLists,
+    createTile,
+    deleteTile,
+    getTileById,
 }
