@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 
-constUserSchema = new Schema(
+const UserSchema = new Schema(
     {
         userName:       {type: String, required: true},
         email:          {type: String, required: true},
@@ -17,7 +17,7 @@ constUserSchema = new Schema(
 
 const PasswordResetSchema = new Schema(
     {
-        userId:     {type: ObjectId, required: ture},
+        userId:     {type: ObjectId, required: true},
         resetToken: {type: String, required: true},
         createAt:   {type: Date, expires: 3600, default: Date.now()}
     },
