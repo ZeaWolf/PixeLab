@@ -63,15 +63,11 @@ updateTileset = async(req, res) => {
         tileset.Name = body.Name;
         tileset.Type = body.Type;
         tileset.SharedList = body.SharedList;
-        tileset.IsPublished = body.IsPublished;
-        tileset.BackgroundColor = body.BackgroundColor;
         tileset.Columns = body.Columns;
         tileset.Rows = body.Rows;
         tileset.Spacing = body.Spacing;
-        tileset.TileHeight = body.TileHeight;
-        tileset.TileWidth = body.TileWidth;
         tileset.Tiles = body.Tiles;
-        tileset.source = body.source;
+        tileset.Source = body.Source;
 
         tileset
             .save()
@@ -141,13 +137,9 @@ getTilesetLists = async (req, res) => {
                     Name: list.Name,
                     Type: list.Type,
                     SharedList: list.SharedList,
-                    IsPublished: list.IsPublished,
-                    BackgroundColor: list.BackgroundColor,
                     Columns: list.Columns,
                     Rows: list.Rows,
                     Spacing: list.Spacing,
-                    TileHeight: list.TileHeight,
-                    TileWidth: list.TileWidth,
                     Tiles: list.Tiles,
                     source: list.source
 
@@ -196,21 +188,6 @@ createTile = async(req, res) => {
     })
 }
 
-// delete the tile by ID
-deleteTile = async (req, res) => {
-    Tile.findById({ _id: req.params.id }, (err, tile) => {
-        if (err) {
-            return res.status(404).json({
-                err,
-                message: 'tile not found!',
-            })
-        }
-        Tile.findOneAndDelete({ _id: req.params.id }, () => {
-            return res.status(200).json({ success: true, data: tile })
-        }).catch(err => console.log(err))
-    })
-}
-
 // get tile by ID
 getTileById = async (req, res) => {
     await Tile.findById({_id: req.params.id}, (err, tileByID) => {
@@ -221,7 +198,50 @@ getTileById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+// updating the tile's source
+updateTile = async (req, res) => {
+    const body = req.body;
+    console.log("updateTile: " + JSON.stringify(body));
+    if(!body){
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a body to update'
+        })
+    }
+    // find the tile based on _id
+    Tile.findOne({ _id: req.params.id}, (err, tile) => {
+        console.log("Tile found: " + JSON.stringify(tile));
+        if(err){
+            return res.status(404).json({
+                err,
+                message: 'Tile not found!'
+            })
+        }
+        
+        tile.X = body.X;
+        tile.Y = body.Y;
+        tile.Type = body.Type;
+        tile.Source = body.Source;
 
+        tile
+            .save()
+            .then(() => {
+                console.log("SUCESS!!!");
+                return res.status(200).json({
+                    success: true,
+                    id: tile._id,
+                    message: 'Tile updated!',
+                })
+            })
+            .catch(error => {
+                console.log("FAILURE: " + JSON.stringify(error));
+                return res.status(404).json({
+                    error,
+                    message: "Tile not updated"
+                })
+            })
+    })
+}
 
 
 module.exports = {
@@ -231,6 +251,6 @@ module.exports = {
     getTilesetById,
     getTilesetLists,
     createTile,
-    deleteTile,
     getTileById,
+    updateTile
 }

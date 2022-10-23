@@ -61,10 +61,10 @@ updateResource = async(req, res) => {
         }
         
         resource.Type = body.Type;
-        resource.TypeId = body.TypeId;
-        resource.MapTilesetName = body.MapTilesetName;
+        resource.Name = body.Name;
         resource.Author = body.Author;
         resource.Image = body.Image;
+        resource.Source = body.Source;
         resource.Like = body.Like;
         resource.Comments = body.Comments;
         resource.PublishTime = body.PublishTime;
@@ -119,8 +119,7 @@ getResourceLists = async (req, res) => {
                 let pair = {
                     _id: list._id,
                     Type: list.Type,
-                    TypeId: list.TypeId,
-                    MapTilesetName: list.MapTilesetName,
+                    Name: list.Name,
                     Author: list.Author,
                     Image: list.Image,
                     Like: list.Like,
