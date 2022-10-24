@@ -2,7 +2,7 @@ const Resource = require('../models/resource-model');
 const User = require('../models/user-model');
 
 // posting the resource to community => create a new resource in the server
-createResource = async(req, res) => {
+createResource = (req, res) => {
     // check if it is correct format
     const body = req.body;
     if(!body){
@@ -15,7 +15,7 @@ createResource = async(req, res) => {
     // create a Resource based on the request's body
     const resource = new Resource(body);
     console.log("creating top5List: " + JSON.stringify(resource));
-    
+
     // if creation of the Resource not success
     if(!resource){
         return res.status(400).json({success: false, error: err});
