@@ -29,6 +29,13 @@ router.delete('/map/:id', auth.verify, MapController.deleteMap)
 router.get('/map/:id', auth.verify, MapController.getMapById)
 router.get('/maps', auth.verify, MapController.getMapLists)
 
+//For layer controllers
+router.post('/layer', auth.verify, MapController.createLayer)
+router.put('/layer/:id', auth.verify, MapController.updateLayer)
+router.delete('/layer/:id', auth.verify, MapController.deleteLayer)
+router.get('/layer/:id', auth.verify, MapController.getLayerById)
+router.get('/layers', auth.verify, MapController.getLayerLists)
+
 //For tileset controllers
 router.post('/tileset', auth.verify, TilesetController.createTileset)
 router.put('/tileset/:id', auth.verify, TilesetController.updateTileset)
