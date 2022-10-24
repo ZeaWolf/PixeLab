@@ -43,5 +43,10 @@ router.delete('/tileset/:id', auth.verify, TilesetController.deleteTileset)
 router.get('/tileset/:id', auth.verify, TilesetController.getTilesetById)
 router.get('/tilesets', auth.verify, TilesetController.getTilesetLists)
 
+//For tile controllers
+router.post('/tile', auth.verify, TilesetController.createTile)
+router.get('/tile/:id', auth.verify, TilesetController.getTileById)
+router.put('/tile/:id', auth.verify, TilesetController.updateTile)
+
 
 module.exports = router
