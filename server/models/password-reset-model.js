@@ -23,4 +23,4 @@ PasswordResetSchema.methods.compareToken = async function (token) {
     return result;
 };
 
-module.exports = mongoose.model("PasswordRest", PasswordResetSchema);
+module.exports = mongoose.model("PasswordReset", PasswordResetSchema);
