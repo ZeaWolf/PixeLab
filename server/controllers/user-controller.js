@@ -150,7 +150,7 @@ loginUser = async (req, res) => {
             .status(500)
             .json({
                 success: false,
-                errorMessage: "Some error happen"
+                errorMessage: "Some error happen!!"
         })
     }
 }
