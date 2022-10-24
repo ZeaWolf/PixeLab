@@ -6,7 +6,7 @@ const {mailTransport, passwordResetEmailTemple} = require("../utils/helper")
 const bcrypt = require("bcryptjs")
 const crypto = require("crypto")
 
-resigterUser = async(req, res) => {
+registerUser = async(req, res) => {
     try {
         const { userName, email, password, passwordVerify } = req.body;
         if (!userName || !email || !password || !passwordVerify) {
@@ -288,8 +288,8 @@ updateLists = async(req, res) => {
 }
 
 module.exports = {
-    getLoggedIn,
     registerUser,
+    getLoggedIn,
     loginUser,
     logoutUser,
     forgotPassword,
