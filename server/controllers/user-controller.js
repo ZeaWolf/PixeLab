@@ -88,7 +88,6 @@ getLoggedIn = async (req, res) => {
         }catch(err){
             console.error(err);
             res.status(500).send();
-            
         }
     })
 }
@@ -136,23 +135,17 @@ loginUser = async (req, res) => {
             success: true,
             loggedIn: true,
             user: {
-                userName: savedUser.userName,
-                email: savedUser.email,
-                collectionList: savedUser.collectionList,
-                likeList: savedUser.likeList,
-                mapList: savedUser.mapList,
-                tilesetList: savedUser.tilesetList,
+                userName: existingUser.userName,
+                email: existingUser.email,
+                collectionList: existingUser.collectionList,
+                likeList: existingUser.likeList,
+                mapList: existingUser.mapList,
+                tilesetList: existingUser.tilesetList,
             }
         }).send();
     }catch (err) {
         console.error(err);
-        // res.status(500).send();
-        return res
-            .status(500)
-            .json({
-                success: false,
-                errorMessage: "Some error happen!!"
-        })
+        res.status(500).send();
     }
 }
 
