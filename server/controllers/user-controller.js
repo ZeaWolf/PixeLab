@@ -189,9 +189,14 @@ forgotPassword = async(req, res) => {
         if(!randToken){
             return res
                 .status(400)
-                .json({ errorMessage: "token error!"});
+                .json({ errorMessage: "random byte error!"});
         }
         const resetToken = new PasswordRest({userId: user._id, resetToken: randToken})
+        if(!randToken){
+            return res
+                .status(400)
+                .json({ errorMessage: "token error!"});
+        }
         const savedToken = await resetToken.save();
 
         // if(savedToken){
