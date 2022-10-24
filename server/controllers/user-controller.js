@@ -186,16 +186,31 @@ forgotPassword = async(req, res) => {
         }
 
         const randToken = await createRandomToken();
+        if(!randToken){
+            return res
+                .status(400)
+                .json({ errorMessage: "token error!"});
+        }
         const resetToken = new PasswordRest({userId: user._id, resetToken: randToken})
-        await resetToken.save();
+        const savedToken = await resetToken.save();
 
-        mailTransport.sendMail({
-            from: "sbupixelab@gmail.com",
-            to: email,
-            subject: "PixeLab Password Reset",
-            html: passwordResetEmailTemple(`https://sbupixelab.herokuapp.com/
-            reset-password?token=${resetToken}&id=${user_.id}`),
-        });
+        // if(savedToken){
+        //     return res.status(200).json({success: true, 
+        //         reset: {
+        //             userId:     savedToken.userId,
+        //             resetToken: savedToken.resetToken,
+        //             createAt:   savedToken.createAt
+        //         }
+        //     }).send();
+        // }
+
+        // mailTransport.sendMail({
+        //     from: "sbupixelab@gmail.com",
+        //     to: email,
+        //     subject: "PixeLab Password Reset",
+        //     html: passwordResetEmailTemple(`https://sbupixelab.herokuapp.com/
+        //     reset-password?token=${resetToken}&id=${user_.id}`),
+        // });
 
         return res.status(200).json({success: true, message: "Password reset link is sent!"});
     }catch(err){
