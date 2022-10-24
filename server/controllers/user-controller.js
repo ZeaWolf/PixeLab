@@ -145,7 +145,13 @@ loginUser = async (req, res) => {
         }).send();
     }catch (err) {
         console.error(err);
-        res.status(500).send();
+        // res.status(500).send();
+        return res
+            .status(500)
+            .json({
+                success: false,
+                errorMessage: "Some error happen"
+        })
     }
 }
 
