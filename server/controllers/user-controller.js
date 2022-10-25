@@ -252,9 +252,10 @@ resetPassword = async(req, res) => {
         const passwordHash = await bcrypt.hash(password, salt);
 
         user.passwordHash = passwordHash;
+
         const savedUser = await user.save();
 
-        await PasswordReset.findOneAndDelete({userId: user._id});
+        //await PasswordReset.deleteOne({userId: user._id});
 
         return res.status(200).json({success: true, message: "Password Reset Successfully!"});
     }catch(err){
