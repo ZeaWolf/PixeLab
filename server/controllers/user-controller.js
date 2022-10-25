@@ -220,7 +220,7 @@ forgotPassword = async(req, res) => {
                     userId:     savedToken.userId,
                     resetToken: savedToken.resetToken,
                     createAt:   savedToken.createAt,
-                    message: `https://sbupixelab.herokuapp.com/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
+                    message: `https://sbupixelab.herokuapp.com/api/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
                 }
             }).send();
         }
@@ -239,7 +239,7 @@ resetPassword = async(req, res) => {
         if (!password || !passwordVerify) return res.status(400).json({ errorMessage: "Please enter all required fields."});
 
         const user = await User.findById(req.userId);
-        if(!user) if(!user) return res.status(400).json({ errorMessage: "User not found!"});
+        if(!user) return res.status(400).json({ errorMessage: "User not found!"});
 
         // Compare old password?
 
