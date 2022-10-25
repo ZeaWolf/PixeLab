@@ -2,9 +2,10 @@ const auth = require("../auth")
 const User = require("../models/user-model")
 const PasswordReset = require("../models/password-reset-model")
 const createRandomToken = require("../utils/helper")
-const mailTransport = require("../utils/mail")
+//const mailTransport = require("../utils/mail")
 const bcrypt = require("bcryptjs")
 const crypto = require("crypto")
+const nodemailer = require("nodemailer");
 
 registerUser = async(req, res) => {
     try {
@@ -199,19 +200,27 @@ forgotPassword = async(req, res) => {
         }
         const savedToken = await resetToken.save();
 
+        const mailTransport = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "sbupixelab@gmail.com",
+                pass: "cse416PixeLab",
+            }
+        });
         
         if(savedToken){
-            mailTransport.sendMail({
-                from: "sbupixelab@gmail.com",
-                to: email,
-                subject: "Password Reset Successfully",
-                text: `https://sbupixelab.herokuapp.com/reset-password?token=${resetToken}&id=${user._id}`,
-            });
+            // mailTransport.sendMail({
+            //     from: "sbupixelab@gmail.com",
+            //     to: email,
+            //     subject: "Password Reset Successfully",
+            //     text: `https://sbupixelab.herokuapp.com/reset-password?token=${resetToken}&id=${user._id}`,
+            // });
             return res.status(200).json({success: true, 
                 reset: {
                     userId:     savedToken.userId,
                     resetToken: savedToken.resetToken,
-                    createAt:   savedToken.createAt
+                    createAt:   savedToken.createAt,
+                    message: `https://sbupixelab.herokuapp.com/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
                 }
             }).send();
         }
@@ -238,7 +247,11 @@ resetPassword = async(req, res) => {
 
         if (password !== passwordVerify) return res.status(400).json({ errorMessage: "Please enter the same password twice." });
 
-        user.password = password;
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        user.passwordHash = passwordHash;
         const savedUser = await user.save();
 
         await PasswordReset.findOneAndDelete({userId: user._id});
