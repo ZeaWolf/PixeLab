@@ -8,22 +8,21 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 
 // ** components no implemented
-// const App = () => {
-//     return (
-//         <BrowserRouter>
-//             <AuthContextProvider>
-//                 <GlobalStoreContextProvider>              
-//                     <AppBanner />
-//                     <Switch>
-//                         <Route path="/" exact component={HomeWrapper} />
-//                         <Route path="/register/" exact component={RegisterScreen} />
-//                         <Route path="/login/" exact component={LoginScreen} />
-//                         <Route path="/top5list/:id" exact component={WorkspaceScreen} />
-//                     </Switch>
-//                 </GlobalStoreContextProvider>
-//             </AuthContextProvider>
-//         </BrowserRouter>
-//     )
-// }
+const App = () => {
+    return (
+        <BrowserRouter>
+            <AuthContextProvider>
+                <GlobalStoreContextProvider>              
+                    <AppBanner />
+                    <Switch>
+                        <Route path="/" exact component={HomeWrapper} />
+                        <Route path="/register/" exact component={RegisterScreen} />
+                        <Route path="/login/" exact component={LoginScreen} />
+                    </Switch>
+                </GlobalStoreContextProvider>
+            </AuthContextProvider>
+        </BrowserRouter>
+    )
+}
 
-// export default App
+export default App
