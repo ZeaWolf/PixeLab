@@ -4,6 +4,7 @@ const api = axios.create({
     baseURL: '/api',
 })
 
+
 // User part
 export const getLoggedIn = () => api.get(`/loggedIn/`);
 export const registerUser = (payload) => api.post(`/register/`, payload)
