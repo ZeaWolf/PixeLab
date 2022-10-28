@@ -81,57 +81,57 @@
     animation: mixInAnimations 2s 0.2s linear forwards;
   }
   
-  [data-animation="slideInOutDown"].is-visible .modal-dialog,
-  [data-animation="slideInOutTop"].is-visible .modal-dialog,
-  [data-animation="slideInOutLeft"].is-visible .modal-dialog,
-  [data-animation="slideInOutRight"].is-visible .modal-dialog,
-  [data-animation="zoomInOut"].is-visible .modal-dialog,
-  [data-animation="rotateInOutDown"].is-visible .modal-dialog {
+[data-animation="slideInOutDown"].is-visible .modal-dialog,
+[data-animation="slideInOutTop"].is-visible .modal-dialog,
+[data-animation="slideInOutLeft"].is-visible .modal-dialog,
+[data-animation="slideInOutRight"].is-visible .modal-dialog,
+[data-animation="zoomInOut"].is-visible .modal-dialog,
+[data-animation="rotateInOutDown"].is-visible .modal-dialog {
     transform: none;
-  }
+}
   
-  @keyframes mixInAnimations {
+@keyframes mixInAnimations {
     0% {
-      transform: translateX(-100%);
+        transform: translateX(-100%);
     }
-  
+
     10% {
-      transform: translateX(0);
+        transform: translateX(0);
     }
-  
+
     20% {
-      transform: rotate(20deg);
+        transform: rotate(20deg);
     }
-  
+
     30% {
-      transform: rotate(-20deg);
+        transform: rotate(-20deg);
     }
-  
+
     40% {
-      transform: rotate(15deg);
+        transform: rotate(15deg);
     }
-  
+
     50% {
-      transform: rotate(-15deg);
+        transform: rotate(-15deg);
     }
-  
+
     60% {
-      transform: rotate(10deg);
+        transform: rotate(10deg);
     }
-  
+
     70% {
-      transform: rotate(-10deg);
+        transform: rotate(-10deg);
     }
-  
+
     80% {
-      transform: rotate(5deg);
+        transform: rotate(5deg);
     }
-  
+
     90% {
-      transform: rotate(-5deg);
+        transform: rotate(-5deg);
     }
-  
+
     100% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
-  }
+}
