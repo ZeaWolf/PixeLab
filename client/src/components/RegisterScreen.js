@@ -10,7 +10,8 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonIcon from '@mui/icons-material/Person';
+//import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { GlobalStoreContext } from '../store';
 import ErrorModal from "./ErrorModal";
 import Paper from '@mui/material/Paper';
@@ -45,7 +46,7 @@ export default function RegisterScreen() {
                     }}
                 >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
+                        <PersonIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
