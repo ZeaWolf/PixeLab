@@ -5,7 +5,12 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 // ** functions not implemented
 // import { AuthContextProvider } from './auth';
 // import { GlobalStoreContextProvider } from './store'
-
+import {
+    AppBanner,
+    HomeWrapper,
+    RegisterScreen,
+    LoginScreen
+} from './components'
 
 // ** components no implemented
 const App = () => {
