@@ -14,8 +14,8 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import Avatar from '@mui/material/Avatar';
 
 export default function AppBanner() {
-    const { auth } = useContext(AuthContext);
-    const { store } = useContext(GlobalStoreContext);
+    // const { auth } = useContext(AuthContext);
+    // const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
 
@@ -29,7 +29,7 @@ export default function AppBanner() {
 
     const handleLogout = () => {
         handleMenuClose();
-        auth.logoutUser(store);
+        // auth.logoutUser(store);
     }
 
     const menuId = 'primary-search-account-menu';
@@ -76,26 +76,26 @@ export default function AppBanner() {
 
     // let editToolbar = "";
     let menu = loggedOutMenu;
-    if (auth.loggedIn) {
-        menu = loggedInMenu;
-    }
+    // if (auth.loggedIn) {
+    //     menu = loggedInMenu;
+    // }
     // if(auth.guest){
     //     menu = guestMenu;
     // }
     
-    // part 3
+    // --------------------------- if user is login or not --------------------
     function getAccountMenu(loggedIn) {
-        if(loggedIn){
-            let firstInitial = auth.user.firstName.charAt(0).toUpperCase();
-            let lastInitial = auth.user.lastName.charAt(0).toUpperCase();
-            return  <Avatar sx={{ m: 1, bgcolor: 'secondary.main', 
-                    borderStyle: 'solid', borderColor: 'black', 
-                    color:'wihte',fontSize:20, fontWeight:'normal',
-                    width: 50, height: 50 }}
-                    >
-                        {firstInitial + lastInitial}
-                    </Avatar>;
-        }
+        // if(loggedIn){
+        //     let firstInitial = auth.user.firstName.charAt(0).toUpperCase();
+        //     let lastInitial = auth.user.lastName.charAt(0).toUpperCase();
+        //     return  <Avatar sx={{ m: 1, bgcolor: 'secondary.main', 
+        //             borderStyle: 'solid', borderColor: 'black', 
+        //             color:'wihte',fontSize:20, fontWeight:'normal',
+        //             width: 50, height: 50 }}
+        //             >
+        //                 {firstInitial + lastInitial}
+        //             </Avatar>;
+        // }
         return <AccountCircleOutlinedIcon />;
     }
 
@@ -109,7 +109,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: '#D4AF38' }} to='/'>T<sup>5</sup>L</Link>
+                        <Link style={{ textDecoration: 'none', color: '#D4AF38' }} to='/'>PixeLab</Link>
                     </Typography>
                     {/* <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box> */}
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -122,7 +122,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            { getAccountMenu(auth.loggedIn) }
+                            {getAccountMenu("null")}{/* { getAccountMenu(auth.loggedIn) }  */}
                         </IconButton>
                     </Box>
                 </Toolbar>
