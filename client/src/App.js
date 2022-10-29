@@ -7,7 +7,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 // import { GlobalStoreContextProvider } from './store'
 import {
     AppBanner,
-    HomeWrapper,
+    WelcomeScreen,
     RegisterScreen,
     LoginScreen
 } from './components'
@@ -20,7 +20,7 @@ const App = () => {
                 <GlobalStoreContextProvider>              
                     <AppBanner />
                     <Switch>
-                        <Route path="/" exact component={HomeWrapper} />
+                        <Route path="/" exact component={WelcomeScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
                         <Route path="/login/" exact component={LoginScreen} />
                     </Switch>
