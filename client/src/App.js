@@ -16,16 +16,16 @@ import {
 const App = () => {
     return (
         <BrowserRouter>
-            <AuthContextProvider>
-                <GlobalStoreContextProvider>              
+            {/* <AuthContextProvider>
+                <GlobalStoreContextProvider>               */}
                     <AppBanner />
                     <Switch>
                         <Route path="/" exact component={WelcomeScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
                         <Route path="/login/" exact component={LoginScreen} />
                     </Switch>
-                </GlobalStoreContextProvider>
-            </AuthContextProvider>
+                {/* </GlobalStoreContextProvider>
+            </AuthContextProvider> */}
         </BrowserRouter>
     )
 }
