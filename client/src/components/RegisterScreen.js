@@ -16,25 +16,25 @@ import { GlobalStoreContext } from '../store';
 import ErrorModal from "./ErrorModal";
 
 export default function RegisterScreen() {
-    const { auth } = useContext(AuthContext);
-    const { store } = useContext(GlobalStoreContext);
+    // const { auth } = useContext(AuthContext);
+    // const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         // ** Need to implement registerUser to the auth
-        auth.registerUser({
-            firstName: formData.get('firstName'),
-            lastName: formData.get('lastName'),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            passwordVerify: formData.get('passwordVerify')
-        }, store);
+        // auth.registerUser({
+        //     firstName: formData.get('firstName'),
+        //     lastName: formData.get('lastName'),
+        //     email: formData.get('email'),
+        //     password: formData.get('password'),
+        //     passwordVerify: formData.get('passwordVerify')
+        // }, store);
     };
 
     return (
             <Container component="main" maxWidth="xs" >
-                <ErrorModal />
+                {/* <ErrorModal /> */}
                 <CssBaseline />
                 <Box
                     sx={{

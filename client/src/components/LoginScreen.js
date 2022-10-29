@@ -15,17 +15,17 @@ import ErrorModal from './ErrorModal';
 import { GlobalStoreContext } from '../store'
   
 export default function LoginScreen(){
-    const { auth } = useContext(AuthContext);
-    const { store } = useContext(GlobalStoreContext);
+    // const { auth } = useContext(AuthContext);
+    // const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {  
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         // eslint-disable-next-line no-console
-        auth.loginUser({
-          email: data.get('email'),
-          password: data.get('password')
-        }, store);
+        // auth.loginUser({
+        //   email: data.get('email'),
+        //   password: data.get('password')
+        // }, store);
     };
     return (
       <div>
@@ -85,7 +85,7 @@ export default function LoginScreen(){
             </Box>
           </Box>
         </Grid>
-        <ErrorModal />
+        {/* <ErrorModal /> */}
       </div>
     );
 }
