@@ -7,7 +7,7 @@ import MapScreen from './MapScreen'
 import RegisterScreen from './RegisterScreen'
 import ResourceScreen from './ResourceScreen'
 import TilesetScreen from './TilesetScreen'
-import WelcomeScreen from './WeclomeScreen'
+import WelcomeScreen from './WelcomeScreen'
 
 export{
     AppBanner,
