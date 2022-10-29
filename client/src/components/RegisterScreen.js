@@ -24,8 +24,7 @@ export default function RegisterScreen() {
         const formData = new FormData(event.currentTarget);
         // ** Need to implement registerUser to the auth
         // auth.registerUser({
-        //     firstName: formData.get('firstName'),
-        //     lastName: formData.get('lastName'),
+        //     userName: formData.get('username'),
         //     email: formData.get('email'),
         //     password: formData.get('password'),
         //     passwordVerify: formData.get('passwordVerify')
@@ -52,25 +51,14 @@ export default function RegisterScreen() {
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6} >
-                                <TextField
-                                    autoComplete="fname"
-                                    name="firstName"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="First Name"
-                                    autoFocus
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    id="lastName"
-                                    label="Last Name"
-                                    name="lastName"
-                                    autoComplete="lname"
+                                    id="username"
+                                    label="Username"
+                                    name="username"
+                                    autoComplete="username"
                                 />
                             </Grid>
                             <Grid item xs={12}>
