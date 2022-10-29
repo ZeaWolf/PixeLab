@@ -14,7 +14,6 @@ import PersonIcon from '@mui/icons-material/Person';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { GlobalStoreContext } from '../store';
 import ErrorModal from "./ErrorModal";
-import Paper from '@mui/material/Paper';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
