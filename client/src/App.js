@@ -9,7 +9,8 @@ import {
     AppBanner,
     WelcomeScreen,
     RegisterScreen,
-    LoginScreen
+    LoginScreen,
+    NavigationBar
 } from './components'
 
 // ** components no implemented
@@ -19,6 +20,7 @@ const App = () => {
             {/* <AuthContextProvider>
                 <GlobalStoreContextProvider>               */}
                     <AppBanner />
+                    <NavigationBar/>
                     <Switch>
                         <Route path="/" exact component={WelcomeScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />

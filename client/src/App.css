@@ -32,6 +32,19 @@
     border-radius: 10px;
 }
 
+#navigationbar{
+  position: absolute;
+  width: 7%;
+  top: 10%;
+  height: 90%;
+  background-color: rgb(7, 174, 216)
+}
+
+.navigationbutton{
+  position: relative;
+  width: 90%;
+  left: 5%;
+}
 
 
 

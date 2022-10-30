@@ -8,6 +8,7 @@ import RegisterScreen from './RegisterScreen'
 import ResourceScreen from './ResourceScreen'
 import TilesetScreen from './TilesetScreen'
 import WelcomeScreen from './WelcomeScreen'
+import NavigationBar from './NavigationBar'
 
 export{
     AppBanner,
@@ -19,5 +20,6 @@ export{
     RegisterScreen,
     ResourceScreen,
     TilesetScreen,
-    WelcomeScreen
+    WelcomeScreen,
+    NavigationBar
 }
