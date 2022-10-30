@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-import { GlobalStoreContext } from '../store';
+//import { GlobalStoreContext } from '../store';
 import { useContext, useState } from 'react'
-import AuthContext from '../auth'
+//import AuthContext from '../auth'
 
 const WelcomeButton = styled(Button)({
     background: 'linear-gradient(to bottom left, #DDB60A, #FFFEC3)',
@@ -25,12 +25,58 @@ export default function WelcomeScreen() {
         //auth.continueAsGuest(store);
     } 
 
+    const WelcomeButton = styled(Button)({
+        background: '#21B7B6',
+        borderRadius: '10px',
+        maxWidth: '230px', 
+        maxHeight: '50px', 
+        minWidth: '230px', 
+        minHeight: '50px',
+    });
+
 
     return (
+
         <div id="welcome-screen">
-            <Typography style={{color: '#FFFEC3', fontSize: 50, fontStyle: 'italic', fontWeight: "bold"}}>
-                PixeLab Welcome Screen
-            </Typography>
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <Typography style={{color: '#0b3654', fontFamily: "Raleway", fontSize: 100, fontWeight: "bold", mt:1 }}>
+                    PixeLab
+                </Typography>
+            </Box>
+            <Box sx={{alignItems:'center', display:'flex', flexDirection:"column", my: 5}}>
+                <WelcomeButton 
+                    id = "login-button"
+                    variant="contained" 
+                    sx = {{my: 2}}
+                    href = "/login/"
+                >
+                    <Typography style={{color: 'white', fontSize: 15, fontWeight: "bold"}}>
+                        Login
+                    </Typography>
+                </WelcomeButton>
+
+                <WelcomeButton 
+                    id = "create-account-button"
+                    variant="contained" 
+                    sx = {{my: 2}}
+                    href = '/register/'
+                >
+                    <Typography style={{color: 'white', fontSize: 15, fontWeight: "bold"}}>
+                        Create Account
+                    </Typography>
+                </WelcomeButton>
+
+                <WelcomeButton 
+                    id = "continue-as-guest-button"
+                    variant="contained" 
+                    sx = {{my: 2}}
+                    onClick = {handleGuest}
+                >
+                    <Typography style={{color: 'white', fontSize: 15, fontWeight: "bold"}}>
+                        Continue as Guest
+                    </Typography>
+                </WelcomeButton>
+            </Box>    
         </div>
         
         // <div id="welcome-screen">
