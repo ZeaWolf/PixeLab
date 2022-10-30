@@ -14,6 +14,14 @@ export default function CommunityScreen() {
 	//const { auth } = useContext(AuthContext);
 	//const { store } = useContext(GlobalStoreContext);
 
+    // const styles = {
+    //     media: {
+    //       height: 0,
+    //       paddingTop: '56.25%', // 16:9,
+    //       marginTop:'30'
+    //     }
+    // };
+
 	return (
         <Grid container spacing={2}>
 
@@ -21,9 +29,78 @@ export default function CommunityScreen() {
                 <Card sx={{ maxWidth: 345 }}>
                     <CardMedia
                             component="img"
+                            alt="moutainforest"
+                            height="140"
+                            image="/moutainforest.png"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            moutain forest
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            moutain forest
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                            <Button size="small">Share</Button>
+                            <Button size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+
+            <Grid item xs={3}>
+                <Card sx={{ maxWidth: 345 }}>
+                    <CardMedia
+                            component="img"
+                            alt="rockland"
+                            height="140"
+                            image="/rockland.jpeg"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            rockland
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            rockland
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                            <Button size="small">Share</Button>
+                            <Button size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+
+            <Grid item xs={3}>
+                <Card sx={{ maxWidth: 345 }}>
+                    <CardMedia
+                            component="img"
                             alt="Pikachu"
                             height="140"
-                            image="/static/images/cards/contemplative-reptile.jpg"
+                            image="/charmander.jpeg"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Charmander
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Charmander (Japanese: ヒトカゲ Hitokage) is a Fire-type Pokémon introduced in Generation I.
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                            <Button size="small">Share</Button>
+                            <Button size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+
+            <Grid item xs={3}>
+                <Card sx={{ maxWidth: 345 }}>
+                    <CardMedia
+                            component="img"
+                            alt="Pikachu"
+                            height="140"
+                            image="/pikachu.jpeg"
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
@@ -31,78 +108,6 @@ export default function CommunityScreen() {
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardMedia
-                            component="img"
-                            alt="green iguana"
-                            height="140"
-                            image="/static/images/cards/contemplative-reptile.jpg"
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Lizard
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardMedia
-                            component="img"
-                            alt="green iguana"
-                            height="140"
-                            image="/static/images/cards/contemplative-reptile.jpg"
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Lizard
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardMedia
-                            component="img"
-                            alt="green iguana"
-                            height="140"
-                            image="/static/images/cards/contemplative-reptile.jpg"
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            Lizard
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
                         </Typography>
                     </CardContent>
                     <CardActions>
