@@ -18,27 +18,27 @@ export default function NavigationBar() {
     // const { store } = useContext(GlobalStoreContext);
 
     return (
-        <Box id= "navigationbar" sx={{ width:'10%', left: '0%', flexDirection: 'column' }}>
-            <Box className='navigationbutton' alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton sx={{fontSize:"large", flexDirection: 'column'}}>
+        <Box id= "navigationbar" alignItems="center" sx={{ width:'10%', left: '0%', flexDirection: 'column' }}>
+            <Box alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
+                <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <GroupsIcon/>
                     <Typography>Community</Typography>
                 </IconButton>
             </Box>
-            <Box className='navigationbutton' alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton sx={{fontSize:"large", flexDirection: 'column'}}>
+            <Box alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
+                <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <HomeIcon/>
                     <Typography>  Home  </Typography>
                 </IconButton>
             </Box>
-            <Box className='navigationbutton' sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton sx={{fontSize:"large", flexDirection: 'column'}}>
+            <Box sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
+                <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <MapIcon/>
                     <Typography>Map</Typography>
                 </IconButton>
             </Box>
-            <Box className='navigationbutton' sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton sx={{fontSize:"large", flexDirection: 'column'}}>
+            <Box sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
+                <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <FormatPaintIcon/>
                     <Typography>Tileset</Typography>
                 </IconButton>

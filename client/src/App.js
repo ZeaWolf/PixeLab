@@ -11,7 +11,8 @@ import {
     RegisterScreen,
     LoginScreen,
     NavigationBar,
-    HomeScreen
+    HomeScreen,
+    CommunityScreen
 } from './components'
 
 // ** components no implemented
@@ -27,6 +28,7 @@ const App = () => {
                         <Route path="/register/" exact component={RegisterScreen} />
                         <Route path="/login/" exact component={LoginScreen} />
                         <Route path="/home/" exact component={HomeScreen}/>
+                        <Route path="/community/" exact component={CommunityScreen} />
                     </Switch>
                 {/* </GlobalStoreContextProvider>
             </AuthContextProvider> */}
