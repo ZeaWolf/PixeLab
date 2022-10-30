@@ -21,7 +21,7 @@ const App = () => {
             {/* <AuthContextProvider>
                 <GlobalStoreContextProvider>               */}
                     <AppBanner />
-                    <NavigationBar/>
+                    {/* <NavigationBar/> */}
                     <Switch>
                         <Route path="/" exact component={WelcomeScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
