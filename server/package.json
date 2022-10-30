@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-      "start": "node index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -23,7 +23,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "node": "^17.7.2",
     "nodemailer": "^6.7.3",
-    "nodemon": "^2.0.15",
+    "nodemon": "^2.0.20",
     "puppeteer": "^3.1.0",
     "puppeteer-core": "^3.1.0",
     "python": "0.0.4",

@@ -47,7 +47,38 @@
 }
 
 
+/*
+Chengzhi Dong
+*/
 
+#welcome-screen {
+  background-image: url("img/wb.webp");
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  height:75%;
+  border-radius: 10px;
+  background-size: cover;
+  /* color: #FFFEC3; */
+  /* font-size: 5vw;
+  font-weight: bold;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  height:80%;
+  width:85%;
+  text-align: center;
+  vertical-align: center; */
+}
+/*
+Chengzhi Dong
+*/
 
 
 
