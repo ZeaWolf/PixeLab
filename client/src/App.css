@@ -363,20 +363,17 @@ Chengzhi Dong
 
 }
 
-.home-add-button{
+/* .home-add-button{
   position: relative;
   background-color: #008CBA;
   border-width: 5px;
   color: white;
   margin-left: 20%;
-  margin-top: 20%;
-  
+  margin-top: 15%;
   height: 60%;
   width: 60%;
-  
-  display: inline-block;
   border-radius: 12px;
-}
+} */
 #home-map-list{
   position: relative;
   width: 98%;
@@ -389,11 +386,19 @@ Chengzhi Dong
 
 .home-map-card{
   position: relative;
+  max-height: 70%;
+  max-width: 20%;
+  min-width: 20%;
+  min-height: 70%;
   margin: 3%;
 }
 
 .home-tileset-card{
   position: relative;
+  max-height: 70%;
+  max-width: 20%;
+  min-width: 20%;
+  min-height: 70%;
   margin: 3%;
 }
 /*
