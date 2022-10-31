@@ -23,10 +23,46 @@ export default function CommunityScreen() {
     // };
 
 	return (
-        <Grid container spacing={2}>
+        <Grid container spacing={0} rowSpacing={1} id="community-screen">
+
+            <Grid item xs={7.1}>
+                <Typography gutterBottom variant="h7" fontSize="34px" component="div">
+                    Community
+                </Typography>
+            </Grid>
+
+            <Grid item xs={2.7} >
+                <form>
+                    <fieldset data-role = "controlgroup" data-type = "horizontal">
+                    
+                        <input type="checkbox" value="map" />
+                        <label for="map">Map</label>
+                    
+                        <input type="checkbox" value="tileset" />
+                        <label for="tileset">Tileset</label>
+
+                        <input type="checkbox" value="collection" />
+                        <label for="collection">Collection</label>
+                    
+                    </fieldset>
+                </form>
+            </Grid>
+
+            <Grid item xs={2.2}>
+                <div class="dropdown">
+                    <button class="dropbtn">Sort By Lastest</button>
+                    <div class="dropdown-content">
+                        <a href="#">Sort By Lastest</a>
+                        <a href="#">Sort By Most Like</a>
+                        <a href="#">Sort By Most Download</a>
+                    </div>
+                </div>
+            </Grid>
+
+            
 
             <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="moutainforest"
@@ -49,7 +85,7 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="rockland"
@@ -72,7 +108,7 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="Pikachu"
@@ -87,7 +123,7 @@ export default function CommunityScreen() {
                             Charmander (Japanese: ヒトカゲ Hitokage) is a Fire-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
-                    <CardActions>
+                    <CardActions height="5%">
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -95,7 +131,30 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={3}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
+                    <CardMedia
+                            component="img"
+                            alt="Pikachu"
+                            height="50%"
+                            image="/pikachu.jpeg"
+                    />
+                    <CardContent height="45%">
+                        <Typography gutterBottom variant="h5" component="div">
+                            Pikachu
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                            Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
+                        </Typography>
+                    </CardContent>
+                    <CardActions height="5%">
+                            <Button size="small">Share</Button>
+                            <Button size="small">Learn More</Button>
+                    </CardActions>
+                </Card>
+            </Grid>
+
+            <Grid item xs={3}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="Pikachu"
