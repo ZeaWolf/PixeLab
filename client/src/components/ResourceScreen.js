@@ -9,11 +9,13 @@ import { Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import TextField from '@mui/material/TextField';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import ResourceScreenCommentCard from './ResourceScreenCommentCard';
+import NavigationBar from './NavigationBar';
 
 export default function ResourceScreen(){
     let returnButton = 
@@ -48,6 +50,7 @@ export default function ResourceScreen(){
         height="100%"
         width='100%'
         image="/charmander.jpeg"
+        sx={{mb:'0%', ml:'0%',mt:'0%'}}
         />
     </Card>
 
@@ -55,7 +58,7 @@ export default function ResourceScreen(){
     let resourceDescription =
     <Box>
         <Typography variant="h5">
-            This is a image of charmander!!!
+            This is a image of a charmander!!!
         </Typography>
     </Box>
 
@@ -71,56 +74,87 @@ export default function ResourceScreen(){
         <Typography variant="h6"> By: author </Typography>
     </Box>
 
+    let handleSubmit =  (event) =>{
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        console.log(formData.get('send-comment-textfield'))
+        // ** TO BE IMPLEMENT: function for the sending out comments
+    }
+
     // C: comment board
     let commentBoard = 
-    <div class='resource-bottom'>
-        <Typography>HI</Typography>
-    </div>
+    <Box class='resource-bottom'>
+        <Box class='resource-commentboard'>
+            <list>
+                <ResourceScreenCommentCard></ResourceScreenCommentCard>
+                <ResourceScreenCommentCard></ResourceScreenCommentCard>
+                <ResourceScreenCommentCard></ResourceScreenCommentCard>
+                <ResourceScreenCommentCard></ResourceScreenCommentCard>
+                <ResourceScreenCommentCard></ResourceScreenCommentCard>
+            </list>
+        </Box>
+        <Box component="form" noValidate onSubmit={handleSubmit} class = "resource-commentboard-textfield">
+            <TextField
+                name="send-comment-textfield"
+                id="send-comment-textfile"
+                label="Add Comment"
+                required
+                fullWidth
+                inputProps={{style: {fontSize:12}}}
+                // onKeyPress={(e)=>{if(e.key === "Enter" && e.target.value != ""){handleSubmit}}}
+            />
+            <IconButton
+                type="submit"
+                variant="contained"
+            >
+                Send
+            </IconButton>
+        </Box>
+    </Box>
 
 
     return(
-        <div class='right-resource-screen'>
-            {/* resource-topbar */}
-            <div class='resource-topbar'>
-                <div class='return-button'>
-                    {returnButton}
-                </div>
-                <div class='resource-name'>
-                    {resourceName}
-                </div>
-                <div class='resource-author'>
-                    {resourceAuthor}
-                </div>
-            </div>
-            {/* Image and Description */}
-            <div class='resource-middle'>
-                <div class='resource-image'>
-                    {resourceImage}
-                </div>
-                <div class='resource-description'>
-                    {resourceDescription}
-                </div>
-            </div>
-            {/* Buttons */}
-            <div class='resource-buttons-board'>
-                <div class='resource-buttons'>
-                    <div class='resource-download-button'>
-                        {downloadButton}
-                    </div>
-                    <div class='resource-like-button'>
-                        {likeButton}
-                    </div>
-                    <div class='resource-star-button'>
-                        {starButton}
-                    </div>
-                </div>
-            </div>
-            <div class='resource-bottom'>
-                <div class='resource-commentboard'>
-                    <Typography>HI</Typography>
-                </div>
-            </div>
-        </div>
+        <Box class='full-screen'>
+            <NavigationBar/>
+            <Box class='right-resource-screen'>
+                {/* resource-topbar */}
+                <Box class='resource-topbar'>
+                    <Box class='return-button'>
+                        {returnButton}
+                    </Box>
+                    <Box class='resource-name'>
+                        {resourceName}
+                    </Box>
+                    <Box class='resource-author'>
+                        {resourceAuthor}
+                    </Box>
+                </Box>
+                {/* Image and Description */}
+                <Box class='resource-middle'>
+                    <Box class='resource-image'>
+                        {resourceImage}
+                    </Box>
+                    <Box class='resource-description'>
+                        {resourceDescription}
+                    </Box>
+                </Box>
+                {/* Buttons */}
+                <Box class='resource-buttons-board'>
+                    <Box class='resource-buttons'>
+                        <Box class='resource-download-button'>
+                            {downloadButton}
+                        </Box>
+                        <Box class='resource-like-button'>
+                            {likeButton}
+                        </Box>
+                        <Box class='resource-star-button'>
+                            {starButton}
+                        </Box>
+                    </Box>
+                </Box>
+                {commentBoard}
+            </Box>
+        </Box>
         // <Grid container spacing={0} className='right-resource-screen'>
         //     <Grid item xs={1} height='7%'>
         //         {returnButton}

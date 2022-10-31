@@ -8,7 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import NavigationBar from './NavigationBar'
+
 
 export default function CommunityScreen() {
 	//const { auth } = useContext(AuthContext);
@@ -66,18 +66,18 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="moutainforest"
-                            height="50%"
+                            height="140"
                             image="/moutainforest.png"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             moutain forest
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             moutain forest
                         </Typography>
                     </CardContent>
-                    <CardActions height="5%">
+                    <CardActions>
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -89,18 +89,18 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="rockland"
-                            height="50%"
+                            height="140"
                             image="/rockland.jpeg"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             rockland
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             rockland
                         </Typography>
                     </CardContent>
-                    <CardActions height="5%">
+                    <CardActions>
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -112,14 +112,14 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="Pikachu"
-                            height="50%"
+                            height="140"
                             image="/charmander.jpeg"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Charmander
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             Charmander (Japanese: ヒトカゲ Hitokage) is a Fire-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
@@ -153,24 +153,23 @@ export default function CommunityScreen() {
                 </Card>
             </Grid>
 
-
             <Grid item xs={3}>
                 <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="Pikachu"
-                            height="50%"
+                            height="140"
                             image="/pikachu.jpeg"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Pikachu
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
-                    <CardActions height="5%">
+                    <CardActions>
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
