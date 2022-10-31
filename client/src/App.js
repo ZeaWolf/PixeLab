@@ -13,7 +13,8 @@ import {
     NavigationBar,
     HomeScreen,
     CommunityScreen,
-    TilesetScreen
+    TilesetScreen,
+    ResourceScreen
 } from './components'
 
 // ** components no implemented
@@ -31,6 +32,7 @@ const App = () => {
                         <Route path="/home/" exact component={HomeScreen}/>
                         <Route path="/community/" exact component={CommunityScreen} />
                         <Route path="/tileset-editor/" exact component={TilesetScreen} />
+                        <Route path="/resource/" exact component={ResourceScreen} />
                     </Switch>
                 {/* </GlobalStoreContextProvider>
             </AuthContextProvider> */}
