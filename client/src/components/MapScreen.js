@@ -39,11 +39,9 @@ export default function MapScreen() {
                             <div className="card_body_2">
                                 <label style={{color: "black"}}>Layer: </label>
                                 <div className="layers">
-                                    <li><button tile-layer="4">Layer 1</button></li>
-                                    <li><button tile-layer="3">Layer 2</button></li>
-                                    <li><button tile-layer="2">Layer 3</button></li>
-                                    <li><button tile-layer="1">Layer 4</button></li>
-                                    <li><button tile-layer="0">Layer 5</button></li>
+                                    <li><button tile-layer="2">Layer 1</button></li>
+                                    <li><button tile-layer="1">Layer 2</button></li>
+                                    <li><button tile-layer="0">Layer 3</button></li>
                                 </div>
                                 <button>+</button>
                                 <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
