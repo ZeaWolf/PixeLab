@@ -204,51 +204,29 @@
 }
 
 .map {
-  background: hwb(71 31% 8%);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .mapbanner{
-  margin-left: 10px;
+  background: hwb(71 31% 8%);
 }
 .card {
   display: flex;
-  position: relative;
-  height: 100%;
+  position: absolute;
+  height: 95%;
+  width: 100%;
   background: hwb(0 100% 0%);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-  /* padding-bottom: 16px; */
-  /* header {
-     display:flex;
-     justify-content: space-between;      
-     align-items: center;
-     border-bottom: 1px solid #ddd;
-     margin-bottom:1em;
-     padding: 16px;
-     h1 {
-        margin:0;
-        
-     }
-     
-     .button-as-link {
-        margin-right: 1em;
-     }
-  }
-  aside {
-     padding-left: 16px;
-     padding-right: 16px;
-  } */
 }
 .card_body {
-  display:flex;
+  /* display:flex; */
   /* padding-left: 800px; */
   margin-left: 5%;
 }
 .card_center-column{
-  padding-left: 0px;
-  margin-left: 10%;
-  margin-top: 7%;
-  margin-bottom: 7%;
+  margin-left: 5%;
+  margin-top: 5%;
+  margin-bottom: 5%;
   /* background-color: rgb(235, 225, 225); */
 }
 
@@ -258,7 +236,7 @@
 } */
 
 .tileset-container {
-  position: relative;
+  position: absolute;
 }
 .tileset-container_selection {
   position:absolute;
