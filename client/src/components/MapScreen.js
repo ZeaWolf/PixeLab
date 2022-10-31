@@ -32,7 +32,7 @@ export default function MapScreen() {
                     </div>
                     <div className="card">
                         <div className="card_center-column">
-                            <canvas style={styles} width="800" height="500">
+                            <canvas style={styles} width="800%" height="500%">
                             </canvas>
                         </div>
                         <div className="card_body">
@@ -52,7 +52,7 @@ export default function MapScreen() {
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
                                     <div className="tileset-container">
-                                        <img height="400px" src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png" />
+                                        <img height="400" src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png" />
                                     </div>
                                 </aside>
                             </div>
