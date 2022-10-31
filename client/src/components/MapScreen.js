@@ -36,11 +36,15 @@ export default function MapScreen() {
                             </canvas>
                         </div>
                         <div className="card_body">
-                            <div className="layer">
+                            <div className="card_body_2">
                                 <label style={{color: "black"}}>Layer: </label>
-                                <li><button tile-layer="2">Layer 1</button></li>
-                                <li><button tile-layer="1">Layer 2</button></li>
-                                <li><button tile-layer="0">Layer 3</button></li>
+                                <div className="layers">
+                                    <li><button tile-layer="4">Layer 1</button></li>
+                                    <li><button tile-layer="3">Layer 2</button></li>
+                                    <li><button tile-layer="2">Layer 3</button></li>
+                                    <li><button tile-layer="1">Layer 4</button></li>
+                                    <li><button tile-layer="0">Layer 5</button></li>
+                                </div>
                                 <button>+</button>
                                 <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
                                 <button><ArrowDownwardIcon sx={{ fontSize: 10 }}></ArrowDownwardIcon></button>

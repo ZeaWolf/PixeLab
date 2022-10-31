@@ -48,7 +48,7 @@ export default function ResourceScreen(){
         <CardMedia
         component="img"
         alt="Pikachu"
-        height="100%"
+        height="265px"
         width='100%'
         image="/pikachu.jpeg"
         sx={{mb:'0%', ml:'0%',mt:'0%'}}
