@@ -194,7 +194,7 @@
 }
 
 .mapbanner{
-  margin-left: 60px;
+  margin-left: 80px;
 }
 .card {
   display: flex;
@@ -232,8 +232,8 @@
 .card_center-column{
   padding-left: 0px;
   margin-left: 10%;
-  margin-top: 10%;
-  margin-bottom: 10%;
+  margin-top: 3.5%;
+  margin-bottom: 3.5%;
   /* background-color: rgb(235, 225, 225); */
 }
 
