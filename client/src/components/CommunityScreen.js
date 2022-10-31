@@ -8,21 +8,15 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-
+import NavigationBar from './NavigationBar';
+import Box from '@mui/material/Box';
 
 export default function CommunityScreen() {
-	//const { auth } = useContext(AuthContext);
-	//const { store } = useContext(GlobalStoreContext);
-
-    // const styles = {
-    //     media: {
-    //       height: 0,
-    //       paddingTop: '56.25%', // 16:9,
-    //       marginTop:'30'
-    //     }
-    // };
-
+	
 	return (
+
+        <Box className="full-screen"> 
+        <NavigationBar/>
         <Grid container spacing={0} rowSpacing={1} id="community-screen">
 
             <Grid item xs={7.1}>
@@ -49,9 +43,9 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={2.2}>
-                <div class="dropdown">
-                    <button class="dropbtn">Sort By Lastest</button>
-                    <div class="dropdown-content">
+                <div className="dropdown">
+                    <button className="dropbtn">Sort By Lastest</button>
+                    <div className="dropdown-content">
                         <a href="#">Sort By Lastest</a>
                         <a href="#">Sort By Most Like</a>
                         <a href="#">Sort By Most Download</a>
@@ -177,7 +171,7 @@ export default function CommunityScreen() {
             </Grid>
 
         </Grid>
-
+        </Box>
 
 		
 	)
