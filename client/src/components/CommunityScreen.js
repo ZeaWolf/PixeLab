@@ -8,7 +8,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import NavigationBar from './NavigationBar'
+
 
 export default function CommunityScreen() {
 	//const { auth } = useContext(AuthContext);
@@ -25,38 +25,36 @@ export default function CommunityScreen() {
 	return (
         <Grid container spacing={0} rowSpacing={1} id="community-screen">
 
-            <Grid item xs={6}>
+            <Grid item xs={7.1}>
                 <Typography gutterBottom variant="h7" fontSize="34px" component="div">
-                    Community List
+                    Community
                 </Typography>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={2.7} >
                 <form>
-                <fieldset>
-                    <div>
+                    <fieldset data-role = "controlgroup" data-type = "horizontal">
+                    
                         <input type="checkbox" value="map" />
                         <label for="map">Map</label>
-                    </div>
-                    <div>
+                    
                         <input type="checkbox" value="tileset" />
                         <label for="tileset">Tileset</label>
-                    </div>
-                    <div>
+
                         <input type="checkbox" value="collection" />
                         <label for="collection">Collection</label>
-                    </div>
-                </fieldset>
+                    
+                    </fieldset>
                 </form>
             </Grid>
 
-            <Grid item xs={2}>
+            <Grid item xs={2.2}>
                 <div class="dropdown">
-                    <button class="dropbtn">Dropdown</button>
+                    <button class="dropbtn">Sort By Lastest</button>
                     <div class="dropdown-content">
-                        <a href="#">Link 1</a>
-                        <a href="#">Link 2</a>
-                        <a href="#">Link 3</a>
+                        <a href="#">Sort By Lastest</a>
+                        <a href="#">Sort By Most Like</a>
+                        <a href="#">Sort By Most Download</a>
                     </div>
                 </div>
             </Grid>
@@ -64,22 +62,22 @@ export default function CommunityScreen() {
             
 
             <Grid item xs={3}>
-                <Card sx={{ width: 258, height: 350 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="moutainforest"
-                            height="50%"
+                            height="140"
                             image="/moutainforest.png"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             moutain forest
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             moutain forest
                         </Typography>
                     </CardContent>
-                    <CardActions height="5%">
+                    <CardActions>
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -87,22 +85,22 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={3}>
-                <Card sx={{ width: 258, height: 350 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="rockland"
-                            height="50%"
+                            height="140"
                             image="/rockland.jpeg"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             rockland
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             rockland
                         </Typography>
                     </CardContent>
-                    <CardActions height="5%">
+                    <CardActions>
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -110,18 +108,18 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={3}>
-                <Card sx={{ width: 258, height: 350 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="Pikachu"
-                            height="50%"
+                            height="140"
                             image="/charmander.jpeg"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Charmander
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             Charmander (Japanese: ヒトカゲ Hitokage) is a Fire-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
@@ -133,7 +131,7 @@ export default function CommunityScreen() {
             </Grid>
 
             <Grid item xs={3}>
-                <Card sx={{ width: 258, height: 350 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="Pikachu"
@@ -155,24 +153,23 @@ export default function CommunityScreen() {
                 </Card>
             </Grid>
 
-
             <Grid item xs={3}>
-                <Card sx={{ width: 258, height: 350 }}>
+                <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
                             alt="Pikachu"
-                            height="50%"
+                            height="140"
                             image="/pikachu.jpeg"
                     />
-                    <CardContent height="45%">
+                    <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Pikachu
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        <Typography variant="body2" color="text.secondary">
                             Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
-                    <CardActions height="5%">
+                    <CardActions>
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
