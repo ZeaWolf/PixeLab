@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import NavigationBar from './NavigationBar';
 import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom'
 
 export default function CommunityScreen() {
 	
@@ -142,7 +143,7 @@ export default function CommunityScreen() {
                     </CardContent>
                     <CardActions height="5%">
                             <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
+                            <Button component={Link} to="/resource" size="small">Learn More</Button>
                     </CardActions>
                 </Card>
             </Grid>
@@ -165,7 +166,7 @@ export default function CommunityScreen() {
                     </CardContent>
                     <CardActions>
                             <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
+                            <Button component={Link} to="/resource" size="small">Learn More</Button>
                     </CardActions>
                 </Card>
             </Grid>
