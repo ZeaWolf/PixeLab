@@ -79,18 +79,67 @@ export default function ResourceScreen(){
 
 
     return(
-        <Grid container spacing={2}>
-        <Grid xs={1}>
-            {returnButton}
-        </Grid>
-        <Grid xs={9}>
-            {resourceName}
-        </Grid>
-        <Grid xs={2}>
-            {resourceAuthor}
-        </Grid>
-        <Grid xs={8}>
-        </Grid>
-        </Grid>
+        <div class='right-resource-screen'>
+            {/* resource-topbar */}
+            <div class='resource-topbar'>
+                <div class='return-button'>
+                    {returnButton}
+                </div>
+                <div class='resource-name'>
+                    {resourceName}
+                </div>
+                <div class='resource-author'>
+                    {resourceAuthor}
+                </div>
+            </div>
+            {/* Image and Description */}
+            <div class='resource-middle'>
+                <div class='resource-image'>
+                    {resourceImage}
+                </div>
+                <div class='resource-description'>
+                    {resourceDescription}
+                </div>
+            </div>
+            {/* Buttons */}
+            <div class='resource-buttons-board'>
+                <div class='resource-buttons'>
+                    <div class='resource-download-button'>
+                        {downloadButton}
+                    </div>
+                    <div class='resource-like-button'>
+                        {likeButton}
+                    </div>
+                    <div class='resource-star-button'>
+                        {starButton}
+                    </div>
+                </div>
+            </div>
+            <div class='resource-bottom'>
+                <div class='resource-commentboard'>
+                    <Typography>HI</Typography>
+                </div>
+            </div>
+        </div>
+        // <Grid container spacing={0} className='right-resource-screen'>
+        //     <Grid item xs={1} height='7%'>
+        //         {returnButton}
+        //     </Grid>
+        //     <Grid item xs={9} height='7%'>
+        //         {resourceName}
+        //     </Grid>
+        //     <Grid item xs={2} height='7%'>
+        //         {resourceAuthor}
+        //     </Grid>
+        //     <Grid item xs={6} height='41%'>
+        //         {resourceImage}
+        //     </Grid>
+        //     <Grid item xs={6} height='41%'>
+        //         {resourceDescription}
+        //     </Grid>
+        //     <Grid>
+
+        //     </Grid>
+        // </Grid>
     );
 }

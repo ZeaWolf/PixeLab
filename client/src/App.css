@@ -78,7 +78,8 @@
 .right-resource-screen {
   position: relative;
   width: 93%;
-  margin-left: 7%;
+  height: 100%;
+  left: 7%;
   background-color: #faf9ff;
 }
 /* resource top bar css */
@@ -129,10 +130,14 @@
   border-radius: 5px;
 }
 /* resource middle-bottom part: 3 buttons */
-.resource-buttons{
+.resource-buttons-board{
   display: flex;
   position: relative;
   height: 8%;
+}
+.resource-buttons{
+  display: flex;
+  position: relative;
   width: 25%;
   margin-left: 6%;
 }
@@ -163,7 +168,7 @@
   margin-top: 2%;
   margin-bottom: 1%;
   width: 85%;
-  background-color: white;
+  background-color: #dff2fd;
   border-color: black;
   border-width: 2px;
   border-style: solid;
