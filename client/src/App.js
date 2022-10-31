@@ -15,7 +15,8 @@ import {
     CommunityScreen,
     MapScreen,
     TilesetScreen,
-    ResourceScreen
+    ResourceScreen,
+    WindowDialog
 } from './components'
 
 // ** components no implemented
@@ -35,6 +36,7 @@ const App = () => {
                         <Route path="/tileset-editor/" exact component={TilesetScreen} />
                         <Route path="/resource/" exact component={ResourceScreen} />
                         <Route path="/map/" exact component={MapScreen} />
+                        <Route path='/window-dialog' exact component={WindowDialog} />
                     </Switch>
                 {/* </GlobalStoreContextProvider>
             </AuthContextProvider> */}

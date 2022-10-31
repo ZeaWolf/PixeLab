@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';
 import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -19,7 +20,7 @@ import NavigationBar from './NavigationBar';
 
 export default function ResourceScreen(){
     let returnButton = 
-    <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+    <IconButton component={Link} to="/community" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
         <KeyboardReturnIcon/>
     </IconButton>
 

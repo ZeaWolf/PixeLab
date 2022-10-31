@@ -368,7 +368,17 @@ Chengzhi Dong
 #home-map-list{
   position: relative;
   width: 98%;
-  height: 90%;
+  height: 95%;
+  margin: 1%;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+#home-tileset-list{
+  position: relative;
+  width: 98%;
+  height: 95%;
   margin: 1%;
   display: flex;
   flex-direction: row;

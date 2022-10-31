@@ -11,6 +11,7 @@ import ResourceScreen from './ResourceScreen'
 import TilesetScreen from './TilesetScreen'
 import WelcomeScreen from './WelcomeScreen'
 import NavigationBar from './NavigationBar'
+import WindowDialog from './WindowDialog'
 
 export{
     AppBanner,
@@ -26,5 +27,5 @@ export{
     TilesetScreen,
     WelcomeScreen,
     NavigationBar,
-
+    WindowDialog
 }

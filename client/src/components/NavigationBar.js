@@ -27,9 +27,9 @@ export default function NavigationBar() {
                 </IconButton>
             </Box>
             <Box alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+                <IconButton component={Link} to="/home" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <HomeIcon/>
-                    <Typography>  Home  </Typography>
+                    <Typography>Home</Typography>
                 </IconButton>
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
@@ -39,7 +39,7 @@ export default function NavigationBar() {
                 </IconButton>
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+                <IconButton component={Link} to="/tileset-editor" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <FormatPaintIcon/>
                     <Typography>Tileset</Typography>
                 </IconButton>
