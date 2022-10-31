@@ -12,7 +12,8 @@ import {
     LoginScreen,
     NavigationBar,
     HomeScreen,
-    CommunityScreen
+    CommunityScreen,
+    TilesetScreen
 } from './components'
 
 // ** components no implemented
@@ -29,6 +30,7 @@ const App = () => {
                         <Route path="/login/" exact component={LoginScreen} />
                         <Route path="/home/" exact component={HomeScreen}/>
                         <Route path="/community/" exact component={CommunityScreen} />
+                        <Route path="/tileset-editor/" exact component={TilesetScreen} />
                     </Switch>
                 {/* </GlobalStoreContextProvider>
             </AuthContextProvider> */}
