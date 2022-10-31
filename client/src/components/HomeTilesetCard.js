@@ -3,26 +3,28 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+import { Box, IconButton, CardActionArea } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-export default function HomeTilesetCard() {
+export default function HomeTilesetCard(props) {
+  const { ImgNamePair } = props;
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card className="home-tileset-card">
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
+          height="100"
+          image={ImgNamePair.img}
+          alt="img"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
+          <Box style={{ display: 'flex', flexDirection: 'row'}}>
+          <Typography sx={{ flexGrow: 1 }}>{ImgNamePair.name}</Typography>
+          <IconButton aria-label="rename"><EditIcon /></IconButton>
+          <IconButton aria-label="delete"><DeleteIcon /></IconButton>
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>
