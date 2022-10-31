@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import { Box,CardHeader, CardActionArea, IconButton, Grid} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { Link } from 'react-router-dom'
 
 export default function HomeMapCard(props) {
   const { ImgNamePair } = props;
@@ -24,7 +25,7 @@ export default function HomeMapCard(props) {
           <Box style={{ display: 'flex', flexDirection: 'row'}}>
           <Typography sx={{ flexGrow: 1 }}>{ImgNamePair.name}</Typography>
           <IconButton aria-label="rename"><EditIcon /></IconButton>
-          <IconButton aria-label="delete"><DeleteIcon /></IconButton>
+          <IconButton component={Link} to="/window-dialog" aria-label="delete"><DeleteIcon /></IconButton>
           </Box>
         </CardContent>
       </CardActionArea>
