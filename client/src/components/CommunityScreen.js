@@ -61,18 +61,18 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="moutainforest"
-                            height="140"
+                            height="50%"
                             image="/moutainforest.png"
                     />
-                    <CardContent>
+                    <CardContent height="45%">
                         <Typography gutterBottom variant="h5" component="div">
                             moutain forest
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            moutain forest
+                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        A mountain is an elevated portion of the Earth's crust, generally with steep sides that show significant exposed bedrock. Although definitions vary, a mountain may differ from a plateau in having a limited summit area, and is usually higher than a hill, typically rising at least 300 metres (1,000 feet) above the surrounding land. A few mountains are isolated summits, but most occur in mountain ranges.
                         </Typography>
                     </CardContent>
-                    <CardActions>
+                    <CardActions height="5%">
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -84,18 +84,18 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="rockland"
-                            height="140"
+                            height="50%"
                             image="/rockland.jpeg"
                     />
-                    <CardContent>
+                    <CardContent height="45%">
                         <Typography gutterBottom variant="h5" component="div">
                             rockland
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            rockland
+                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
+                        Rockland County is the southernmost county on the west side of the Hudson River in the U.S. state of New York. It is part of the New York City metropolitan statistical area. It is about 6 miles (10 kilometers) from the Bronx at their closest points. The county's population, as of the 2020 United States Census, is 338,329,[4] making it the state's third-most densely populated county outside New York City (after Nassau and neighboring Westchester Counties, respectively).
                         </Typography>
-                    </CardContent>
-                    <CardActions>
+                    </CardContent >
+                    <CardActions height="5%">
                             <Button size="small">Share</Button>
                             <Button size="small">Learn More</Button>
                     </CardActions>
@@ -107,14 +107,14 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="Pikachu"
-                            height="140"
+                            height="50%"
                             image="/charmander.jpeg"
                     />
-                    <CardContent>
+                    <CardContent height="45%">
                         <Typography gutterBottom variant="h5" component="div">
                             Charmander
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
                             Charmander (Japanese: ヒトカゲ Hitokage) is a Fire-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
@@ -153,18 +153,18 @@ export default function CommunityScreen() {
                     <CardMedia
                             component="img"
                             alt="Pikachu"
-                            height="140"
+                            height="50%"
                             image="/pikachu.jpeg"
                     />
-                    <CardContent>
+                    <CardContent height="45%">
                         <Typography gutterBottom variant="h5" component="div">
                             Pikachu
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
                             Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
                         </Typography>
                     </CardContent>
-                    <CardActions>
+                    <CardActions height="5%">
                             <Button size="small">Share</Button>
                             <Button component={Link} to="/resource" size="small">Learn More</Button>
                     </CardActions>
