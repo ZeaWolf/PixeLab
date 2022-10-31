@@ -70,6 +70,7 @@ export default function WelcomeScreen() {
                     id = "continue-as-guest-button"
                     variant="contained" 
                     sx = {{my: 2}}
+                    href = '/community/'
                     onClick = {handleGuest}
                 >
                     <Typography style={{color: 'white', fontSize: 15, fontWeight: "bold"}}>
