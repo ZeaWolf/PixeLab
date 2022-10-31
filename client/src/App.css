@@ -45,14 +45,6 @@
   background-color: rgb(7, 174, 216)
 }
 
-#community-screen{
-  position: absolute;
-  width: 93%;
-  top: 11.5%;
-  height: 88.5%;
-  right: -0.8%;
-  overflow-y: scroll;
-}
 .full-screen {   /* shugui: can be apply for the community */
   display: flex;
   position: relative;
@@ -412,8 +404,8 @@ stephen tang
 #community-screen{
   position: absolute;
   width: 93%;
-  top: 11.5%;
-  height: 89.5%;
+  top: 2%;
+  height: 99%;
   right: -0.1%;
   overflow-y: scroll;
   background-color: #b3e5ff;
