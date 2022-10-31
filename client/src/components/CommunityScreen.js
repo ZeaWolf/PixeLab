@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import NavigationBar from './NavigationBar';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom'
+import TextField from '@mui/material/TextField';
 
 export default function CommunityScreen() {
 	
@@ -20,13 +21,29 @@ export default function CommunityScreen() {
         <NavigationBar/>
         <Grid container spacing={0} rowSpacing={1} id="community-screen">
 
-            <Grid item xs={7.1}>
+            <Grid item xs={3}>
                 <Typography gutterBottom variant="h7" fontSize="34px" component="div">
                     Community
                 </Typography>
             </Grid>
 
-            <Grid item xs={2.7} >
+            <Grid item xs={3.9}>
+                <div>
+                    <div>
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            label="Search"
+                        />
+                     </div>
+                </div>
+            </Grid>
+
+            <Grid item xs={0.2}>
+                
+            </Grid>
+
+            <Grid item xs={2.7}>
                 <form>
                     <fieldset data-role = "controlgroup" data-type = "horizontal">
                     
