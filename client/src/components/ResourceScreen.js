@@ -49,7 +49,7 @@ export default function ResourceScreen(){
         alt="Pikachu"
         height="100%"
         width='100%'
-        image="/charmander.jpeg"
+        image="/pikachu.jpeg"
         sx={{mb:'0%', ml:'0%',mt:'0%'}}
         />
     </Card>
