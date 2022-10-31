@@ -32,14 +32,141 @@
     border-radius: 10px;
 }
 
-#navigationbar{
-  position: absolute;
+
+/*
+   shugui
+*/
+.navigationbar{
+  position: absolute;  /* using flex when it is in the page*/
+  left: 0%;
   width: 7%;
   top: 10%;
   height: 90%;
   background-color: rgb(7, 174, 216)
 }
 
+.full-screen {   /* shugui: can be apply for the community */
+  position: relative;
+  width: 100%;
+  height: 90%;
+  color: white;
+  float: top;
+}
+
+.right-screen {
+  position: relative;
+  width: 93%;
+  margin-left: 7%;
+}
+/* inside the right-screen: New file, save file, import export, such buttons */
+.menu-bar {
+  position: relative;
+  top: 0%;
+  height: 4%;
+  color:aqua;
+}
+
+/* resource begin */
+.right-resource-screen {
+  position: relative;
+  width: 93%;
+  margin-left: 7%;
+  background-color: #faf9ff;
+}
+/* resource top bar css */
+.resource-topbar{
+  display: flex;
+  position: relative;
+  margin-top: 0%;
+  height: 8%;
+}
+.return-button{
+  position: relative;
+  width: 7%;
+}
+.resource-name{
+  position: relative;
+  width: 78%;
+}
+.resource-author{
+  position: relative;
+  width: 15%;
+}
+/* resource middle part image and text description */
+/* image and description text */
+.resource-middle{
+  display: flex;
+  position: relative;
+  height: 40%;
+}
+.resource-image{
+  position: relative;
+  width: 25%;
+  margin-top: 2%;
+  margin-left: 6%;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+}
+.resource-description{
+  position: relative;
+  margin-left: 6%;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  width: 55%;
+  background-color: white;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+}
+/* resource middle-bottom part: 3 buttons */
+.resource-buttons{
+  display: flex;
+  position: relative;
+  height: 8%;
+  width: 25%;
+  margin-left: 6%;
+}
+.resource-download-button{
+  position: relative;
+  width: 20%;
+}
+.resource-like-button{
+  position: relative;
+  width: 20%;
+  margin-left: 23%
+}
+.resource-star-button{
+  position: relative;
+  width: 18%;
+  margin-left:20%
+}
+
+/* resource bottom part: comment*/
+.resource-bottom{
+  display: flex;
+  position: relative;
+  height: 44%;
+}
+.resource-commentboard{
+  position: relative;
+  margin-left: 6%;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  width: 85%;
+  background-color: white;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+/* resource end */
+
+/*
+   shugui
+*/
 
 /*
 Chengzhi Dong
