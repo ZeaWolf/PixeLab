@@ -1,9 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
-import { Fab, Typography, Box } from '@mui/material'
+import { Fab, Typography, Box, Button } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import List from '@mui/material/List'
 import Grid from '@mui/material/Grid';
+import HomeMapCard from './HomeMapCard';
+import HomeTilesetCard from './HomeTilesetCard';
 //import DeletionModal from "./DeletionModal"
 //import NavigationBar from "./NavigationBar"
 //import Statusbar from "./Statusbar"
@@ -18,9 +20,24 @@ export default function HomeScreen() {
 
     return (
         <div id="home-screen">
-            <Typography style={{color: '#FFFEC3', fontSize: 50, fontStyle: 'italic', fontWeight: "bold"}}>
-                Welcome to PixeLab Home Screen!
+
+            <Box sx={{ backgroundColor: 'warning.light'}}>
+            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
+                Maps
             </Typography>
+            </Box>
+            <Box>
+            <Button>Plus </Button>
+            <HomeMapCard/>
+            </Box>
+            <Box sx={{ backgroundColor: 'warning.light'}}>
+            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
+                Tilesets
+            </Typography>
+            </Box>
+            <Box>
+            <HomeTilesetCard/>
+            </Box>
         </div>
     )
 }

@@ -2,6 +2,8 @@ import AppBanner from './AppBanner'
 import CommunityScreen from './CommunityScreen'
 import ErrorModal from './ErrorModal'
 import HomeScreen from './HomeScreen'
+import HomeMapCard from './HomeMapCard'
+import HomeTilesetCard from './HomeTilesetCard'
 import LoginScreen from './LoginScreen'
 import MapScreen from './MapScreen'
 import RegisterScreen from './RegisterScreen'
@@ -15,11 +17,14 @@ export{
     CommunityScreen,
     ErrorModal,
     HomeScreen,
+    HomeMapCard,
+    HomeTilesetCard,
     LoginScreen,
     MapScreen,
     RegisterScreen,
     ResourceScreen,
     TilesetScreen,
     WelcomeScreen,
-    NavigationBar
+    NavigationBar,
+
 }
