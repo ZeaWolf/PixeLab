@@ -78,7 +78,8 @@
 .right-resource-screen {
   position: relative;
   width: 93%;
-  margin-left: 7%;
+  height: 100%;
+  left: 7%;
   background-color: #faf9ff;
 }
 /* resource top bar css */
@@ -129,10 +130,14 @@
   border-radius: 5px;
 }
 /* resource middle-bottom part: 3 buttons */
-.resource-buttons{
+.resource-buttons-board{
   display: flex;
   position: relative;
   height: 8%;
+}
+.resource-buttons{
+  display: flex;
+  position: relative;
   width: 25%;
   margin-left: 6%;
 }
@@ -163,7 +168,7 @@
   margin-top: 2%;
   margin-bottom: 1%;
   width: 85%;
-  background-color: white;
+  background-color: #dff2fd;
   border-color: black;
   border-width: 2px;
   border-style: solid;
@@ -175,7 +180,115 @@
 /*
    shugui
 */
+.instructions {
+  font-size: 0.8em;
+  color: #aaa;
+  text-align: center;
+  margin:0;
+  margin-bottom: 16px;
+}
 
+.card {
+  background: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  /* padding-bottom: 16px; */
+  /* header {
+     display:flex;
+     justify-content: space-between;      
+     align-items: center;
+     border-bottom: 1px solid #ddd;
+     margin-bottom:1em;
+     padding: 16px;
+     h1 {
+        margin:0;
+        
+     }
+     
+     .button-as-link {
+        margin-right: 1em;
+     }
+  }
+  aside {
+     padding-left: 16px;
+     padding-right: 16px;
+  } */
+}
+.card_body {
+  display:flex;
+  padding-left: 800px;
+}
+.card_left-column {
+  padding-left: 0px;
+  /* background-color: rgb(235, 225, 225); */
+}
+
+/* canvas {
+  // outline: 1px solid #ddd;
+  background: #f4f8f9;
+} */
+
+.tileset-container {
+  position: relative;
+}
+.tileset-container_selection {
+  position:absolute;
+  outline: 3px solid cyan;
+  left:0;
+  top:0;
+  width: 32px;
+  height:32px;
+}
+.layer {
+  position:relative;
+  list-style-type:none;
+  margin:0;
+  left:800px;
+}
+.layers {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  /* padding-left: 800px; */
+  /* button {
+     appearance:none;
+     font-family:inherit;
+     outline:0;
+     background:transparent;
+     border:0;
+     padding: 8px 0;
+     // border-bottom:1px solid #ddd;
+     display:block;
+     width: 100%;
+     text-align:left;
+     cursor:pointer;
+  
+     &.active {
+        font-weight:bold;
+        color: #0884f1;
+     }
+  } */
+}
+
+.button-as-link {
+  appearance:none;
+  text-decoration: underline;
+  background: transparent;
+  color: #7f808e;
+  border:0;
+  outline:0;
+  cursor:pointer;
+}
+.primary-button {
+  border:0;
+  background: #4e84fa;
+  border-top:4px solid transparent;
+  border-bottom: 4px solid #3166c7;
+  color: #fff;
+  border-radius: 6px;
+  outline:0;
+  padding: 6px 16px;
+  cursor:pointer;
+}
 /*
 Chengzhi Dong
 */
