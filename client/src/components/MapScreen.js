@@ -20,9 +20,8 @@ export default function MapScreen() {
     return (
         <div className='full-screen'>
             <NavigationBar/>
-            <div className='.right-screen'>
+            <div className='right-screen'>
                 <div className="map">
-                    {/* <NavigationBar></NavigationBar> */}
                     <div className="mapbanner">
                         <Button>New</Button>
                         <Button>Save</Button>
@@ -38,7 +37,7 @@ export default function MapScreen() {
                         </div>
                         <div className="card_body">
                             <div className="layer">
-                                <label>Editing Layer:</label>
+                                <label style={{color: "black"}}>Layer: </label>
                                 <li><button tile-layer="2">Layer 1</button></li>
                                 <li><button tile-layer="1">Layer 2</button></li>
                                 <li><button tile-layer="0">Layer 3</button></li>
@@ -47,7 +46,7 @@ export default function MapScreen() {
                                 <button><ArrowDownwardIcon sx={{ fontSize: 10 }}></ArrowDownwardIcon></button>
                                 <button><ArrowUpwardIcon sx={{ fontSize: 10 }}></ArrowUpwardIcon></button>
                                 <aside>
-                                    <label>Import Tileset</label>
+                                    <label style={{color: "black"}}>Tileset: </label>
                                     <div className="tileset-container">
                                         <img height="400px" src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png" />
                                     </div>

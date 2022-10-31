@@ -57,6 +57,7 @@
 .right-screen {
   position: relative;
   width: 93%;
+  height: 100%;
 }
 /* inside the right-screen: New file, save file, import export, such buttons */
 .menu-bar {
@@ -208,11 +209,11 @@
 }
 
 .mapbanner{
-  margin-left: 80px;
+  margin-left: 10px;
 }
 .card {
   display: flex;
-  /* position: relative; */
+  position: relative;
   height: 100%;
   background: hwb(0 100% 0%);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
@@ -246,8 +247,8 @@
 .card_center-column{
   padding-left: 0px;
   margin-left: 10%;
-  margin-top: 3.5%;
-  margin-bottom: 3.5%;
+  margin-top: 7%;
+  margin-bottom: 7%;
   /* background-color: rgb(235, 225, 225); */
 }
 
