@@ -86,6 +86,7 @@ export default function ResourceScreen(){
     <Box class='resource-bottom'>
         <Box class='resource-commentboard'>
             <list>
+                {/*  */}
                 <ResourceScreenCommentCard></ResourceScreenCommentCard>
                 <ResourceScreenCommentCard></ResourceScreenCommentCard>
                 <ResourceScreenCommentCard></ResourceScreenCommentCard>

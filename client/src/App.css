@@ -57,7 +57,6 @@
 .right-screen {
   position: relative;
   width: 93%;
-  margin-left: 7%;
 }
 /* inside the right-screen: New file, save file, import export, such buttons */
 .menu-bar {
@@ -353,6 +352,40 @@ Chengzhi Dong
 
 #tileset-screen{
 
+}
+
+.home-add-button{
+  position: relative;
+  background-color: #008CBA;
+  border-width: 5px;
+  color: white;
+  margin-left: 20%;
+  margin-top: 20%;
+  
+  height: 60%;
+  width: 60%;
+  
+  display: inline-block;
+  border-radius: 12px;
+}
+#home-map-list{
+  position: relative;
+  width: 98%;
+  height: 90%;
+  margin: 1%;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+.home-map-card{
+  position: relative;
+  margin: 3%;
+}
+
+.home-tileset-card{
+  position: relative;
+  margin: 3%;
 }
 /*
 Chengzhi Dong
