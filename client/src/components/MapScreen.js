@@ -30,7 +30,7 @@ export default function MapScreen() {
             </div>
             <div className="card">
             <div className="card_center-column">
-                <canvas style={styles} width="600" height="400">
+                <canvas style={styles} width="800" height="500">
                 </canvas>
             </div>
             <div className="card_body">

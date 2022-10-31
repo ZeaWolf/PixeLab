@@ -216,7 +216,7 @@
 }
 
 .mapbanner{
-  margin-left: 60px;
+  margin-left: 80px;
 }
 .card {
   display: flex;
@@ -254,8 +254,8 @@
 .card_center-column{
   padding-left: 0px;
   margin-left: 10%;
-  margin-top: 10%;
-  margin-bottom: 10%;
+  margin-top: 3.5%;
+  margin-bottom: 3.5%;
   /* background-color: rgb(235, 225, 225); */
 }
 
@@ -360,6 +360,40 @@ Chengzhi Dong
 
 #tileset-screen{
 
+}
+
+.home-add-button{
+  position: relative;
+  background-color: #008CBA;
+  border-width: 5px;
+  color: white;
+  margin-left: 20%;
+  margin-top: 20%;
+  
+  height: 60%;
+  width: 60%;
+  
+  display: inline-block;
+  border-radius: 12px;
+}
+#home-map-list{
+  position: relative;
+  width: 98%;
+  height: 90%;
+  margin: 1%;
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+.home-map-card{
+  position: relative;
+  margin: 3%;
+}
+
+.home-tileset-card{
+  position: relative;
+  margin: 3%;
 }
 /*
 Chengzhi Dong

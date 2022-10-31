@@ -5,23 +5,21 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 
-export default function HomeMapCard() {
+export default function HomeMapCard(props) {
+  const { ImgNamePair } = props;
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card class="home-map-card">
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
+          height="100"
+          image={ImgNamePair.img}
           alt="img"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Lizard
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+          <Typography gutterBottom variant="h3" component="div">
+            {ImgNamePair.name}
           </Typography>
         </CardContent>
       </CardActionArea>
