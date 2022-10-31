@@ -18,7 +18,7 @@ export default function NavigationBar() {
     // const { store } = useContext(GlobalStoreContext);
 
     return (
-        <Box id= "navigationbar" alignItems="center" sx={{ width:'10%', left: '0%', flexDirection: 'column' }}>
+        <Box className= "navigationbar" alignItems="center" sx={{ left: '0%', flexDirection: 'column' }}>
             <Box alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
                 <IconButton sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <GroupsIcon/>
