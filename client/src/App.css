@@ -42,7 +42,7 @@
   width: 7%;
   top: 0%;
   height: 100%;
-  background-color: rgb(7, 174, 216)
+  background: linear-gradient(to bottom,#64cdfa 40%, #f6f5dd);
 }
 
 .full-screen {   /* shugui: can be apply for the community */
