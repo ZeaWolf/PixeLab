@@ -32,7 +32,12 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 
 
-app.use(express.static("public"));
-app.get('*', function (req, res){
-    res.sendFile(path.join(__dirname + '/', 'public', 'index.html'));
+// app.use(express.static("public"));
+// app.get('*', function (req, res){
+//     res.sendFile(path.join(__dirname + '/', 'public', 'index.html'));
+// });
+
+app.use(express.static("client/build"));
+app.get('*', (req, res) => {
+res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
