@@ -77,8 +77,13 @@ export default function LoginScreen(){
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link href="/register/" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    "Don't have an account? Sign Up"
                   </Link>
+                  <Grid item>
+                    <Link href="/forget-your-password/" variant="body2">
+                        "Forget your password?"
+                    </Link>
+                </Grid>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />

@@ -16,7 +16,9 @@ import {
     MapScreen,
     TilesetScreen,
     ResourceScreen,
-    WindowDialog
+    WindowDialog,
+    PasswordRecoveryEmail,
+    PasswordRecoveryPage,
 } from './components'
 
 // ** components no implemented
@@ -37,6 +39,8 @@ const App = () => {
                         <Route path="/resource/" exact component={ResourceScreen} />
                         <Route path="/map/" exact component={MapScreen} />
                         <Route path='/window-dialog' exact component={WindowDialog} />
+                        <Route path='/forget-your-password' exact component={PasswordRecoveryEmail} />
+                        <Route path='/idk' exact component={PasswordRecoveryPage} />
                     </Switch>
                 {/* </GlobalStoreContextProvider>
             </AuthContextProvider> */}

@@ -12,6 +12,8 @@ import TilesetScreen from './TilesetScreen'
 import WelcomeScreen from './WelcomeScreen'
 import NavigationBar from './NavigationBar'
 import WindowDialog from './WindowDialog'
+import PasswordRecoveryEmail from './PasswordRecoveryEmail'
+import PasswordRecoveryPage from './PasswordRecoveryPage'
 
 export{
     AppBanner,
@@ -27,5 +29,7 @@ export{
     TilesetScreen,
     WelcomeScreen,
     NavigationBar,
-    WindowDialog
+    WindowDialog,
+    PasswordRecoveryEmail,
+    PasswordRecoveryPage,
 }
