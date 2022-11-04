@@ -8,7 +8,8 @@
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "engines": {
-    "node": "16.18.0"
+    "node": "16.18.0",
+    "npm": "8.19.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
