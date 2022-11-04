@@ -78,6 +78,7 @@ updateResource = async(req, res) => {
             resource.Image = body.Image;
             resource.Source = body.Source;
             resource.Like = body.Like;
+            resource.Downloads = body.Downloads;
             resource.Comments = body.Comments;
             resource.PublishTime = body.PublishTime;
             resource.Description = body.Description;
@@ -151,6 +152,7 @@ getResourceLists = async (req, res) => {
                         Author: list.Author,
                         Image: list.Image,
                         Like: list.Like,
+                        Downloads: list.Downloads,
                         Comments: list.Comments,
                         PublishTime: list.PublishTime,
                         Description: list.Description

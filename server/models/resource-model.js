@@ -19,6 +19,7 @@ const ResourceSchema = new Schema(
         Image:          {type: String, required: true},
         Source:         {type: String, required: true},
         Like:           {type: Number, required: true},
+        Downloads:      {type: Number, required: true},
         Comments:       {type: [[String]], required: true},
         PublishTime:    {type: Date, required: true, default: Date.now()},
         Description:    {type: String, required: true}
