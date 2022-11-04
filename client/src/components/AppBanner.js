@@ -101,7 +101,8 @@ export default function AppBanner() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" color="primary" style={{ height: 70 }}>
+            <AppBar position="static" color="primary" 
+            style={{ height: 70 ,background:"linear-gradient(to bottom right, #64cdfa 20%, #f6f5dd)",color:"#2fb2e6"}}>
                 <Toolbar>
                     <Typography                        
                         variant="h3"
@@ -109,7 +110,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block', flexGrow: 1 } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: '#e7cb75' }} to='/'>PixeLab</Link>
+                        <Link style={{ textDecoration: 'none', color: '#e7cb75'}} to='/'>PixeLab</Link>
                     </Typography>
                     {/* <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box> */}
                     {/* <Box sx={{ flexGrow: 1 }}></Box> */}

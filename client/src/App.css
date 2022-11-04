@@ -42,7 +42,7 @@
   width: 7%;
   top: 0%;
   height: 100%;
-  background-color: rgb(7, 174, 216)
+  background: linear-gradient(to bottom,#64cdfa 40%, #f6f5dd);
 }
 
 .full-screen {   /* shugui: can be apply for the community */
@@ -219,7 +219,7 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 }
 .card_body {
-  /* display:flex; */
+  display:flex;
   /* padding-left: 800px; */
   margin-left: 5%;
 }
@@ -247,16 +247,16 @@
   height:32px;
 }
 .card_body_2 {
-  position:relative;
+  position:absolute;
   list-style-type:none;
-  margin:0;
+  /* margin:0; */
   /* left:800px; */
   margin-left: 5%;
 }
 .layers {
-  list-style-type:none;
+  /* list-style-type:none;
   margin:0;
-  padding:0;
+  padding:0; */
   margin-left: 5%;
   overflow-y: scroll;
   height: 15%;
