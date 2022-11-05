@@ -16,5 +16,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '16.18.0'
+    - name: Run jest 
+      run: jest
     - name: Run tests
       run: npm test
