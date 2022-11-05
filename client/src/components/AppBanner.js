@@ -14,8 +14,8 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import Avatar from '@mui/material/Avatar';
 
 export default function AppBanner() {
-    // const { auth } = useContext(AuthContext);
-    // const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
+    const { store } = "store";
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
 
@@ -29,7 +29,7 @@ export default function AppBanner() {
 
     const handleLogout = () => {
         handleMenuClose();
-        // auth.logoutUser(store);
+        auth.logoutUser(store);
     }
 
     const menuId = 'primary-search-account-menu';
@@ -76,26 +76,25 @@ export default function AppBanner() {
 
     // let editToolbar = "";
     let menu = loggedOutMenu;
-    // if (auth.loggedIn) {
-    //     menu = loggedInMenu;
-    // }
+    if (auth.loggedIn) {
+        menu = loggedInMenu;
+    }
     // if(auth.guest){
     //     menu = guestMenu;
     // }
     
     // --------------------------- if user is login or not --------------------
     function getAccountMenu(loggedIn) {
-        // if(loggedIn){
-        //     let firstInitial = auth.user.firstName.charAt(0).toUpperCase();
-        //     let lastInitial = auth.user.lastName.charAt(0).toUpperCase();
-        //     return  <Avatar sx={{ m: 1, bgcolor: 'secondary.main', 
-        //             borderStyle: 'solid', borderColor: 'black', 
-        //             color:'wihte',fontSize:20, fontWeight:'normal',
-        //             width: 50, height: 50 }}
-        //             >
-        //                 {firstInitial + lastInitial}
-        //             </Avatar>;
-        // }
+        if(loggedIn){
+            let firstInitial = auth.user.userName.charAt(0).toUpperCase();
+            return  <Avatar sx={{ m: 1, bgcolor: 'secondary.main', 
+                    borderStyle: 'solid', borderColor: 'black', 
+                    color:'wihte',fontSize:20, fontWeight:'normal',
+                    width: 50, height: 50 }}
+                    >
+                        {firstInitial}
+                    </Avatar>;
+        }
         return <AccountCircleOutlinedIcon />;
     }
 
@@ -124,7 +123,7 @@ export default function AppBanner() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            {getAccountMenu("null")}{/* { getAccountMenu(auth.loggedIn) }  */}
+                            {getAccountMenu(auth.loggedIn)}
                         </IconButton>
                     </Box>
                 </Toolbar>

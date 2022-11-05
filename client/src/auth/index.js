@@ -25,9 +25,9 @@ function AuthContextProvider(props) {
     });
     const history = useHistory();
 
-    // useEffect(() => {
-    //     auth.getLoggedIn();
-    // }, []);
+    useEffect(() => {
+        auth.getLoggedIn();
+    }, []);
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -122,7 +122,7 @@ function AuthContextProvider(props) {
                         loggedIn: response.data.loggedIn
                     }
                 })
-                history.push("/homescreen/");
+                history.push("/home/");
                 // store.loadIdNamePairs({screen:"homeScreen"});
             }
         }catch(err){
