@@ -17,6 +17,6 @@ jobs:
       with:
         node-version: '16.18.0'
     - name: Run npm 
-      run: npm
+      run: npm CI
     - name: Run tests
       run: npm test
