@@ -90,7 +90,7 @@ export default function LoginScreen(){
             </Box>
           </Box>
         </Grid>
-        {/* <ErrorModal /> */}
+        <ErrorModal />
       </div>
     );
 }
