@@ -8,6 +8,7 @@
     "@fontsource/roboto": "^4.5.1",
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
+    "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.22.0",
@@ -21,14 +22,14 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
-    "test": "react-scripts --openssl-legacy-provider test",
-    "eject": "react-scripts --openssl-legacy-provider eject"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
-      "react-app"
+      "react-app",
+      "react-app/jest"
     ]
   },
   "browserslist": {
