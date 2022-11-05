@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import api from '../api';
 
 const AuthContext = createContext();
-console.log("create AuthContext: " + AuthContext);
+console.log("create AuthContext: " + "shugui");
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
@@ -25,9 +25,9 @@ function AuthContextProvider(props) {
     });
     const history = useHistory();
 
-    useEffect(() => {
-        auth.getLoggedIn();
-    }, []);
+    // useEffect(() => {
+    //     auth.getLoggedIn();
+    // }, []);
 
     const authReducer = (action) => {
         const { type, payload } = action;
@@ -105,7 +105,7 @@ function AuthContextProvider(props) {
                 screen: screen,
             }
         })
-        store.loadIdNamePairs({screen: screen});
+        // store.loadIdNamePairs({screen: screen});
     }
 
 
@@ -122,8 +122,8 @@ function AuthContextProvider(props) {
                         loggedIn: response.data.loggedIn
                     }
                 })
-                history.push("/");
-                store.loadIdNamePairs({screen:"homeScreen"});
+                history.push("/homescreen/");
+                // store.loadIdNamePairs({screen:"homeScreen"});
             }
         }catch(err){
             // part 2
@@ -165,7 +165,7 @@ function AuthContextProvider(props) {
                 })
             }
             history.push("/");
-            store.closeCurrentList();
+            // store.closeCurrentList();
         }catch(err){
             console.log(err);
         }

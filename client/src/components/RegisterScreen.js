@@ -16,19 +16,19 @@ import { GlobalStoreContext } from '../store';
 import ErrorModal from "./ErrorModal";
 
 export default function RegisterScreen() {
-    // const { auth } = useContext(AuthContext);
-    // const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
+    const { store } = "Store";
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         // ** Need to implement registerUser to the auth
-        // auth.registerUser({
-        //     userName: formData.get('username'),
-        //     email: formData.get('email'),
-        //     password: formData.get('password'),
-        //     passwordVerify: formData.get('passwordVerify')
-        // }, store);
+        auth.registerUser({
+            userName: formData.get('username'),
+            email: formData.get('email'),
+            password: formData.get('password'),
+            passwordVerify: formData.get('passwordVerify')
+        }, store);
     };
 
     return (

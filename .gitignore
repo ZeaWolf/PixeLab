@@ -5,3 +5,4 @@ server/.env
 .DS_Store
 client/.DS_Store
 server/.DS_Store
+.env

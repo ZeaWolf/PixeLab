@@ -3,7 +3,7 @@ import {React} from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // ** functions not implemented
-// import { AuthContextProvider } from './auth';
+import { AuthContextProvider } from './auth';
 // import { GlobalStoreContextProvider } from './store'
 import {
     AppBanner,
@@ -25,10 +25,9 @@ import {
 const App = () => {
     return (
         <BrowserRouter>
-            {/* <AuthContextProvider>
-                <GlobalStoreContextProvider>               */}
+            <AuthContextProvider>
+                {/* <GlobalStoreContextProvider>               */}
                     <AppBanner />
-                    {/* <NavigationBar/> */}
                     <Switch>
                         <Route path="/" exact component={WelcomeScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
@@ -42,8 +41,8 @@ const App = () => {
                         <Route path='/forget-your-password' exact component={PasswordRecoveryEmail} />
                         <Route path='/idk' exact component={PasswordRecoveryPage} />
                     </Switch>
-                {/* </GlobalStoreContextProvider>
-            </AuthContextProvider> */}
+                {/* </GlobalStoreContextProvider> */}
+            </AuthContextProvider>
         </BrowserRouter>
     )
 }
