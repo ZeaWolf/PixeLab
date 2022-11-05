@@ -78,12 +78,12 @@ getLoggedIn = async (req, res) => {
             return res.status(200).json({
                 loggedIn: true,
                 user: {
-                    userName: savedUser.userName,
-                    email: savedUser.email,
-                    collectionList: savedUser.collectionList,
-                    likeList: savedUser.likeList,
-                    mapList: savedUser.mapList,
-                    tilesetList: savedUser.tilesetList,
+                    userName: loggedInUser.userName,
+                    email: loggedInUser.email,
+                    collectionList: loggedInUser.collectionList,
+                    likeList: loggedInUser.likeList,
+                    mapList: loggedInUser.mapList,
+                    tilesetList: loggedInUser.tilesetList,
                 }
             }).send();
         }catch(err){
