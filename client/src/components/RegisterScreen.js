@@ -107,7 +107,12 @@ export default function RegisterScreen() {
                                 <Link href="/login/" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
+                            <Grid item>
+                                <Link href="/forgot-password/" variant="body2">
+                                    Forget your password?
+                                </Link>
                             </Grid>
+                        </Grid>
                         </Grid>
                         <Copyright sx={{ mt: 2 }} />
                     </Box>

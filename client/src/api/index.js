@@ -9,7 +9,8 @@ export const getLoggedIn = () => api.get(`/loggedIn/`);
 export const registerUser = (payload) => api.post(`/register/`, payload)
 export const loginUser = (payload) => api.post(`/login/`, payload)
 export const logoutUser = () => api.get(`/logout/`)
-// export const resetPassword
+export const forgotPassword = (payload) => api.post(`/forgot-password/`, payload)
+//export const resetPassword = () => api.put(`/reset-password/`)
 // export const forgetPassword
 // export const updateLists
 
@@ -50,6 +51,7 @@ const apis = {
     registerUser,
     loginUser,
     logoutUser,
+    forgotPassword,
 
     createResource,
     updateResource,
