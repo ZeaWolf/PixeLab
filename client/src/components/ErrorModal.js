@@ -30,7 +30,7 @@ export default function ErrorModal(){
 
     const handleClick = (event) => {
         event.preventDefault();
-        // auth.closeErrorModal();     // need auth function implemented
+        auth.closeErrorModal();     // need auth function implemented
     }
 
     
