@@ -6,11 +6,12 @@
 // import supertest from 'supertest'
 // import resourcecontroller from './resource-controller.js'
 
-// const request = require('supertest');
+const request = require('supertest');
 // const { deleteOne } = require('../models/user-model.js');
 // const createResource = require('./resource-controller.js')
-// // const jest = require('@jest/globals')
-
+// const jest = require('@jest/globals')
+const UserController = require('./user-controller.js')
+const registerUser = require('./user-controller.js')
 // const mockResponse = () => {
 //     const res = {};
 //     res.status = jest.fn().mockReturnValue(res);
@@ -24,30 +25,38 @@
 //       body: sessionData,
 //     };
 // };
-
-//     describe ("!!!!",()=>{
-
-//         test("When resource is missing", ()=>{
-//             // const response = request(createResource).post("/resource").send({
-//             // })
-//             const req = mockRequest({
-//                 Type:           "resource",
-//                 Name:           "nihao",
-//                 Author:         "shugui",
-//                 Image:          "1",
-//                 Source:         "1",
-//                 Like:           1,
-//                 Comments:       [["1111"]],
-//                 PublishTime:    1666568158316,
-//                 Description:    "1"
-//             });
-//             const body = req.body;
-//             console.log(body);
-//             const res = mockResponse();
-//             createResource.createResource(req,res);
-//             expect(res.status).toHaveBeenCalledWith(201);
-//         })
-//     })
+    describe ("!!!!",()=>{
+        // test("When resource is missing", ()=>{
+        //     // const response = request(createResource).post("/resource").send({
+        //     // })
+        //     const req = mockRequest({
+        //         Type:           "resource",
+        //         Name:           "nihao",
+        //         Author:         "shugui",
+        //         Image:          "1",
+        //         Source:         "1",
+        //         Like:           1,
+        //         Comments:       [["1111"]],
+        //         PublishTime:    1666568158316,
+        //         Description:    "1"
+        //     });
+        //     // const body = req.body;
+        //     //console.log(body);
+        //     const res = mockResponse();
+        //     createResource.createResource(req,res);
+        //     expect(res.status).toHaveBeenCalledWith(400);
+        // })
+        test("basic test", async ()=>{
+            // const response = await request(registerUser).post('/register').send({
+            //     userName: "Shugui",
+            //     email: "123@123.com",
+            //     password: "12345678",
+            //     passwordVerify: "12345678"
+            // })
+            const response = 1*2
+            expect(response).toBe(2)
+        })
+    })
 
 
 // afterAll(async done => {

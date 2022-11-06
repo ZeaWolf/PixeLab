@@ -80,8 +80,8 @@ export default function LoginScreen(){
                     "Don't have an account? Sign Up"
                   </Link>
                   <Grid item>
-                    <Link href="/forget-your-password/" variant="body2">
-                        "Forget your password?"
+                    <Link href="/forgot-password/" variant="body2">
+                        Forget your password?
                     </Link>
                 </Grid>
                 </Grid>

@@ -15,8 +15,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import { GlobalStoreContext } from '../store';
 import ErrorModal from "./ErrorModal";
 
-export default function PasswordRecovery() {
-    // const { auth } = useContext(AuthContext);
+export default function ResetPasswordScreen() {
+    const { auth } = useContext(AuthContext);
     // const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
@@ -24,8 +24,9 @@ export default function PasswordRecovery() {
         const formData = new FormData(event.currentTarget);
         // ** Need to implement registerUser to the auth
         // auth.registerUser({
-        //     email: formData.get('email'),
-        // }, store);
+        //     password: formData.get('password'),
+        //     passwordVerify: formData.get('passwordVerify')
+        // });
     };
 
     return (
@@ -44,7 +45,7 @@ export default function PasswordRecovery() {
                         <PersonIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Enter Your Email Address
+                        Reset Password
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
@@ -52,10 +53,22 @@ export default function PasswordRecovery() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="passwordVerify"
+                                    label="Password Verify"
+                                    type="password"
+                                    id="passwordVerify"
+                                    autoComplete="new-password"
                                 />
                             </Grid>
                         </Grid>
@@ -65,20 +78,8 @@ export default function PasswordRecovery() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Send Email
+                            Reset password
                         </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/register/" variant="body2">
-                                    "Don't have an account? Sign Up"
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <Link href="/login/" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid>
                         <Copyright sx={{ mt: 2 }} />
                     </Box>
                 </Box>

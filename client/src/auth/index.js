@@ -13,6 +13,7 @@ export const AuthActionType = {
     ERROR_MODAL: "ERROR_MODAL",
     LOGOUT_USER: "LOGOUT_USER",
     CHANGE_SCREEN: "CHANGE_SCREEN",
+    FORGET_PASSWORD: "FORGET_PASSWORD",
 }
 
 function AuthContextProvider(props) {
@@ -78,6 +79,15 @@ function AuthContextProvider(props) {
                     error: auth.error,
                     message: auth.message,
                     currentScreen: "welcomeScreen",
+                })
+            }
+            case AuthActionType.FORGET_PASSWORD:{
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    error: auth.error,
+                    message: payload.message,
+                    currentScreen: auth.currentScreen,
                 })
             }
 
@@ -215,6 +225,22 @@ function AuthContextProvider(props) {
         }
     }
 
+    auth.forgotPassword = async function(userData){
+        try{
+            const response = await api.forgotPassword(userData);      
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.FORGET_PASSWORD,
+                    payload: {
+                    }
+                })
+            }
+        }catch(err){
+            const message = err.response.data.errorMessage;
+            auth.showErrorModal(message);
+        }
+
+    }
     return (
         <AuthContext.Provider value={{
             auth
