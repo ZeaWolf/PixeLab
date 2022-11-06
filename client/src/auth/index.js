@@ -123,7 +123,8 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/home/");
-                // store.loadIdNamePairs({screen:"homeScreen"});
+                store.loadTilesets();
+                // store.loadMaps();
             }
         }catch(err){
             // part 2

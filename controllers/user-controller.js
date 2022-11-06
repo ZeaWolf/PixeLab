@@ -74,7 +74,8 @@ registerUser = async(req, res) => {
 getLoggedIn = async (req, res) => {
     auth.verify(req, res, async function () {
         try{
-            const loggedInUser = await User.findOne({ _id: req.userId });
+            const savedUser = await User.findOne({ _id: req.userId });
+            console.log(savedUser);
             return res.status(200).json({
                 loggedIn: true,
                 user: {
@@ -83,7 +84,7 @@ getLoggedIn = async (req, res) => {
                     collectionList: savedUser.collectionList,
                     likeList: savedUser.likeList,
                     mapList: savedUser.mapList,
-                    tilesetList: savedUser.tilesetList,
+                    tilesetList: savedUser.tilesetList
                 }
             }).send();
         }catch(err){

@@ -16,7 +16,7 @@ import { GlobalStoreContext } from '../store'
   
 export default function LoginScreen(){
     const { auth } = useContext(AuthContext);
-    const { store } = "store";
+    const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {  
         event.preventDefault();

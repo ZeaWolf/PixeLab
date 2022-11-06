@@ -34,16 +34,16 @@ export const getLayerById = (id) => api.get('/layer/${id}')
 export const getLayerLists = () => api.get('/layers')
 
 //tileset part
-export const createTileset = (payload) => api.post('/Tileset',payload)
-export const updateTileset = (id, payload) => api.put('/Tileset/${id}',payload)
-export const deleteTileset = (id) => api.delete('/Tileset/${id}')
-export const getTilesetById = (id) => api.get('/Tileset/${id}')
-export const getTilesetLists = () => api.get('/Tilesets')
+export const createTileset = (payload) => api.post('/tileset',payload)
+export const updateTileset = (id, payload) => api.put('/tileset/${id}',payload)
+export const deleteTileset = (id) => api.delete('/tileset/${id}')
+export const getTilesetById = (id) => api.get('/tileset/${id}')
+export const getTilesetLists = () => api.get('/tilesets')
 
 //tile part
-export const createTile = (payload) => api.post('/Tile',payload)
-export const getTileById = (id) => api.get('/Tile/${id}')
-export const updateTile = (id, payload) => api.put('/Tile/${id}',payload)
+export const createTile = (payload) => api.post('/tile',payload)
+export const getTileById = (id) => api.get('/tile/${id}')
+export const updateTile = (id, payload) => api.put('/tile/${id}',payload)
 
 const apis = {
     getLoggedIn,
