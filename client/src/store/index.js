@@ -124,7 +124,7 @@ function GlobalStoreContextProvider(props) {
         try{
             let response = await api.getTilesetById(id);
             console.log("wtf");
-            let value = JSON.stringify(response.data.data.Source);
+            let value = response.data.data.Source;
             console.log(typeof response.data.data.Source);
             return value;
         }catch(err){
