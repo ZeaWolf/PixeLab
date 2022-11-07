@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import api from '../api';
 
 const AuthContext = createContext();
-console.log("create AuthContext: " + "shugui");
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
@@ -13,7 +12,8 @@ export const AuthActionType = {
     ERROR_MODAL: "ERROR_MODAL",
     LOGOUT_USER: "LOGOUT_USER",
     CHANGE_SCREEN: "CHANGE_SCREEN",
-    FORGET_PASSWORD: "FORGET_PASSWORD",
+    FORGOT_PASSWORD: "FORGET_PASSWORD",
+    RESET_PASSWORD: "RESET_PASSWORD",
     CONTINUE_AS_GUEST: "CONTINUE_AS_GUEST",
     GUEST_MODAL: "GUEST_MODAL",
 }
@@ -84,7 +84,16 @@ function AuthContextProvider(props) {
                     currentScreen: "welcomeScreen",
                 })
             }
-            case AuthActionType.FORGET_PASSWORD:{
+            case AuthActionType.FORGOT_PASSWORD:{
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    error: auth.error,
+                    message: payload.message,
+                    currentScreen: auth.currentScreen,
+                })
+            }
+            case AuthActionType.RESET_PASSWORD:{
                 return setAuth({
                     user: null,
                     loggedIn: false,
@@ -251,28 +260,43 @@ function AuthContextProvider(props) {
 
     auth.forgotPassword = async function(userData){
         try{
-            const response = await api.forgotPassword(userData);      
+            const response = await api.forgotPassword(userData);   
             if (response.status === 200) {
                 authReducer({
-                    type: AuthActionType.FORGET_PASSWORD,
+                    type: AuthActionType.FORGOT_PASSWORD,
                     payload: {
                     }
                 })
+                auth.showErrorModal("Password reset link is sent to your email!");
             }
         }catch(err){
             const message = err.response.data.errorMessage;
             auth.showErrorModal(message);
         }
-
     }
 
-    auth.continueAsGuest = async function(screen){
-        authReducer({
-            type: AuthActionType.CONTINUE_AS_GUEST,
-            payload:{
-                screen: screen,
+    auth.resetPassword = async function(userData){
+        //try{
+            console.log("LOVE") 
+            let queryString = window.location.search;
+            queryString = queryString.replace('?','');
+            let queryParam = new URLSearchParams(queryString);
+            const token = queryParam.get('token');
+            const id = queryParam.get('id');
+            const query = {token:token, id:id};
+            const response = await api.resetPassword(userData, query);  
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.RESET_PASSWORD,
+                    payload: {
+                    }
+                })
+                auth.showErrorModal("Password has been reset!");
             }
-        })
+        // }catch(err){
+        //     const message = err.response.data.errorMessage;
+        //     auth.showErrorModal(message);
+        // }
     }
 
     auth.OpenGuestModal = function() {
