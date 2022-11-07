@@ -75,7 +75,6 @@ getLoggedIn = async (req, res) => {
     auth.verify(req, res, async function () {
         try{
             const loggedInUser = await User.findOne({ _id: req.userId });
-            console.log(savedUser);
             return res.status(200).json({
                 loggedIn: true,
                 user: {

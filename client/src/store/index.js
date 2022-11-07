@@ -20,7 +20,8 @@ export const GlobalStoreContext = createContext({});
 export const GlobalStoreActionType = {
     // CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     // CLOSE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
-    // CREATE_NEW_LIST: "CREATE_NEW_LIST",
+    CREATE_NEW_TILESET: "CREATE_NEW_TILESET",
+    DELETE_TILESET: "DELETE_TILESET",
     // LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
     // MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
     // UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
@@ -42,7 +43,8 @@ export const GlobalStoreActionType = {
 function GlobalStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
-        tilesetList: []
+        tilesetList: [],
+        newTilesetCounter: 0,
         // maps: []
     });
     const history = useHistory();
@@ -59,9 +61,21 @@ function GlobalStoreContextProvider(props) {
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
             case GlobalStoreActionType.LOAD_TILESETS: {
                 return setStore({
-                    tilesetList: payload
-                    // maps: null
+                    tilesetList: payload,
+                    newTilesetCounter: store.newTilesetCounter
                 });
+            }
+            case GlobalStoreActionType.CREATE_NEW_LIST: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    newTilesetCounter: store.newTilesetCounter + 1
+                })
+            }
+            case GlobalStoreActionType.DELETE_TILESET: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    newTilesetCounter: store.newTilesetCounter + 1
+                })
             }
             // case GlobalStoreActionType.LOAD_MAPS: {
             //     return setStore({
@@ -79,12 +93,9 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadTilesets = async function () {
         try{
-            console.log("kkkkkkkkkkkkkkk ");
-            // console.log(action);
             const response = await api.getTilesetLists();
-            console.log("response:111111111 "+response);
             if (response.data.success) {
-                let pairsArray = response.data.user.tilesetList;
+                let pairsArray = response.data.data;
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_TILESETS,
                     payload: pairsArray
@@ -99,26 +110,38 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    // store.loadMaps = async function (criteria) {
-    //     try{
-    //         const response = await api.getMapLists();
-    //         console.log("response:111111111 "+response.data.user.mapList);
-    //         if (response.data.success) {
-    //             let pairsArray = response.data.user.maps;
-    //             console.log("tilesetsssssss: "+pairsArray);
-    //             storeReducer({
-    //                 type: GlobalStoreActionType.LOAD_MAPS,
-    //                 payload: pairsArray
-    //             });
-    //         }
-    //         else {
-    //             console.log("API FAILED TO GET THE LIST PAIRS");
-    //         }
-            
-    //     }catch(err){
-    //         console.log("err");
-    //     }
-    // }
+
+    store.createNewTileset = async function () {
+        let newTilesetName = "Untitled" + store.newTilesetCounter;
+        let payload = {
+            OwnerEmail:     auth.user.email,
+            Name:           newTilesetName,
+            Type:           "tileset",
+            SharedList:     [],
+            Columns:        0,
+            Rows:           0,
+            Spacing:        0,
+            Tiles:          [],
+            Source:         ""
+        };
+        const response = await api.createTileset(payload);
+        console.log(response);
+        if (response.data.success) {
+            // tps.clearAllTransactions();
+            let newTileset = response.data.tilesetList;
+            storeReducer({
+                type: GlobalStoreActionType.CREATE_NEW_TILESET,
+                payload: newTileset
+            }
+            );
+
+            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
+            history.push("/tileset-editor");//////
+        }
+        else {
+            console.log("API FAILED TO CREATE A NEW LIST");
+        }
+    }
 
     return (
         <GlobalStoreContext.Provider value={{

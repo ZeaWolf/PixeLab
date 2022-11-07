@@ -34,6 +34,10 @@ export default function HomeScreen() {
         'borderRadius': '12px',
     })
 
+    function handleCreateNewTileset() {
+        store.createNewTileset();
+    }
+
 
     let listCard = "";
     const filteredPairs = store.tilesetList;
@@ -51,7 +55,6 @@ export default function HomeScreen() {
         }
         </List>;
 
-
     return (
         <div className='full-screen'>
             <NavigationBar/>
@@ -67,7 +70,7 @@ export default function HomeScreen() {
                         <Grid container spacing={2}>
 
                         <Grid item xs={4} md={2}>
-                            <AddButton  ><AddIcon sx={{ fontSize: 100 }} /></AddButton >
+                            <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
                         </Grid>
                         <Grid item xs={6} md={10}>
                         <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
@@ -94,7 +97,7 @@ export default function HomeScreen() {
                         <Grid container spacing={2}>
 
                         <Grid item xs={4} md={2}>
-                            <AddButton className="home-add-button" ><AddIcon sx={{ fontSize: 100 }} /></AddButton>
+                            <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
                         </Grid>
                         <Grid item xs={6} md={10}>
                         {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
