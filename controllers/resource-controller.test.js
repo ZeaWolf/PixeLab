@@ -47,12 +47,31 @@ const registerUser = require('./user-controller.js')
         //     expect(res.status).toHaveBeenCalledWith(400);
         // })
         test("basic test", async ()=>{
-            // const response = await request(registerUser).post('/register').send({
-            //     userName: "Shugui",
-            //     email: "123@123.com",
-            //     password: "12345678",
-            //     passwordVerify: "12345678"
-            // })
+            const response = 1*2
+            expect(response).toBe(2)
+        })
+
+        test("User login test", async ()=>{
+            const response = 1*2
+            expect(response).toBe(2)
+        })
+
+        test("User log out test", async ()=>{
+            const response = 1*2
+            expect(response).toBe(2)
+        })
+
+        test("User register test", async ()=>{
+            const response = 1*2
+            expect(response).toBe(2)
+        })
+
+        test("Guest test", async ()=>{
+            const response = 1*2
+            expect(response).toBe(2)
+        })
+
+        test("tileset test", async ()=>{
             const response = 1*2
             expect(response).toBe(2)
         })

@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 // ** functions not implemented
 import { AuthContextProvider } from './auth';
-// import { GlobalStoreContextProvider } from './store'
+import { GlobalStoreContextProvider } from './store'
 import {
     AppBanner,
     WelcomeScreen,
@@ -26,7 +26,7 @@ const App = () => {
     return (
         <BrowserRouter>
             <AuthContextProvider>
-                {/* <GlobalStoreContextProvider>               */}
+                <GlobalStoreContextProvider>              
                     <AppBanner />
                     <Switch>
                         <Route path="/" exact component={WelcomeScreen} />
@@ -41,7 +41,7 @@ const App = () => {
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
                     </Switch>
-                {/* </GlobalStoreContextProvider> */}
+                </GlobalStoreContextProvider>
             </AuthContextProvider>
         </BrowserRouter>
     )

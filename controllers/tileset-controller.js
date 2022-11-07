@@ -1,5 +1,6 @@
 const Tileset = require('../models/tileset-model');
 const Tile = require('../models/tile-model');
+const User = require('../models/user-model');
 
 // create a new tileset in the server
 createTileset = async(req, res) => {
@@ -14,8 +15,8 @@ createTileset = async(req, res) => {
 
         // create a tileset based on the request's body
         const tileset = new Tileset(body);
-        console.log("creating tileset: " + JSON.stringify(tileset));
-        
+        // console.log("creating tileset: " + JSON.stringify(tileset));
+
         // if creation of the tileset not success
         if(!tileset){
             return res.status(400).json({success: false, error: err});
@@ -155,7 +156,8 @@ getTilesetById = async (req, res) => {
 // get TilesetLists
 getTilesetLists = async (req, res) => {
     try{
-        await Tileset.find({}, (err, tileset) => {
+        const loggedInUser = await User.findOne({ _id: req.userId });
+        await Tileset.find({OwnerEmail: loggedInUser.email}, (err, tileset) => {
             if(err){
                 return res.status(400).json({ success: false, error: err})
             }
@@ -185,7 +187,7 @@ getTilesetLists = async (req, res) => {
                     };
                     pairs.push(pair);
                 }
-                return res.status(200).json({success: true, idInfoPairs: pairs})
+                return res.status(200).json({success: true, data: tileset})
             }
         }).catch(err => console.log(err))
     }catch(err){

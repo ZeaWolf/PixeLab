@@ -17,7 +17,7 @@ import ErrorModal from "./ErrorModal";
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
-    const { store } = "Store";
+    const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();

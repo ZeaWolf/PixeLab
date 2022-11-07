@@ -12,8 +12,9 @@ export const AuthActionType = {
     ERROR_MODAL: "ERROR_MODAL",
     LOGOUT_USER: "LOGOUT_USER",
     CHANGE_SCREEN: "CHANGE_SCREEN",
-    FORGOT_PASSWORD: "FORGOT_PASSWORD",
+    FORGOT_PASSWORD: "FORGET_PASSWORD",
     RESET_PASSWORD: "RESET_PASSWORD",
+    CONTINUE_AS_GUEST: "CONTINUE_AS_GUEST",
 }
 
 function AuthContextProvider(props) {
@@ -111,6 +112,16 @@ function AuthContextProvider(props) {
                 })
             }
 
+            case AuthActionType.CONTINUE_AS_GUEST:{
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    error: auth.error,
+                    message: auth.message,
+                    currentScreen: payload.screen,
+                })
+            }
+
             default:
                 return auth;
         }
@@ -142,7 +153,8 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/home/");
-                // store.loadIdNamePairs({screen:"homeScreen"});
+                store.loadTilesets();
+                // store.loadMaps();
             }
         }catch(err){
             // part 2
@@ -273,8 +285,6 @@ function AuthContextProvider(props) {
         //     auth.showErrorModal(message);
         // }
     }
-
-
     return (
         <AuthContext.Provider value={{
             auth
