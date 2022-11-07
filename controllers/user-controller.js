@@ -15,6 +15,12 @@ registerUser = async(req, res) => {
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
         }
+        if (!(/\S+@\S+\.\S+/.test(email))) {
+            return res
+                .status(400)
+                .json({ errorMessage: "Please enter a valid email." });
+        }
+
         if (password.length < 8) {
             return res
                 .status(400)
@@ -210,22 +216,15 @@ forgotPassword = async(req, res) => {
         
         if(savedToken){
             mailTransport.sendMail({
-                from: "sbupixelab@outlook.com",
+                from: "PixeLab",
                 to: email,
                 subject: "PixeLab Password Reset Link",
                 text: `Please use the following link to reset your password: https://sbucsepixelab.herokuapp.com/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
             });
-            return res.status(200).json({success: true
-                // reset: {
-                //     userId:     savedToken.userId,
-                //     resetToken: savedToken.resetToken,
-                //     createAt:   savedToken.createAt,
-                //     message: `https://sbupixelab.herokuapp.com/api/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
-                // }
-            }).send();
+            return res.status(200).json({success: true, message: "Password reset link is sent!"});
         }
 
-        return res.status(200).json({success: true, message: "Password reset link is sent!"});
+        return res.status(400).json({errorMessage: "Invalid!"});
     }catch(err){
         console.error(err);
         res.status(500).send();
