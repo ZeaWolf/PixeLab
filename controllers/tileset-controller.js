@@ -145,7 +145,7 @@ getTilesetById = async (req, res) => {
                     message: 'tileset not found!'
                 })
             }
-            return res.status(200).json({success: true, tileset: tilesetByID})
+            return res.status(200).json({success: true, data: tilesetByID})
         }).catch(err => console.log(err))
     }catch(err){
         console.error(err);

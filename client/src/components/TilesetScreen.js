@@ -44,35 +44,30 @@ export default function TilesetScreen() {
 
     /* Above: Chengzhi's initial tileset screen */
 
-    let _lc = null;
-    let _lc2 = null;
-    let imageBounds =  {x: 0, y:0, width: 200, height: 200}
+    // let imageBounds =  {x: 0, y:0, width: 200, height: 200}
     const [image, setImage] = useState("");
+    const [canvas, setCanvas] = useState({});
+    const [src, setSrc] = useState("");
+    const { store } = useContext(GlobalStoreContext);
+
 
     const onInit = lc => {
-        _lc = lc;
-        _lc2 = lc;
-        console.log(lc);
+        // console.log(lc);
+        setCanvas(lc);
     }
 
     const onSave = event => {
-        console.log("Onclicked");
-        if (!_lc){
-            console.log("Disappear")
+        if (!canvas){
+            // console.log("Disappear")
             return;
-        } 
-        console.log(_lc);
-        // var svgString = _lc.getSVGString();
-        // console.log(svgString);
-        // window.open("data:image/svg+xml;base64," + btoa(svgString));
-        const img = _lc.getImage({rect: imageBounds});
+        }
+        const img = canvas.getImage();
         if(!img) return;
-        _lc = _lc2;
-        console.log("image got");
         try{
             const imgData = img.toDataURL();
             setImage(imgData);
             console.log("URL: " + imgData);
+            store.saveTilesetSpace(store.currentTilesetId, imgData);
         }
         catch(err){
             console.log(err);
@@ -80,17 +75,20 @@ export default function TilesetScreen() {
     }
 
     const loadingImage = (event) => {
-        if(!_lc) return;
+        if(!canvas) return;
         const img =new Image();
         img.src = image;
         let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 0.5 });
-        _lc.saveShape(shape);
+        canvas.saveShape(shape);
+        if(store.currentTilesetId){
+            console.log("currentTilesetID from store: " + store.currentTilesetId);
+        }
     }
     
     const logging = event => {
         //event.preventDefault();
         console.log("hello");
-        console.log(_lc);
+        console.log(canvas);
     }
 
     return (

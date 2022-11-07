@@ -31,7 +31,8 @@ export const GlobalStoreActionType = {
     // SEARCH_LIST:"SEARCH_LIST",
     // SORT_LIST:"SORT_LIST",
     // LOAD_COMMUNITY_LISTS:"LOAD_COMMUNITY_LISTS"
-    LOAD_TILESETS: "LOAD_TILESETS"
+    LOAD_TILESETS: "LOAD_TILESETS",
+    LOADING_A_TILESET: "LOADING_A_TILESET",
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -45,6 +46,7 @@ function GlobalStoreContextProvider(props) {
     const [store, setStore] = useState({
         tilesetList: [],
         newTilesetCounter: 0,
+        currentTilesetId: null,
         // maps: []
     });
     const history = useHistory();
@@ -62,19 +64,29 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_TILESETS: {
                 return setStore({
                     tilesetList: payload,
-                    newTilesetCounter: store.newTilesetCounter
+                    newTilesetCounter: store.newTilesetCounter,
+                    currentTilesetId: store.currentTilesetId,
                 });
             }
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    newTilesetCounter: store.newTilesetCounter + 1
+                    newTilesetCounter: store.newTilesetCounter + 1,
+                    currentTilesetId: store.currentTilesetId,
                 })
             }
             case GlobalStoreActionType.DELETE_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    newTilesetCounter: store.newTilesetCounter + 1
+                    newTilesetCounter: store.newTilesetCounter,
+                    currentTilesetId: store.currentTilesetId,
+                })
+            }
+            case GlobalStoreActionType.LOADING_A_TILESET: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    newTilesetCounter: store.newTilesetCounter,
+                    currentTilesetId: payload,
                 })
             }
             // case GlobalStoreActionType.LOAD_MAPS: {
@@ -86,6 +98,44 @@ function GlobalStoreContextProvider(props) {
 
             default:
                 return store;
+        }
+    }
+    // THIS FUNCTION WILL LOAD A SELECTED TILESET CARD FROM THE HOMEPAGE
+    store.loadTilesetPage = async function(id) {
+        try{
+            console.log(id);
+            let response = await api.getTilesetById(id);
+            if (response.data.success){
+                let tileset = response.data.data;  // these 2 lines can be deleted since the payload can just be id in this case
+                let tilesetID = tileset._id;       // but whatever
+                storeReducer({
+                    type: GlobalStoreActionType.LOADING_A_TILESET,
+                    payload: tilesetID
+                })
+            }
+            console.log(response);
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    // THIS FUNCTION WILL SAVE THE TILESET CARD FROM THE TILESET EDITOR
+    store.saveTilesetSpace = async function(id, src) {
+        try{
+            let response = await api.getTilesetById(id);
+            // Tileset Found From Database
+            if(response.data.success){
+                let tileset = response.data.data;
+                tileset.Source = src;
+                // async function updateTileset(id, tileset){
+                response = await api.updateTileset(id, tileset);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+                // }
+            }
+        }catch(err){
+            console.log("err:"+err);
         }
     }
 
@@ -136,7 +186,7 @@ function GlobalStoreContextProvider(props) {
             );
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/tileset-editor");//////
+            // history.push("/tileset-editor");//////
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
