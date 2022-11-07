@@ -66,7 +66,7 @@ export default function TilesetScreen() {
         try{
             const imgData = img.toDataURL();
             setImage(imgData);
-            console.log("URL: " + imgData);
+            console.log("URL: " + typeof imgData);
             store.saveTilesetSpace(store.currentTilesetId, imgData);
         }
         catch(err){
@@ -76,13 +76,26 @@ export default function TilesetScreen() {
 
     const loadingImage = (event) => {
         if(!canvas) return;
-        const img =new Image();
-        img.src = image;
-        let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 0.5 });
-        canvas.saveShape(shape);
-        if(store.currentTilesetId){
-            console.log("currentTilesetID from store: " + store.currentTilesetId);
-        }
+        // async function loadImage(){
+            let uploadedImage = store.loadTilesetResourceImage(store.currentTilesetId);
+            if(uploadedImage != null){
+                const img = new Image();
+                console.log("result: " + uploadedImage);
+                console.log(uploadedImage);
+                // img.src = JSON.stringify(uploadedImage);
+                img.src = image; // comment this when works
+                let shape = LC.createShape("Image", { x: 40, y: 40, image: img, scale: 1 });
+                canvas.saveShape(shape);
+            }
+        // }
+            // const img =new Image();
+            // img.src = image;
+            // let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
+            // canvas.saveShape(shape);
+            // if(store.currentTilesetId){
+            //     console.log("currentTilesetID from store: " + store.currentTilesetId);
+            // }
+        // }
     }
     
     const logging = event => {

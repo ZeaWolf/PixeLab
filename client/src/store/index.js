@@ -113,7 +113,20 @@ function GlobalStoreContextProvider(props) {
                     payload: tilesetID
                 })
             }
-            console.log(response);
+            console.log(response.data);
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    // THIS FUNCTION WILL RETURN TILESET'S SOURCE BY ID
+    store.loadTilesetResourceImage = async function(id){
+        try{
+            let response = await api.getTilesetById(id);
+            console.log("wtf");
+            let value = JSON.stringify(response.data.data.Source);
+            console.log(typeof response.data.data.Source);
+            return value;
         }catch(err){
             console.log("err:"+err);
         }
