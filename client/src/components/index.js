@@ -14,6 +14,7 @@ import NavigationBar from './NavigationBar'
 import WindowDialog from './WindowDialog'
 import ForgotPasswordScreen from './ForgotPasswordScreen'
 import ResetPasswordScreen from './ResetPasswordScreen'
+import GuestModal from './GuestModal'
 
 export{
     AppBanner,
@@ -32,4 +33,5 @@ export{
     WindowDialog,
     ForgotPasswordScreen,
     ResetPasswordScreen,
+    GuestModal,
 }

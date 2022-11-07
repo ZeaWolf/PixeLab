@@ -15,6 +15,7 @@ export const AuthActionType = {
     CHANGE_SCREEN: "CHANGE_SCREEN",
     FORGET_PASSWORD: "FORGET_PASSWORD",
     CONTINUE_AS_GUEST: "CONTINUE_AS_GUEST",
+    GUEST_MODAL: "GUEST_MODAL",
 }
 
 function AuthContextProvider(props) {
@@ -24,6 +25,7 @@ function AuthContextProvider(props) {
         error: false,
         message: "",
         currentScreen: "welcomeScreen",
+        guestModal: false,
     });
     const history = useHistory();
 
@@ -110,6 +112,17 @@ function AuthContextProvider(props) {
                     error: auth.error,
                     message: auth.message,
                     currentScreen: payload.screen,
+                })
+            }
+
+            case AuthActionType.GUEST_MODAL:{
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
+                    error: auth.error,
+                    message: auth.message,
+                    currentScreen: auth.currentScreen,
+                    guestModal: payload.guestModal
                 })
             }
 
@@ -262,6 +275,25 @@ function AuthContextProvider(props) {
         })
     }
 
+    auth.OpenGuestModal = function() {
+        console.log("Nihao!!");
+        authReducer({
+            type: AuthActionType.GUEST_MODAL,
+            payload: {
+                guestModal: true,
+            }
+        })
+        console.log("Nihao!! "+ auth.guestModal);
+    } 
+
+    auth.closeGuestModal = function() {
+        authReducer({
+            type: AuthActionType.GUEST_MODAL,
+            payload: {
+                guestModal: false,
+            }
+        })
+    }
 
     return (
         <AuthContext.Provider value={{
