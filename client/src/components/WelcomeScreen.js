@@ -2,9 +2,9 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-//import { GlobalStoreContext } from '../store';
+import { GlobalStoreContext } from '../store';
 import { useContext, useState } from 'react'
-//import AuthContext from '../auth'
+import AuthContext from '../auth'
 
 const WelcomeButton = styled(Button)({
     background: 'linear-gradient(to bottom left, #DDB60A, #FFFEC3)',
@@ -18,11 +18,11 @@ const WelcomeButton = styled(Button)({
 
 
 export default function WelcomeScreen() {
-    //const { auth } = useContext(AuthContext);
-    //const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
 
     function handleGuest(){
-        //auth.continueAsGuest(store);
+        auth.continueAsGuest("community");
     } 
 
     const WelcomeButton = styled(Button)({

@@ -14,6 +14,7 @@ export const AuthActionType = {
     LOGOUT_USER: "LOGOUT_USER",
     CHANGE_SCREEN: "CHANGE_SCREEN",
     FORGET_PASSWORD: "FORGET_PASSWORD",
+    CONTINUE_AS_GUEST: "CONTINUE_AS_GUEST",
 }
 
 function AuthContextProvider(props) {
@@ -96,6 +97,16 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: auth.user,
                     loggedIn: auth.loggedIn,
+                    error: auth.error,
+                    message: auth.message,
+                    currentScreen: payload.screen,
+                })
+            }
+
+            case AuthActionType.CONTINUE_AS_GUEST:{
+                return setAuth({
+                    user: null,
+                    loggedIn: false,
                     error: auth.error,
                     message: auth.message,
                     currentScreen: payload.screen,
@@ -241,6 +252,17 @@ function AuthContextProvider(props) {
         }
 
     }
+
+    auth.continueAsGuest = async function(screen){
+        authReducer({
+            type: AuthActionType.CONTINUE_AS_GUEST,
+            payload:{
+                screen: screen,
+            }
+        })
+    }
+
+
     return (
         <AuthContext.Provider value={{
             auth
