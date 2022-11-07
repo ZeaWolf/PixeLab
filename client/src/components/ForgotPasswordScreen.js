@@ -29,7 +29,7 @@ export default function ForgotPasswordScreen() {
 
     return (
             <Container component="main" maxWidth="xs" >
-                {/* <ErrorModal /> */}
+                <ErrorModal />
                 <CssBaseline />
                 <Box
                     sx={{

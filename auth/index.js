@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 const {isValidObjectId} = require("mongoose")
 const PasswordRest = require("../models/password-reset-model")
+const User = require("../models/user-model")
 
 
 function authManager(){
@@ -36,17 +37,15 @@ function authManager(){
         try{
             const{token, id} = req.query;
             if(!token || !id) return res.status(400).json({ errorMessage: "Invalid request!"});
-            
             if(!isValidObjectId(id)) return res.status(400).json({ errorMessage: "Invalid request!"});
-            
             const user = await User.findById(id);
             if(!user) return res.status(400).json({ errorMessage: "Invalid request!"});
     
-            const resetToken = await PasswordRest.findOne({userId: user._id});
-            if(!resetToken) return res.status(400).json({ errorMessage: "Invalid request!"});
+            const reset = await PasswordRest.findOne({userId: user._id});
+            if(!reset) return res.status(400).json({ errorMessage: "Invalid request!"});
             
-            const isValid = await resetToken.compareToken(token)
-            if(!isValid) return res.status(400).json({ errorMessage: "Invalid request!"});
+            
+            if(!(reset.resetToken === token)) return res.status(400).json({ errorMessage: "Invalid request!"});
     
             req.userId = user._id;
             next();
