@@ -216,7 +216,7 @@ forgotPassword = async(req, res) => {
         
         if(savedToken){
             mailTransport.sendMail({
-                from: "PixeLab",
+                from: "sbupixelab@outlook.com",
                 to: email,
                 subject: "PixeLab Password Reset Link",
                 text: `Please use the following link to reset your password: https://sbucsepixelab.herokuapp.com/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
@@ -254,7 +254,7 @@ resetPassword = async(req, res) => {
 
         const savedUser = await user.save();
 
-        //await PasswordReset.deleteOne({userId: user._id});
+        await PasswordReset.deleteOne({userId: user._id});
 
         return res.status(200).json({success: true, message: "Password Reset Successfully!"});
     }catch(err){
