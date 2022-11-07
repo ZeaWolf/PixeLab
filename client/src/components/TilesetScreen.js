@@ -56,7 +56,7 @@ export default function TilesetScreen() {
         setCanvas(lc);
     }
 
-    const onSave = event => {
+    const onSave = async event => {
         if (!canvas){
             // console.log("Disappear")
             return;
@@ -67,23 +67,25 @@ export default function TilesetScreen() {
             const imgData = img.toDataURL();
             setImage(imgData);
             console.log("URL: " + typeof imgData);
-            store.saveTilesetSpace(store.currentTilesetId, imgData);
+            await store.saveTilesetSpace(store.currentTilesetId, imgData);
         }
         catch(err){
             console.log(err);
         }
     }
 
-    const loadingImage = (event) => {
+    const loadingImage = async (event) => {
         if(!canvas) return;
         // async function loadImage(){
-            let uploadedImage = store.loadTilesetResourceImage(store.currentTilesetId);
+            let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
                 const img = new Image();
                 console.log("result: " + uploadedImage);
                 console.log(uploadedImage);
-                // img.src = JSON.stringify(uploadedImage);
-                img.src = image; // comment this when works
+                img.src = uploadedImage;
+                console.log(img.src);
+                // img.src = image; // comment this when works
+                // console.log(typeof image);
                 let shape = LC.createShape("Image", { x: 40, y: 40, image: img, scale: 1 });
                 canvas.saveShape(shape);
             }
