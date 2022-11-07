@@ -11,7 +11,7 @@ export default function HomeTilesetCard(props) {
   const { ImgNamePair } = props;
 
   return (
-    <Card className="home-tileset-card">
+    <Card className="home-tileset-card" style={{background:"linear-gradient(to bottom, #64cdfa 5%, #f6f5dd)"}}>
       <CardActionArea>
         <CardMedia
           component="img"
