@@ -199,8 +199,8 @@ function GlobalStoreContextProvider(props) {
             );
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            // history.push("/tileset-editor");//////
-            store.loadTilesets();
+            history.push("/home");//////
+            // store.loadTilesets();
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
