@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import AuthContext from '../auth'
+import { GlobalStoreContext } from '../store';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,8 +16,8 @@ import { Link } from 'react-router-dom'
 
 
 export default function NavigationBar() {
-    // const { auth } = useContext(AuthContext);
-    // const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
 
     return (
         <Box className= "navigationbar" alignItems="center" sx={{ left: '0%', flexDirection: 'column' }}>
@@ -27,19 +28,19 @@ export default function NavigationBar() {
                 </IconButton>
             </Box>
             <Box alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton component={Link} to="/home" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+                <IconButton component={Link} to={auth.loggedIn ? "/home" : "/register"} sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <HomeIcon/>
                     <Typography>Home</Typography>
                 </IconButton>
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton component={Link} to="/map" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+                <IconButton component={Link} to={auth.loggedIn ? "/map" : "/register"} sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <MapIcon/>
                     <Typography>Map</Typography>
                 </IconButton>
             </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
-                <IconButton component={Link} to="/tileset-editor" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+                <IconButton component={Link} to={auth.loggedIn ? "/tileset-editor" : "/register"} sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <FormatPaintIcon/>
                     <Typography>Tileset</Typography>
                 </IconButton>
