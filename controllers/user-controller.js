@@ -169,59 +169,59 @@ forgotPassword = async(req, res) => {
         if(!email){
             return res
                 .status(400)
-                .json({ errorMessage: "Please provide a vailid email!"});
+                .json({ errorMessage: "Please provide a valid email!"});
         }
 
         const user = await User.findOne({email: email});
         if(!user){
             return res
                 .status(400)
-                .json({ errorMessage: "Please provide a vailid email!"});
+                .json({ errorMessage: "Please provide a valid email!"});
         }
 
         const token = await PasswordReset.findOne({userId: user._id});
         if(token){
             return res
                 .status(400)
-                .json({ errorMessage: "Only after one hour you can request for another token!"});
+                .json({ errorMessage: "Only after one hour you can request for another password reset"});
         }
 
         const randToken = crypto.randomBytes(30).toString("hex");
         if(!randToken){
             return res
                 .status(400)
-                .json({ errorMessage: "random byte error!"});
+                .json({ errorMessage: "Random byte error!"});
         }
         const resetToken = new PasswordReset({userId: user._id, resetToken: randToken})
         if(!randToken){
             return res
                 .status(400)
-                .json({ errorMessage: "token error!"});
+                .json({ errorMessage: "Token error!"});
         }
         const savedToken = await resetToken.save();
 
         const mailTransport = nodemailer.createTransport({
-            service: "gmail",
+            service: "outlook",
             auth: {
-                user: "sbupixelab@gmail.com",
+                user: "sbupixelab@outlook.com",
                 pass: "cse416PixeLab",
             }
         });
         
         if(savedToken){
-            // mailTransport.sendMail({
-            //     from: "sbupixelab@gmail.com",
-            //     to: email,
-            //     subject: "Password Reset Successfully",
-            //     text: `https://sbupixelab.herokuapp.com/reset-password?token=${resetToken}&id=${user._id}`,
-            // });
-            return res.status(200).json({success: true, 
-                reset: {
-                    userId:     savedToken.userId,
-                    resetToken: savedToken.resetToken,
-                    createAt:   savedToken.createAt,
-                    message: `https://sbupixelab.herokuapp.com/api/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
-                }
+            mailTransport.sendMail({
+                from: "sbupixelab@outlook.com",
+                to: email,
+                subject: "Password Reset Successfully",
+                text: `http://sbucsepixelab.herokuapp.com/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
+            });
+            return res.status(200).json({success: true
+                // reset: {
+                //     userId:     savedToken.userId,
+                //     resetToken: savedToken.resetToken,
+                //     createAt:   savedToken.createAt,
+                //     message: `https://sbupixelab.herokuapp.com/api/reset-password?token=${savedToken.resetToken}&id=${user._id}`,
+                // }
             }).send();
         }
 

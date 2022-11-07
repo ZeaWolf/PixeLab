@@ -23,15 +23,15 @@ export default function ResetPasswordScreen() {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         // ** Need to implement registerUser to the auth
-        // auth.registerUser({
-        //     password: formData.get('password'),
-        //     passwordVerify: formData.get('passwordVerify')
-        // });
+        auth.resetPassword({
+            password: formData.get('password'),
+            passwordVerify: formData.get('passwordVerify')
+        });
     };
 
     return (
             <Container component="main" maxWidth="xs" >
-                {/* <ErrorModal /> */}
+                <ErrorModal />
                 <CssBaseline />
                 <Box
                     sx={{

@@ -1,7 +1,7 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 const api = axios.create({
-    baseURL: '/api',
+    baseURL: 'http://localhost:4000/api',
 })
 
 // User part
@@ -10,7 +10,7 @@ export const registerUser = (payload) => api.post(`/register/`, payload)
 export const loginUser = (payload) => api.post(`/login/`, payload)
 export const logoutUser = () => api.get(`/logout/`)
 export const forgotPassword = (payload) => api.post(`/forgot-password/`, payload)
-//export const resetPassword = () => api.put(`/reset-password/`)
+export const resetPassword = (payload, query) => api.put(`/reset-password`, payload, {params:query})
 // export const forgetPassword
 // export const updateLists
 
@@ -52,6 +52,7 @@ const apis = {
     loginUser,
     logoutUser,
     forgotPassword,
+    resetPassword,
 
     createResource,
     updateResource,
