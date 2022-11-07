@@ -12,6 +12,7 @@ import NavigationBar from './NavigationBar';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
+import GuestModal from './GuestModal';
 
 export default function CommunityScreen() {
 	
@@ -19,6 +20,7 @@ export default function CommunityScreen() {
 
         <Box className="full-screen"> 
         <NavigationBar/>
+        <GuestModal/>
         <Grid container spacing={0} rowSpacing={1} id="community-screen">
 
             <Grid item xs={3}>
