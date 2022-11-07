@@ -49,7 +49,7 @@ export default function HomeScreen() {
                     key={pair._id}
                     tilesetList={pair}
                     selected={false}
-                    ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}
+                    ImgNamePair={{img:"/defaultpic.png", name:"Untitled"}}
                 />
             ))
         }
@@ -74,14 +74,14 @@ export default function HomeScreen() {
                         </Grid>
                         <Grid item xs={6} md={10}>
                         <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                            <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
+                            {/* <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
                             <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
                             <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
                             <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
                             <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
                             <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
                             <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
+                            <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/> */}
                         </List>
                         </Grid>
                         </Grid>
