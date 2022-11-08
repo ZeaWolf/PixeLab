@@ -21,7 +21,6 @@ export default function ForgotPasswordScreen() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        // ** Need to implement registerUser to the auth
         auth.forgotPassword({
             email: formData.get('email'),
         });

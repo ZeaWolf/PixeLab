@@ -22,7 +22,6 @@ export default function ResetPasswordScreen() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        // ** Need to implement registerUser to the auth
         auth.resetPassword({
             password: formData.get('password'),
             passwordVerify: formData.get('passwordVerify')

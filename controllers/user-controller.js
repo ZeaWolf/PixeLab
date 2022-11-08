@@ -209,8 +209,8 @@ forgotPassword = async(req, res) => {
         const mailTransport = nodemailer.createTransport({
             service: "outlook",
             auth: {
-                user: "sbupixelab@outlook.com",
-                pass: "cse416PixeLab",
+                user: process.env.EMAILUSER,
+                pass: process.env.EMAILPASS,
             }
         });
         

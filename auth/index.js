@@ -40,13 +40,9 @@ function authManager(){
             if(!isValidObjectId(id)) return res.status(400).json({ errorMessage: "Invalid request!"});
             const user = await User.findById(id);
             if(!user) return res.status(400).json({ errorMessage: "Invalid request!"});
-    
             const reset = await PasswordRest.findOne({userId: user._id});
             if(!reset) return res.status(400).json({ errorMessage: "Invalid request!"});
-            
-            
             if(!(reset.resetToken === token)) return res.status(400).json({ errorMessage: "Invalid request!"});
-    
             req.userId = user._id;
             next();
         }catch(err){

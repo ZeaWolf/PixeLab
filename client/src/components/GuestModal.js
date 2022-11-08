@@ -36,21 +36,24 @@ function GuestModal(){
             aria-describedby="modal-modal-description"
             style={{display:'flex',alignItems:'center',justifyContent:'center'}}
         >
-            <Box sx={style}>
-                <Alert severity="warning">Please login to see home/map/tileset pages</Alert>
-                <Button
-                    href = "/login/"
-                >
-                    Confirm
-                </Button>
+            <Typography align="center">
+                <Box sx={style}>
+                    <Alert variant="filled" severity="warning">Please login to see home/map/tileset pages</Alert>
+                    <Button
+                        variant="contained"
+                        href = "/login/"
+                    >
+                        Confirm
+                    </Button>
 
-                <Button
-                    onClick={handleClick}
-                >
-                    Cancel
-                </Button>
-            </Box>
-
+                    <Button
+                        variant="contained"
+                        onClick={handleClick}
+                    >
+                        Cancel
+                    </Button>
+                </Box>
+            </Typography>
         </Modal>
     );
 }
