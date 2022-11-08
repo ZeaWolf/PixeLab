@@ -8,13 +8,13 @@ import HomeMapCard from './HomeMapCard';
 import HomeTilesetCard from './HomeTilesetCard';
 //import DeletionModal from "./DeletionModal"
 import NavigationBar from "./NavigationBar"
+import AuthContext from '../auth'
 //import Statusbar from "./Statusbar"
-//import AuthContext from '../auth'
 import LC from "literallycanvas";
 import "../literallycanvas.css";
 
 export default function TilesetScreen() {
-    //const { auth } = useContext(AuthContext);
+    const { auth } = useContext(AuthContext);
     //const { store } = useContext(GlobalStoreContext);
 
     //const lc = LC.init(document.getElementById("tileset-screen"), {})
@@ -106,7 +106,15 @@ export default function TilesetScreen() {
         // }
     }
 
-    return (
+    let tilesetPage = 
+        <div className='full-screen'>
+            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
+                401: Unauthorized Access
+            </Typography>
+        </div>
+
+    if(auth.loggedIn){
+        tilesetPage = 
         <div className='full-screen'>
             <NavigationBar/>
             <div className='right-screen'>
@@ -126,5 +134,30 @@ export default function TilesetScreen() {
                 </div>
             </div>
         </div>
+    }
+
+    return (
+        <div className='outer-screen'>
+            {tilesetPage}
+        </div>
+        // <div className='full-screen'>
+        //     <NavigationBar/>
+        //     <div className='right-screen'>
+        //         <div id="tileset-screen" className='literally-screen'>
+        //             <Box>
+        //                 <Button>New</Button>
+        //                 <Button onClick={onSave}>Save</Button>
+        //                 <Button onClick={loadingImage}>Import</Button>
+        //                 <Button>Export</Button>
+        //                 <Button>Publish</Button>
+        //                 <Button>Share</Button>
+        //             </Box>
+        //                 <LC.LiterallyCanvasReactComponent
+        //                 onInit={onInit}
+        //                 imageURLPrefix="/literallycanvasimg"
+        //                 />
+        //         </div>
+        //     </div>
+        // </div>
     )
 }
