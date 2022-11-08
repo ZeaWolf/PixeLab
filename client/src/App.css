@@ -45,6 +45,16 @@
   background: linear-gradient(to bottom,#64cdfa 40%, #f6f5dd);
 }
 
+.outer-screen {   /* shugui: can be apply for the community */
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  color: white;
+  float: top;
+}
+
+
 .full-screen {   /* shugui: can be apply for the community */
   display: flex;
   position: relative;
