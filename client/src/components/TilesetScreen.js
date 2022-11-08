@@ -54,6 +54,11 @@ export default function TilesetScreen() {
     const onInit = lc => {
         // console.log(lc);
         setCanvas(lc);
+
+        // let uploadedImage = store.loadTilesetResourceImage(store.currentTilesetId);
+        // if(uploadedImage != null){
+        //     loadingImage();
+        // }
     }
 
     const onSave = async event => {
@@ -78,9 +83,10 @@ export default function TilesetScreen() {
         if(!canvas) return;
         // async function loadImage(){
             let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
+            console.log("result: " + store.currentTilesetId);
+            console.log("result: " + uploadedImage);
             if(uploadedImage != null){
                 const img = new Image();
-                console.log("result: " + uploadedImage);
                 console.log(uploadedImage);
                 img.src = uploadedImage;
                 console.log(img.src);
