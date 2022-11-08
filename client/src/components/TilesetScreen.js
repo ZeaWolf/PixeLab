@@ -99,12 +99,6 @@ export default function TilesetScreen() {
             // }
         // }
     }
-    
-    const logging = event => {
-        //event.preventDefault();
-        console.log("hello");
-        console.log(canvas);
-    }
 
     return (
         <div className='full-screen'>
@@ -112,7 +106,7 @@ export default function TilesetScreen() {
             <div className='right-screen'>
                 <div id="tileset-screen" className='literally-screen'>
                     <Box>
-                        <Button onClick={logging}>New</Button>
+                        <Button>New</Button>
                         <Button onClick={onSave}>Save</Button>
                         <Button onClick={loadingImage}>Import</Button>
                         <Button>Export</Button>
