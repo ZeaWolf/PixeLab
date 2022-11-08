@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import AuthContext from '../auth';
 import Typography from '@mui/material/Typography';
-
+import Stack from '@mui/material/Stack';
 
 function GuestModal(){
     const { auth } = useContext(AuthContext);
@@ -39,19 +39,24 @@ function GuestModal(){
             <Typography align="center">
                 <Box sx={style}>
                     <Alert variant="filled" severity="warning">Please login to see home/map/tileset pages</Alert>
-                    <Button
-                        variant="contained"
-                        href = "/login/"
-                    >
-                        Confirm
-                    </Button>
+                    <Typography id="empty-line-guest-modal" mt={2}></Typography>
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                    <Stack spacing={6} direction="row">
+                        <Button
+                            variant="contained"
+                            href = "/login/"
+                        >
+                            Login
+                        </Button>
 
-                    <Button
-                        variant="contained"
-                        onClick={handleClick}
-                    >
-                        Cancel
-                    </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleClick}
+                        >
+                            Cancel
+                        </Button>
+                    </Stack>
+                    </Box>
                 </Box>
             </Typography>
         </Modal>
