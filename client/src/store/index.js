@@ -33,6 +33,7 @@ export const GlobalStoreActionType = {
     // LOAD_COMMUNITY_LISTS:"LOAD_COMMUNITY_LISTS"
     LOAD_TILESETS: "LOAD_TILESETS",
     LOADING_A_TILESET: "LOADING_A_TILESET",
+    DELETING_A_TILESET: "DELETING_A_TILESET"
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -47,6 +48,7 @@ function GlobalStoreContextProvider(props) {
         tilesetList: [],
         newTilesetCounter: 0,
         currentTilesetId: null,
+        TilesetIdForDelete: null,
         // maps: []
     });
     const history = useHistory();
@@ -87,6 +89,14 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     newTilesetCounter: store.newTilesetCounter,
                     currentTilesetId: payload,
+                })
+            }
+            case GlobalStoreActionType.DELETING_A_TILESET: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    newTilesetCounter: store.newTilesetCounter,
+                    currentTilesetId: store.currentTilesetId,
+                    TilesetIdForDelete: payload,
                 })
             }
             // case GlobalStoreActionType.LOAD_MAPS: {
@@ -206,6 +216,24 @@ function GlobalStoreContextProvider(props) {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
+
+    store.DeleteTilesetFile = async function(){
+        let response = await api.deleteTileset(store.TilesetIdForDelete);
+        if (response.data.success) {
+            storeReducer({
+                type: GlobalStoreActionType.DELETING_A_TILESET,
+                payload: null,
+            })
+            store.loadTilesets();
+        }
+    };
+
+    store.MarkDeleteTileset = function (id){
+        storeReducer({
+            type: GlobalStoreActionType.DELETING_A_TILESET,
+            payload: id,
+        })
+    };
 
     return (
         <GlobalStoreContext.Provider value={{

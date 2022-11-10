@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { GlobalStoreContext } from '../store';
 import { useHistory } from 'react-router-dom'
+import DeleteModal from './DeleteModal';
 
 export default function HomeTilesetCard(props) {
   const { ImgNamePair} = props;
@@ -19,6 +20,11 @@ export default function HomeTilesetCard(props) {
     store.loadTilesetPage(ImgNamePair.tilesetID);
     // push to the tileset-editor screen by router
     history.push("/tileset-editor");
+  }
+
+  const handleDeleteTileset = async event => {
+    store.MarkDeleteTileset(ImgNamePair.tilesetID);
+    console.log("shugui是gay")
   }
 
   return (
@@ -35,7 +41,7 @@ export default function HomeTilesetCard(props) {
           <Box style={{ display: 'flex', flexDirection: 'row'}}>
           <Typography sx={{ flexGrow: 1 }}>{ImgNamePair.name}</Typography>
           <IconButton aria-label="rename"><EditIcon /></IconButton>
-          <IconButton aria-label="delete"><DeleteIcon /></IconButton>
+          <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteTileset}/></IconButton>
           </Box>
         </CardContent>
       </CardActionArea>

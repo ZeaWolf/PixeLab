@@ -11,6 +11,7 @@ import { styled } from '@mui/material/styles';
 import NavigationBar from "./NavigationBar"
 //import Statusbar from "./Statusbar"
 import AuthContext from '../auth'
+import DeleteModal from './DeleteModal';
 
 export default function HomeScreen() {
     const { auth } = useContext(AuthContext);
@@ -66,6 +67,7 @@ export default function HomeScreen() {
     homePage = 
         <div className='full-screen'>
             <NavigationBar/>
+            <DeleteModal/>
             <div className='right-screen'>
                 <div id="home-screen">
 
