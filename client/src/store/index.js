@@ -33,7 +33,7 @@ export const GlobalStoreActionType = {
     // LOAD_COMMUNITY_LISTS:"LOAD_COMMUNITY_LISTS"
     LOAD_TILESETS: "LOAD_TILESETS",
     LOADING_A_TILESET: "LOADING_A_TILESET",
-    DELETING_A_TILESET: "DELETING_A_TILESET"
+    DELETING_A_TILESET: "DELETING_A_TILESET",
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -99,12 +99,6 @@ function GlobalStoreContextProvider(props) {
                     TilesetIdForDelete: payload,
                 })
             }
-            // case GlobalStoreActionType.LOAD_MAPS: {
-            //     return setStore({
-            //         tilesets: payload.tilesets,
-            //         // maps: null
-            //     });
-            // }
 
             default:
                 return store;
@@ -161,6 +155,24 @@ function GlobalStoreContextProvider(props) {
             console.log("err:"+err);
         }
     }
+
+    store.RenameTileset = async function (id,name){
+        try{
+            let response = await api.getTilesetById(id);
+            if(response.data.success){
+                let tileset = response.data.data;
+                tileset.Name = name;
+                // async function updateTileset(id, tileset){
+                response = await api.updateTileset(id, tileset);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+                store.loadTilesets();
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    };
 
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
