@@ -19,7 +19,6 @@ export default function HomeTilesetCard(props) {
   const handleOpenTileset = event => {
     store.loadTilesetPage(ImgNamePair.tilesetID);
     // push to the tileset-editor screen by router
-    history.push("/tileset-editor");
   }
 
   const handleDeleteTileset = async event => {

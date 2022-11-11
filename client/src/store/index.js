@@ -124,6 +124,7 @@ function GlobalStoreContextProvider(props) {
                 })
             }
             console.log(response.data);
+            history.push("/tileset-editor");
         }catch(err){
             console.log("err:"+err);
         }

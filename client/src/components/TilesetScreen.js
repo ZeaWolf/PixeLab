@@ -15,12 +15,6 @@ import "../literallycanvas.css";
 
 export default function TilesetScreen() {
     const { auth } = useContext(AuthContext);
-    //const { store } = useContext(GlobalStoreContext);
-
-    //const lc = LC.init(document.getElementById("tileset-screen"), {})
-
-
-
     // return (
     //     <div className='full-screen'>
     //         <NavigationBar/>
@@ -44,16 +38,28 @@ export default function TilesetScreen() {
 
     /* Above: Chengzhi's initial tileset screen */
 
-    // let imageBounds =  {x: 0, y:0, width: 200, height: 200}
+    let imageBounds =  {x: 0, y:0, width: 384, height: 384}
+    let backgroundImg = new Image();
+    backgroundImg.src = '../../public/8x8grid.png'
+
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
     const [src, setSrc] = useState("");
     const { store } = useContext(GlobalStoreContext);
 
 
-    const onInit = lc => {
-        // console.log(lc);
+    const onInit = async lc => {
         setCanvas(lc);
+        let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
+            if(uploadedImage != null){
+                const img = new Image();
+                console.log(uploadedImage);
+                img.src = uploadedImage;
+                // img.src = image; // comment this when works
+                // console.log(typeof image);
+                let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
+                lc.saveShape(shape);
+        }
 
         // let uploadedImage = store.loadTilesetResourceImage(store.currentTilesetId);
         // if(uploadedImage != null){
@@ -63,10 +69,9 @@ export default function TilesetScreen() {
 
     const onSave = async event => {
         if (!canvas){
-            // console.log("Disappear")
             return;
         }
-        const img = canvas.getImage();
+        const img = canvas.getImage({rect: imageBounds});
         if(!img) return;
         try{
             const imgData = img.toDataURL();
@@ -79,32 +84,23 @@ export default function TilesetScreen() {
         }
     }
 
-    const loadingImage = async (event) => {
-        if(!canvas) return;
-        // async function loadImage(){
-            let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
-            console.log("result: " + store.currentTilesetId);
-            console.log("result: " + uploadedImage);
-            if(uploadedImage != null){
-                const img = new Image();
-                console.log(uploadedImage);
-                img.src = uploadedImage;
-                console.log(img.src);
-                // img.src = image; // comment this when works
-                // console.log(typeof image);
-                let shape = LC.createShape("Image", { x: 40, y: 40, image: img, scale: 1 });
-                canvas.saveShape(shape);
-            }
-        // }
-            // const img =new Image();
-            // img.src = image;
-            // let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
-            // canvas.saveShape(shape);
-            // if(store.currentTilesetId){
-            //     console.log("currentTilesetID from store: " + store.currentTilesetId);
-            // }
-        // }
-    }
+    // const loadingImage = async (event) => {
+    //     if(!canvas) return;
+    //     // async function loadImage(){
+    //         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
+    //         console.log("result: " + store.currentTilesetId);
+    //         console.log("result: " + uploadedImage);
+    //         if(uploadedImage != null){
+    //             const img = new Image();
+    //             console.log(uploadedImage);
+    //             img.src = uploadedImage;
+    //             console.log(img.src);
+    //             // img.src = image; // comment this when works
+    //             // console.log(typeof image);
+    //             let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
+    //             canvas.saveShape(shape);
+    //         }
+    // }
 
     let tilesetPage = 
         <div className='full-screen'>
@@ -122,7 +118,7 @@ export default function TilesetScreen() {
                     <Box>
                         <Button>New</Button>
                         <Button onClick={onSave}>Save</Button>
-                        <Button onClick={loadingImage}>Import</Button>
+                        <Button>Import</Button>
                         <Button>Export</Button>
                         <Button>Publish</Button>
                         <Button>Share</Button>
