@@ -50,7 +50,7 @@ export default function HomeScreen() {
                     key={pair._id}
                     tilesetList={pair}
                     selected={false}
-                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, tilesetID:pair._id}}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, tilesetID:pair._id, src:pair.Source}}
                 />
             ))
         }
