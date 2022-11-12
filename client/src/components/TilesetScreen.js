@@ -48,7 +48,7 @@ export default function TilesetScreen() {
     const { store } = useContext(GlobalStoreContext);
 
 
-    const onInit = async lc => {
+    const onInit = async (lc) => {
         setCanvas(lc);
         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
@@ -67,7 +67,7 @@ export default function TilesetScreen() {
         // }
     }
 
-    const onSave = async event => {
+    const onSave = async (event) => {
         if (!canvas){
             return;
         }
@@ -76,12 +76,48 @@ export default function TilesetScreen() {
         try{
             const imgData = img.toDataURL();
             setImage(imgData);
-            console.log("URL: " + typeof imgData);
+            //console.log("URL: " + typeof imgData);
             await store.saveTilesetSpace(store.currentTilesetId, imgData);
         }
         catch(err){
             console.log(err);
         }
+    }
+
+    const onImport = async (event) =>{
+        const reader = new FileReader();
+        reader.addEventListener("load", ()=> {
+            var importImage = "";
+            importImage = reader.result;
+            const img = new Image();
+            img.src = importImage;
+            let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
+            canvas.saveShape(shape);
+        })
+        if(event.target.files && event.target.files[0]){
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        //fr.readAsDataURL(fileEl.files[0]);
+        //fr.addEvent
+    }
+    const onExport = async (event) =>{
+        event.preventDefault();
+        if (!canvas){
+            return;
+        }
+        // var data = canvas.getImage({rect: imageBounds}).toDataURL();
+        // var image = new Image();
+        // image.src = data;
+
+        // Get name
+        const link = document.createElement('a');
+        link.download = `${store.currentTilesetName}.png`;
+        link.href = canvas.getImage({rect: imageBounds}).toDataURL();
+        link.click();
+        //link.delete;
+        //const w = window.open("");
+        //w.document.write(image.outerHTML);
+        return;
     }
 
     // const loadingImage = async (event) => {
@@ -118,8 +154,8 @@ export default function TilesetScreen() {
                     <Box>
                         <Button>New</Button>
                         <Button onClick={onSave}>Save</Button>
-                        <Button>Import</Button>
-                        <Button>Export</Button>
+                        <Button onClick={onImport} component="label">Import <input type="file"hidden onChange={onImport}/></Button>
+                        <Button onClick={onExport}>Export</Button>
                         <Button>Publish</Button>
                         <Button>Share</Button>
                     </Box>
