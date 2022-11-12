@@ -1,5 +1,5 @@
 import { GlobalStoreContext } from '../store';
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import AuthContext from '../auth'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -15,6 +15,11 @@ import TextField from '@mui/material/TextField';
 import GuestModal from './GuestModal';
 
 export default function CommunityScreen() {
+    // const { auth } = useContext(AuthContext);
+    // const { store } = useContext(GlobalStoreContext);
+    // useEffect(() => {
+    //     store.loadResources();
+    // }, []);
 	
 	return (
 

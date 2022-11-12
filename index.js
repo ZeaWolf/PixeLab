@@ -16,7 +16,10 @@ app.use(cors({
     origin: ["http://localhost:3000", "https://pixelab-sbu.herokuapp.com"],
     credentials: true
 }))
-app.use(express.json())
+// From stackover flow, what is does is to exceed the payload size limit
+app.use(express.json({limit: '200mb'}));
+app.use(express.urlencoded({limit: '200mb', extended: true, parameterLimit:5000000}));
+
 app.use(cookieParser())
 
 

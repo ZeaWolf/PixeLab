@@ -16,7 +16,7 @@ export default function TilesetScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
 
-    let imageBounds =  {x: 0, y:0, width: 288, height: 288}
+    let imageBounds =  {x: 0, y:0, width: 384, height: 384}
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
     const backgroundImg = new Image();
@@ -126,9 +126,9 @@ export default function TilesetScreen() {
         imageURLPrefix: "/literallycanvasimg",
         backgroundShapes: [
             LC.createShape("Image", { x: 0, y: 0, image: backgroundImg, scale: 0.16 }),
-            LC.createShape("Image", { x: 32, y: 0, image: backgroundImg, scale: 0.16 }),
-            LC.createShape("Image", { x: 0, y: 32, image: backgroundImg, scale: 0.16 }),
-            LC.createShape("Image", { x: 32, y: 32, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 128, y: 0, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 0, y: 128, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 128, y: 128, image: backgroundImg, scale: 0.16 }),
         ]
     }
 
