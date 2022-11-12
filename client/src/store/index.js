@@ -84,19 +84,22 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
                 })
             }
             case GlobalStoreActionType.LOADING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
                     newTilesetCounter: store.newTilesetCounter,
-                    currentTilesetId: payload,
+                    currentTilesetId: payload.id,
+                    currentTilesetName: payload.name,
                 })
             }
             case GlobalStoreActionType.DELETING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: payload,
                     resourceList: store.resourceList,
                 })

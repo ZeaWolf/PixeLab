@@ -18,8 +18,9 @@ export default function HomeTilesetCard(props) {
   const [editActive, setEditActive] = useState(false);
   const [text, setText] = useState("");
 
-  const handleOpenTileset = event => {
-    store.loadTilesetPage(ImgNamePair.tilesetID);
+  const handleOpenTileset = async event => {
+    console.log("HomeTilesetCardID: " + ImgNamePair.tilesetID);
+    await store.loadTilesetPage(ImgNamePair.tilesetID);
     // push to the tileset-editor screen by router
   }
 

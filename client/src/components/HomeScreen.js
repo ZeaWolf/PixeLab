@@ -70,58 +70,61 @@ export default function HomeScreen() {
             <DeleteModal/>
             <div className='right-screen'>
                 <div id="home-screen">
-
-                    <Box sx={{ backgroundColor: 'warning.light'}}>
-                    <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-                        Maps
-                    </Typography>
+                    {/* upper half screen 50% */}
+                    <Box className='upper-half-screen'>
+                        <Box sx={{ backgroundColor: 'warning.light'}}>
+                            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
+                                Maps
+                            </Typography>
+                        </Box>
+                        <Box>
+                            <Grid container spacing={2}>
+                                <Grid item xs={4} md={2}>
+                                    <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
+                                </Grid>
+                                <Grid item xs={6} md={10}>
+                                    <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+                                        {/* <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
+                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/> */}
+                                    </List>
+                                </Grid>
+                            </Grid>
+                        </Box>
                     </Box>
-                    <Box>
-                        <Grid container spacing={2}>
+                    {/* lower half screen 50% */}
+                    <Box className='upper-half-screen'>
+                        <Box sx={{ backgroundColor: 'warning.light'}}>
+                            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
+                                Tilesets
+                            </Typography>
+                        </Box>
+                        <Box>
+                            <Box>
+                                <Grid container spacing={2}>
 
-                        <Grid item xs={4} md={2}>
-                            <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
-                        </Grid>
-                        <Grid item xs={6} md={10}>
-                        <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                            {/* <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                            <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/> */}
-                        </List>
-                        </Grid>
-                        </Grid>
-                    </Box>
-
-                    <Box sx={{ backgroundColor: 'warning.light'}}>
-                    <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-                        Tilesets
-                    </Typography>
-                    </Box>
-                    <Box>
-                    <Box>
-                        <Grid container spacing={2}>
-
-                        <Grid item xs={4} md={2}>
-                            <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
-                        </Grid>
-                        <Grid item xs={6} md={10}>
-                        {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                            <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
-                            <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
-                        </List> */}
-                        <div id="lists-selector">
-                            {
-                                listCard
-                            }
-                        </div>
-                        </Grid>
-                        </Grid>
-                    </Box>
+                                    <Grid item xs={4} md={2}>
+                                        <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
+                                    </Grid>
+                                    <Grid item xs={6} md={10}>
+                                    {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+                                        <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
+                                        <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
+                                    </List> */}
+                                    <div id="lists-selector">
+                                        {
+                                            listCard
+                                        }
+                                    </div>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        </Box>
                     </Box>
                 </div>
             </div>
@@ -132,65 +135,5 @@ export default function HomeScreen() {
         <div className='outer-screen'>
             {homePage}
         </div>
-        // <div className='full-screen'>
-        //     <NavigationBar/>
-        //     <div className='right-screen'>
-        //         <div id="home-screen">
-
-        //             <Box sx={{ backgroundColor: 'warning.light'}}>
-        //             <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-        //                 Maps
-        //             </Typography>
-        //             </Box>
-        //             <Box>
-        //                 <Grid container spacing={2}>
-
-        //                 <Grid item xs={4} md={2}>
-        //                     <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
-        //                 </Grid>
-        //                 <Grid item xs={6} md={10}>
-        //                 <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-        //                     {/* <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-        //                     <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/> */}
-        //                 </List>
-        //                 </Grid>
-        //                 </Grid>
-        //             </Box>
-
-        //             <Box sx={{ backgroundColor: 'warning.light'}}>
-        //             <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-        //                 Tilesets
-        //             </Typography>
-        //             </Box>
-        //             <Box>
-        //             <Box>
-        //                 <Grid container spacing={2}>
-
-        //                 <Grid item xs={4} md={2}>
-        //                     <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
-        //                 </Grid>
-        //                 <Grid item xs={6} md={10}>
-        //                 {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-        //                     <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
-        //                     <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
-        //                 </List> */}
-        //                 <div id="lists-selector">
-        //                     {
-        //                         listCard
-        //                     }
-        //                 </div>
-        //                 </Grid>
-        //                 </Grid>
-        //             </Box>
-        //             </Box>
-        //         </div>
-        //     </div>
-        // </div>
     )
 }

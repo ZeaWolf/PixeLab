@@ -69,6 +69,12 @@
   width: 93%;
   height: 100%;
 }
+.upper-half-screen{
+  position: relative;
+  width: 100%;
+  height: 50%;
+}
+
 /* inside the right-screen: New file, save file, import export, such buttons */
 .menu-bar {
   position: relative;

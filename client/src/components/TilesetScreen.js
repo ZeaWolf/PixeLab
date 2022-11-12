@@ -14,33 +14,11 @@ import "../literallycanvas.css";
 
 export default function TilesetScreen() {
     const { auth } = useContext(AuthContext);
-    // return (
-    //     <div className='full-screen'>
-    //         <NavigationBar/>
-    //         <div className='right-screen'>
-    //             <div id="tileset-screen">
-    //                 <Box>
-    //                     <Button>New</Button>
-    //                     <Button>Save</Button>
-    //                     <Button>Import</Button>
-    //                     <Button>Export</Button>
-    //                     <Button>Publish</Button>
-    //                     <Button>Share</Button>
-    //                 </Box>
-    //                 <LC.LiterallyCanvasReactComponent
-    //                 imageURLPrefix="/literallycanvasimg"
-    //                 />
-    //             </div>
-    //         </div>
-    //     </div>
-    // )
-
-    /* Above: Chengzhi's initial tileset screen */
+    const { store } = useContext(GlobalStoreContext);
 
     let imageBounds =  {x: 0, y:0, width: 288, height: 288}
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
-    const { store } = useContext(GlobalStoreContext);
     const backgroundImg = new Image();
     backgroundImg.src = '8x8grid.png'
     // backgroundImg is 1600 x 1600
@@ -48,6 +26,8 @@ export default function TilesetScreen() {
 
     const onInits = async (lc) => {
         setCanvas(lc);
+        console.log("Initial ID: " + store.currentTilesetId);
+        console.log(store.currentTilesetId)
         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
                 const img = new Image();
