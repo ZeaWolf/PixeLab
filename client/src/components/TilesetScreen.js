@@ -46,7 +46,7 @@ export default function TilesetScreen() {
     // backgroundImg is 1600 x 1600
 
 
-    const onInit = async (lc) => {
+    const onInits = async (lc) => {
         setCanvas(lc);
         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
