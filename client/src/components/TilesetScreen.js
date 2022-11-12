@@ -94,6 +94,10 @@ export default function TilesetScreen() {
     //         }
     // }
 
+    const publishTileset = async event => {
+        store.publishTileset(store.currentTilesetId);
+    }
+
     let tilesetPage = 
         <div className='full-screen'>
             <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
@@ -123,7 +127,7 @@ export default function TilesetScreen() {
                         <Button onClick={onSave}>Save</Button>
                         <Button>Import</Button>
                         <Button>Export</Button>
-                        <Button>Publish</Button>
+                        <Button onClick={publishTileset}>Publish</Button>
                         <Button>Share</Button>
                     </Box>
                         <LC.LiterallyCanvasReactComponent
