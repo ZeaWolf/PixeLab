@@ -34,6 +34,7 @@ export const GlobalStoreActionType = {
     LOAD_TILESETS: "LOAD_TILESETS",
     LOADING_A_TILESET: "LOADING_A_TILESET",
     DELETING_A_TILESET: "DELETING_A_TILESET",
+    PUBLISH_TILESET: "PUBLISH_TILESET",
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -46,10 +47,10 @@ function GlobalStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
         tilesetList: [],
-        newTilesetCounter: 0,
         currentTilesetId: null,
         currentTilesetName:null,
         TilesetIdForDelete: null,
+        resourceList: [],
         // maps: []
     });
     const history = useHistory();
@@ -67,42 +68,46 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_TILESETS: {
                 return setStore({
                     tilesetList: payload,
-                    newTilesetCounter: store.newTilesetCounter,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    resourceList: store.resourceList,
                 });
             }
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    newTilesetCounter: store.newTilesetCounter + 1,
                     currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
                 })
             }
             case GlobalStoreActionType.DELETE_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    newTilesetCounter: store.newTilesetCounter,
                     currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
                 })
             }
             case GlobalStoreActionType.LOADING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
                     newTilesetCounter: store.newTilesetCounter,
-                    currentTilesetId: payload.id,
-                    currentTilesetName: payload.name,
+                    currentTilesetId: payload,
                 })
             }
             case GlobalStoreActionType.DELETING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    newTilesetCounter: store.newTilesetCounter,
+                    currentTilesetId: store.currentTilesetId,
+                    TilesetIdForDelete: payload,
+                    resourceList: store.resourceList,
+                })
+            }
+            case GlobalStoreActionType.PUBLISH_TILESET: {
+                return setStore({
+                    tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: payload,
+                    resourceList: payload,
                 })
             }
 
@@ -205,7 +210,7 @@ function GlobalStoreContextProvider(props) {
 
 
     store.createNewTileset = async function () {
-        let newTilesetName = "Untitled" + store.newTilesetCounter;
+        let newTilesetName = "Untitled";
         let payload = {
             OwnerEmail:     auth.user.email,
             Name:           newTilesetName,
@@ -234,6 +239,42 @@ function GlobalStoreContextProvider(props) {
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
+        }
+    }
+
+    store.publishTileset = async function(id){
+        const response = await api.getTilesetById(id);
+        if (response.data.success) {
+            let tileset = response.data.data;
+            let payload = {
+                Type:           "tileset",
+                Name:           tileset.Name,
+                Author:         tileset.OwnerEmail,
+                Image:          tileset.Source,
+                Source:         tileset.Source,
+                Like:           0,
+                Downloads:      0,
+                Comments:       [],
+                PublishTime:    Date.now(),
+                Description:    "shugui is gay",
+            };
+            const responseResource = await api.createResource(payload);
+            if (responseResource.data.success) {
+                let resource = responseResource.data.resource;
+                storeReducer({
+                    type: GlobalStoreActionType.PUBLISH_TILESET,
+                    payload: resource
+                });
+                // history.push("/community");
+                // store.loadTilesets();
+            }
+            else {
+                console.log("API FAILED TO publish a tileset");
+            }
+
+        }
+        else {
+            console.log("API FAILED TO get a tileset");
         }
     }
 
