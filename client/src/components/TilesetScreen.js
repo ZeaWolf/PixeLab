@@ -9,7 +9,6 @@ import HomeTilesetCard from './HomeTilesetCard';
 //import DeletionModal from "./DeletionModal"
 import NavigationBar from "./NavigationBar"
 import AuthContext from '../auth'
-//import Statusbar from "./Statusbar"
 import LC from "literallycanvas";
 import "../literallycanvas.css";
 
@@ -38,33 +37,26 @@ export default function TilesetScreen() {
 
     /* Above: Chengzhi's initial tileset screen */
 
-    let imageBounds =  {x: 0, y:0, width: 384, height: 384}
-    let backgroundImg = new Image();
-    backgroundImg.src = '../../public/8x8grid.png'
-
+    let imageBounds =  {x: 0, y:0, width: 288, height: 288}
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
-    const [src, setSrc] = useState("");
     const { store } = useContext(GlobalStoreContext);
+    const backgroundImg = new Image();
+    backgroundImg.src = '8x8grid.png'
+    // backgroundImg is 1600 x 1600
 
 
-    const onInit = async lc => {
+    const onInits = async lc => {
         setCanvas(lc);
         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
                 const img = new Image();
-                console.log(uploadedImage);
                 img.src = uploadedImage;
-                // img.src = image; // comment this when works
-                // console.log(typeof image);
+
+                // load tileset
                 let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
                 lc.saveShape(shape);
         }
-
-        // let uploadedImage = store.loadTilesetResourceImage(store.currentTilesetId);
-        // if(uploadedImage != null){
-        //     loadingImage();
-        // }
     }
 
     const onSave = async event => {
@@ -109,6 +101,17 @@ export default function TilesetScreen() {
             </Typography>
         </div>
 
+    let lcOptions = {
+        onInit: onInits,
+        imageURLPrefix: "/literallycanvasimg",
+        backgroundShapes: [
+            LC.createShape("Image", { x: 0, y: 0, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 32, y: 0, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 0, y: 32, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 32, y: 32, image: backgroundImg, scale: 0.16 }),
+        ]
+    }
+
     if(auth.loggedIn){
         tilesetPage = 
         <div className='full-screen'>
@@ -124,8 +127,9 @@ export default function TilesetScreen() {
                         <Button>Share</Button>
                     </Box>
                         <LC.LiterallyCanvasReactComponent
-                        onInit={onInit}
-                        imageURLPrefix="/literallycanvasimg"
+                        // onInit={onInits}
+                        // imageURLPrefix="/literallycanvasimg"
+                        {...lcOptions}
                         />
                 </div>
             </div>
