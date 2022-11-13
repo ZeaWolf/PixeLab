@@ -124,7 +124,6 @@ function GlobalStoreContextProvider(props) {
                     resourceList: store.resourceList,
                 })
             }
-
             default:
                 return store;
         }
@@ -276,7 +275,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.publishTileset = async function(id){
+    store.publishTileset = async function(id, text){
         const response = await api.getTilesetById(id);
         if (response.data.success) {
             let tileset = response.data.data;
@@ -290,7 +289,7 @@ function GlobalStoreContextProvider(props) {
                 Downloads:      0,
                 Comments:       [],
                 PublishTime:    Date.now(),
-                Description:    "shugui is gay",
+                Description:    text,
             };
             const responseResource = await api.createResource(payload);
             if (responseResource.data.success) {
@@ -326,7 +325,7 @@ function GlobalStoreContextProvider(props) {
     store.MarkDeleteTileset = function (id){
         storeReducer({
             type: GlobalStoreActionType.DELETING_A_TILESET,
-            payload: id,
+            payload: null,
         })
     };
 
