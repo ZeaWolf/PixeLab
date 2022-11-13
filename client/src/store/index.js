@@ -30,6 +30,9 @@ export const GlobalStoreActionType = {
     DELETING_A_TILESET: "DELETING_A_TILESET",
     PUBLISH_TILESET: "PUBLISH_TILESET",
     LOAD_RESOURCES: "LOAD_RESOURCES",
+    LOADING_A_RESOURCE: "LOADING_A_RESOURCE",
+    CLOSING_A_RESOURCE: "CLOSING_A_RESOURCE",
+    
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -46,6 +49,7 @@ function GlobalStoreContextProvider(props) {
         currentTilesetName:null,
         TilesetIdForDelete: null,
         resourceList: [],
+        currentResource: null,
         // maps: []
     });
     const history = useHistory();
@@ -58,7 +62,27 @@ function GlobalStoreContextProvider(props) {
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {
-            
+            case GlobalStoreActionType.LOADING_A_RESOURCE: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: payload.currentResource,
+                })
+            }
+            case GlobalStoreActionType.CLOSING_A_RESOURCE: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: null,
+                })
+            }
+
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
             case GlobalStoreActionType.LOAD_TILESETS: {
                 return setStore({
@@ -67,6 +91,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
+                    currentResource: store.currentResource,
                 });
             }
             // GET ALL THE RESOURCE LIST
@@ -77,6 +102,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: payload,
+                    currentResource: store.currentResource,
                 })
             }
             case GlobalStoreActionType.CREATE_NEW_LIST: {
@@ -86,6 +112,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
+                    currentResource: store.currentResource,
                 })
             }
             case GlobalStoreActionType.DELETE_TILESET: {
@@ -95,6 +122,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
+                    currentResource: store.currentResource,
                 })
             }
             case GlobalStoreActionType.LOADING_A_TILESET: {
@@ -104,6 +132,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: payload.name,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
+                    currentResource: store.currentResource,
                 })
             }
             case GlobalStoreActionType.DELETING_A_TILESET: {
@@ -113,6 +142,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: payload,
                     resourceList: store.resourceList,
+                    currentResource: store.currentResource,
                 })
             }
             case GlobalStoreActionType.PUBLISH_TILESET: {
@@ -122,6 +152,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
+                    currentResource: store.currentResource,
                 })
             }
             default:
@@ -238,6 +269,38 @@ function GlobalStoreContextProvider(props) {
             }
         }catch(err){
             console.log("error msg: "+err);
+        }
+    }
+
+    // THIS FUNCTION WILL LOAD A SELECTED RESOURCE CARD
+    store.setCurrentResource = async function (id) {
+        try{
+            let response = await api.getResourceById(id);
+            if(response.data.success){
+                let resource = response.data.resource;
+                let resourceID = resource._id;
+                storeReducer({
+                    type: GlobalStoreActionType.LOADING_A_RESOURCE,
+                    payload: {currentResource: resource}
+                })
+                history.push("/resource/"+resourceID);
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    // THIS FUNCTION WILL CLOSE THE CURRENT RESOURCE PAGE AND RETURN TO COMMUNITY PAGE
+    store.closeCurrentResource = async function() {
+        try{
+            storeReducer({
+                type: GlobalStoreActionType.CLOSING_A_RESOURCE,
+                Payload: {}
+            })
+            //await store.loadResources();
+            history.push("/community/");
+        }catch(err){
+            console.log(err);
         }
     }
 

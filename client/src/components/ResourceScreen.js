@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +12,8 @@ import CardActions from '@mui/material/CardActions';
 import CardMedia from '@mui/material/CardMedia';
 import TextField from '@mui/material/TextField';
 import { Link } from 'react-router-dom'
+import { GlobalStoreContext } from '../store';
+import AuthContext from '../auth'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -19,8 +21,22 @@ import ResourceScreenCommentCard from './ResourceScreenCommentCard';
 import NavigationBar from './NavigationBar';
 
 export default function ResourceScreen(){
+    const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
+
+    // useEffect(() => {                                   
+    //     let url = window.location.href;
+    //     let indexBeforeURL = url.lastIndexOf("/");
+    //     let loadingListID = url.substring(indexBeforeURL+1);
+    //     store.setCurrentResource(loadingListID);
+    // }, []);
+
+    const handleReturnCommunity = () => {
+        store.closeCurrentResource();
+    }
+
     let returnButton = 
-    <IconButton component={Link} to="/community" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
+    <IconButton onClick={handleReturnCommunity} sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
         <KeyboardReturnIcon/>
     </IconButton>
 
@@ -28,14 +44,14 @@ export default function ResourceScreen(){
     let downloadButton = 
     <IconButton>
         <DownloadIcon/>
-        <Typography> # </Typography>
+        <Typography> {store.currentResource.Downloads} </Typography>
     </IconButton>
 
     /* replace # with like number*/
     let likeButton = 
     <IconButton>
         <ThumbUpOffAltIcon/>
-        <Typography> # </Typography>
+        <Typography> {store.currentResource.Like} </Typography>
     </IconButton>
 
     let starButton =
@@ -50,7 +66,7 @@ export default function ResourceScreen(){
         alt="Pikachu"
         height="265px"
         width='100%'
-        image="/pikachu.jpeg"
+        image={store.currentResource.Image}
         sx={{mb:'0%', ml:'0%',mt:'0%'}}
         />
     </Card>
@@ -59,14 +75,14 @@ export default function ResourceScreen(){
     let resourceDescription =
     <Box>
         <Typography variant="h5">
-            This is a image of a charmander!!!
+            {store.currentResource.Description}
         </Typography>
     </Box>
 
     // C: inside the typograph, replace it with resource name
     let resourceName = 
     <Box>
-        <Typography variant="h4"> Map Name </Typography>
+        <Typography variant="h4"> {store.currentResource.Name} </Typography>
     </Box>
 
     // C: inside the typograph, replace it with author

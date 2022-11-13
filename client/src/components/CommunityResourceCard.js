@@ -9,9 +9,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom'
 import Button from '@mui/material/Button';
+import { GlobalStoreContext } from '../store';
+import AuthContext from '../auth'
+import { useContext, useState, useEffect } from 'react'
 
 export default function CommunityResourceCard(props) {
   const { ImgNamePair } = props;
+  const { auth } = useContext(AuthContext);
+  const { store } = useContext(GlobalStoreContext);
+
+  const handleLoadResource = () => {
+    store.setCurrentResource(ImgNamePair.id);
+  }
 
   function handleShare(){
    
@@ -19,7 +28,7 @@ export default function CommunityResourceCard(props) {
 
   return (
     <Grid item xs={3}>
-    <Card id="resource-card">
+    <Card id="resource-card" onClick={handleLoadResource}>
       <CardMedia
           component="img"
           height="100"
