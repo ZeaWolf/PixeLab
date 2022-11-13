@@ -53,7 +53,6 @@ export default function TilesetScreen() {
         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
                 const img = new Image();
-                console.log(uploadedImage);
                 img.src = uploadedImage;
                 // img.src = image; // comment this when works
                 // console.log(typeof image);
