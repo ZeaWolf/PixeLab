@@ -10,17 +10,13 @@ import {
     WelcomeScreen,
     RegisterScreen,
     LoginScreen,
-    NavigationBar,
     HomeScreen,
     CommunityScreen,
     MapScreen,
     TilesetScreen,
     ResourceScreen,
-    WindowDialog,
     ForgotPasswordScreen,
     ResetPasswordScreen,
-    PublishModal,
-    PublishErrorModal,
 } from './components'
 
 // ** components no implemented
@@ -39,11 +35,8 @@ const App = () => {
                         <Route path="/tileset-editor/" exact component={TilesetScreen} />
                         <Route path="/resource/" exact component={ResourceScreen} />
                         <Route path="/map/" exact component={MapScreen} />
-                        <Route path='/window-dialog' exact component={WindowDialog} />
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
-                        <Route path='/publish-modal' exact component={PublishModal} />
-                        <Route path='/publish-error' exact component={PublishErrorModal} />
                     </Switch>
                 </GlobalStoreContextProvider>
             </AuthContextProvider>
