@@ -41,7 +41,7 @@ export default function HomeScreen() {
 
 
     let listCard = "";
-    const filteredPairs = store.tilesetList;
+    let filteredPairs = store.tilesetList;
     listCard = 
         <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
         {
@@ -71,7 +71,7 @@ export default function HomeScreen() {
             <div className='right-screen'>
                 <div id="home-screen">
                     {/* upper half screen 50% */}
-                    <Box className='upper-half-screen'>
+                    <div className='upper-half-screen'>
                         <Box sx={{ backgroundColor: 'warning.light'}}>
                             <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
                                 Maps
@@ -96,9 +96,9 @@ export default function HomeScreen() {
                                 </Grid>
                             </Grid>
                         </Box>
-                    </Box>
+                    </div>
                     {/* lower half screen 50% */}
-                    <Box className='upper-half-screen'>
+                    <div className='upper-half-screen'>
                         <Box sx={{ backgroundColor: 'warning.light'}}>
                             <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
                                 Tilesets
@@ -125,7 +125,7 @@ export default function HomeScreen() {
                                 </Grid>
                             </Box>
                         </Box>
-                    </Box>
+                    </div>
                 </div>
             </div>
         </div>

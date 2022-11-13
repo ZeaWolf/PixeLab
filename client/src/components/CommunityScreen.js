@@ -1,5 +1,5 @@
 import { GlobalStoreContext } from '../store';
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import AuthContext from '../auth'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -13,8 +13,30 @@ import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 import GuestModal from './GuestModal';
+import List from '@mui/material/List'
+import CommunityResourceCard from './CommunityResourceCard';
 
 export default function CommunityScreen() {
+
+    const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
+
+    let listCard = "";
+    const filteredPairs = store.resourceList;
+    listCard = 
+        <List id="community-resource-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+        {
+            filteredPairs.map((pair) => (
+                <CommunityResourceCard
+                    // item xs={3}
+                    key={pair._id}
+                    resourceList={pair}
+                    selected={false}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, tilesetID:pair._id}}
+                />
+            ))
+        }
+        </List>;
 	
 	return (
 
@@ -73,9 +95,15 @@ export default function CommunityScreen() {
                 </div>
             </Grid>
 
+            <div id="lists-selector">
+                {
+                    listCard
+                }
+            </div>
+
             
 
-            <Grid item xs={3}>
+            {/* <Grid item xs={3}>
                 <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
                             component="img"
@@ -188,7 +216,7 @@ export default function CommunityScreen() {
                             <Button component={Link} to="/resource" size="small">Learn More</Button>
                     </CardActions>
                 </Card>
-            </Grid>
+            </Grid> */}
 
         </Grid>
         </Box>
