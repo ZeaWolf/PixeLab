@@ -10,13 +10,11 @@ import {
     WelcomeScreen,
     RegisterScreen,
     LoginScreen,
-    NavigationBar,
     HomeScreen,
     CommunityScreen,
     MapScreen,
     TilesetScreen,
     ResourceScreen,
-    WindowDialog,
     ForgotPasswordScreen,
     ResetPasswordScreen,
 } from './components'
@@ -37,7 +35,6 @@ const App = () => {
                         <Route path="/tileset-editor/" exact component={TilesetScreen} />
                         <Route path="/resource/" exact component={ResourceScreen} />
                         <Route path="/map/" exact component={MapScreen} />
-                        <Route path='/window-dialog' exact component={WindowDialog} />
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
                     </Switch>
