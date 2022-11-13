@@ -121,7 +121,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
-                    resourceList: payload,
+                    resourceList: store.resourceList,
                 })
             }
             default:
