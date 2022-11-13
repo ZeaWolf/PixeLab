@@ -35,6 +35,7 @@ export const GlobalStoreActionType = {
     LOADING_A_TILESET: "LOADING_A_TILESET",
     DELETING_A_TILESET: "DELETING_A_TILESET",
     PUBLISH_TILESET: "PUBLISH_TILESET",
+    PUBLISH_TILESET_ACTIVE: "PUBLISH_TILESET_ACTIVE",
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -109,11 +110,10 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
-                    TilesetIdForDelete: payload,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: payload,
                 })
             }
-
             default:
                 return store;
         }
@@ -295,7 +295,7 @@ function GlobalStoreContextProvider(props) {
     store.MarkDeleteTileset = function (id){
         storeReducer({
             type: GlobalStoreActionType.DELETING_A_TILESET,
-            payload: id,
+            payload: null,
         })
     };
 
