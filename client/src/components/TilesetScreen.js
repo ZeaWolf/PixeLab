@@ -10,6 +10,7 @@ import HomeTilesetCard from './HomeTilesetCard';
 import NavigationBar from "./NavigationBar"
 import AuthContext from '../auth'
 import PublishErrorModal from './PublishErrorModal'
+import PublishModal from './PublishModal'
 import LC from "literallycanvas";
 import "../literallycanvas.css";
 import api from '../api'
@@ -22,11 +23,19 @@ export default function TilesetScreen() {
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
     const [hasSource, setHasSource] = useState(false);
+    const [isPublish, setIsPublish] = useState(false);
     const backgroundImg = new Image();
     backgroundImg.src = '8x8grid.png'
     // backgroundImg is 1600 x 1600
     const setHasSourceFunction = (bools) => {
         setHasSource(bools);
+    }
+    const setNotPublishFunction = () => {
+        setIsPublish(false);
+    }
+    const setPublishDescriptionFunction = (text) => {
+        store.publishTileset(store.currentTilesetId, text);
+        setIsPublish(false);
     }
 
     const onInits = async (lc) => {
@@ -120,7 +129,7 @@ export default function TilesetScreen() {
         if(response.data.success){
             let tilesetSource = response.data.data.Source;
             if(tilesetSource !== ""){
-                store.publishTileset(store.currentTilesetId);
+                setIsPublish(true);
             }
             else{
                 setHasSourceFunction(true);
@@ -170,6 +179,11 @@ export default function TilesetScreen() {
             <PublishErrorModal
                 hasSource = {hasSource}
                 setHasSourceFunction = {setHasSourceFunction}
+            />
+            <PublishModal
+                isPublish = {isPublish}
+                setNotPublishFunction = {setNotPublishFunction}
+                setPublishDescriptionFunction = {setPublishDescriptionFunction}
             />
         </div>
     }

@@ -10,9 +10,10 @@ import Stack from '@mui/material/Stack';
 import { TextField } from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
 
-function PublishModal(){
+function PublishModal(props){
     const { store } = useContext(GlobalStoreContext);
     const [text, setText] = useState("");
+    const {isPublish, setNotPublishFunction, setPublishDescriptionFunction} = props;
 
     const style = {
         width: 700,
@@ -29,10 +30,18 @@ function PublishModal(){
     function handleUpdateText(event) {
         setText(event.target.value);
     }
+    const handlePublish = (event) => {
+        event.preventDefault();  
+        setPublishDescriptionFunction(text);
+    }
+    const handleNotPublish = (event) => {
+        event.preventDefault();  
+        setNotPublishFunction();
+    }
     
     return(
         <Modal
-            open={true}
+            open={isPublish}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{display:'flex',alignItems:'center',justifyContent:'center'}}
@@ -59,7 +68,7 @@ function PublishModal(){
                     <Stack spacing={6} direction="row">
                         <Button
                             variant="contained"
-                            // onClick={handleClick}
+                            onClick={handlePublish}
                         >
                             confirm
                         </Button>
@@ -67,6 +76,7 @@ function PublishModal(){
                         <Button
                             variant="contained"
                             href = "/tileset-editor/"
+                            onClick={handleNotPublish}
                         >
                             Cancel
                         </Button>
