@@ -21,18 +21,32 @@ export default function CommunityScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
 
+    useEffect(() => {
+        store.loadResources();
+        hello();
+    }, []);
+
+    // function hello(){
+    //     console.log(filteredPairs);
+    // }
+
+
     let listCard = "";
     const filteredPairs = store.resourceList;
+
+    function hello(){
+        console.log("lllllllll"+filteredPairs);
+    }
+
     listCard = 
-        <List id="community-resource-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+        <List className="resource-list" style={{ display: 'flex', flexDirection: 'row', flexWrap:'wrap'}}>
         {
             filteredPairs.map((pair) => (
                 <CommunityResourceCard
-                    // item xs={3}
                     key={pair._id}
                     resourceList={pair}
                     selected={false}
-                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, tilesetID:pair._id}}
+                    ImgNamePair={{img:pair.Source, name:pair.Name, tilesetID:pair._id}}
                 />
             ))
         }
@@ -43,6 +57,7 @@ export default function CommunityScreen() {
         <Box className="full-screen"> 
         <NavigationBar/>
         <GuestModal/>
+        <Box>
         <Grid container spacing={0} rowSpacing={1} id="community-screen">
 
             <Grid item xs={3}>
@@ -94,15 +109,16 @@ export default function CommunityScreen() {
                     </div>
                 </div>
             </Grid>
+        </Grid>
+        </Box>
 
-            <div id="lists-selector">
-                {
-                    listCard
-                }
-            </div>
-
-            
-
+        <Box>
+            <Grid container spacing={0} rowSpacing={1} className='community-resource-list'>
+            {
+                listCard
+            }
+            </Grid>
+        </Box>
             {/* <Grid item xs={3}>
                 <Card sx={{ width: '95%', height: '100%'}}>
                     <CardMedia
@@ -217,8 +233,12 @@ export default function CommunityScreen() {
                     </CardActions>
                 </Card>
             </Grid> */}
-
-        </Grid>
+            
+        {/* <Grid container spacing={0} rowSpacing={1} id="community-resource-list">
+            {
+                listCard
+            }
+        </Grid> */}
         </Box>
 
 		

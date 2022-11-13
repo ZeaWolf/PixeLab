@@ -121,7 +121,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
-                    resourceList: payload,
+                    resourceList: store.resourceList,
                 })
             }
 
@@ -227,7 +227,8 @@ function GlobalStoreContextProvider(props) {
             if(response.data.success){
                 let pairsArray = response.data.idInfoPairs;
                 // community's filter, sort, search by text should be written here
-
+                console.log(pairsArray);
+                console.log("fffkfkkfkfkfkf"+pairsArray.Source);
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_RESOURCES,
                     payload: pairsArray,

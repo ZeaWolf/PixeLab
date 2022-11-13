@@ -151,6 +151,7 @@ getResourceLists = async (req, res) => {
                         Name: list.Name,
                         Author: list.Author,
                         Image: list.Image,
+                        Source: list.Source,
                         Like: list.Like,
                         Downloads: list.Downloads,
                         Comments: list.Comments,
