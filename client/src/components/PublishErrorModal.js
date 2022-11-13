@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useContext } from 'react';
 import { GlobalStoreContext } from '../store';
 import Box from '@mui/material/Box';
@@ -10,8 +11,9 @@ import Stack from '@mui/material/Stack';
 
 
 
-export default function PublishErrorModal(){
+export default function PublishErrorModal(props){
     const { auth } = useContext(AuthContext);
+    const { hasSource, setHasSourceFunction } = props;
 
     const style = {
         width: 400,
@@ -22,9 +24,13 @@ export default function PublishErrorModal(){
         pb: 3,
     };
 
+    const handleClose = (event) => {
+        setHasSourceFunction(false);
+    }
+
     return(
             <Modal
-                open={true}
+                open={hasSource}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 style={{display:'flex',alignItems:'center',justifyContent:'center'}}
@@ -37,6 +43,7 @@ export default function PublishErrorModal(){
                         <Stack spacing={6} direction="row">
                             <Button
                                 variant="contained"
+                                onClick={handleClose}
                             >
                                 Close
                             </Button>

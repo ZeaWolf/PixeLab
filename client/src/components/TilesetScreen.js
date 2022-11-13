@@ -9,8 +9,10 @@ import HomeTilesetCard from './HomeTilesetCard';
 //import DeletionModal from "./DeletionModal"
 import NavigationBar from "./NavigationBar"
 import AuthContext from '../auth'
+import PublishErrorModal from './PublishErrorModal'
 import LC from "literallycanvas";
 import "../literallycanvas.css";
+import api from '../api'
 
 export default function TilesetScreen() {
     const { auth } = useContext(AuthContext);
@@ -19,10 +21,13 @@ export default function TilesetScreen() {
     let imageBounds =  {x: 0, y:0, width: 384, height: 384}
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
+    const [hasSource, setHasSource] = useState(false);
     const backgroundImg = new Image();
     backgroundImg.src = '8x8grid.png'
     // backgroundImg is 1600 x 1600
-
+    const setHasSourceFunction = (bools) => {
+        setHasSource(bools);
+    }
 
     const onInits = async (lc) => {
         setCanvas(lc);
@@ -111,7 +116,16 @@ export default function TilesetScreen() {
     // }
 
     const publishTileset = async event => {
-        store.publishTileset(store.currentTilesetId);
+        let response = await api.getTilesetById(store.currentTilesetId);
+        if(response.data.success){
+            let tilesetSource = response.data.data.Source;
+            if(tilesetSource !== ""){
+                store.publishTileset(store.currentTilesetId);
+            }
+            else{
+                setHasSourceFunction(true);
+            }
+        }
     }
 
     let tilesetPage = 
@@ -153,6 +167,10 @@ export default function TilesetScreen() {
                         />
                 </div>
             </div>
+            <PublishErrorModal
+                hasSource = {hasSource}
+                setHasSourceFunction = {setHasSourceFunction}
+            />
         </div>
     }
 
