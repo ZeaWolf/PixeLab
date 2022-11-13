@@ -109,8 +109,8 @@ export default function CommunityScreen() {
         </Grid>
         </Box>
 
-        <Box>
-            <Grid container spacing={0} rowSpacing={1} className='community-resource-list'>
+        <Box className='community-resource-list'>
+            <Grid container spacing={0} rowSpacing={1}>
             {
                 listCard
             }
