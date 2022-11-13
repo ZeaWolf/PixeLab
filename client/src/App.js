@@ -19,8 +19,6 @@ import {
     WindowDialog,
     ForgotPasswordScreen,
     ResetPasswordScreen,
-    PublishModal,
-    PublishErrorModal,
 } from './components'
 
 // ** components no implemented
@@ -42,8 +40,6 @@ const App = () => {
                         <Route path='/window-dialog' exact component={WindowDialog} />
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
-                        <Route path='/publish-modal' exact component={PublishModal} />
-                        <Route path='/publish-error' exact component={PublishErrorModal} />
                     </Switch>
                 </GlobalStoreContextProvider>
             </AuthContextProvider>
