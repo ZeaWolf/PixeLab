@@ -16,6 +16,8 @@ import ForgotPasswordScreen from './ForgotPasswordScreen'
 import ResetPasswordScreen from './ResetPasswordScreen'
 import GuestModal from './GuestModal'
 import DeleteModal from './DeleteModal'
+import PublishModal from './PublishModal'
+import PublishErrorModal from './PublishErrorModal'
 
 export{
     AppBanner,
@@ -36,4 +38,6 @@ export{
     ResetPasswordScreen,
     GuestModal,
     DeleteModal,
+    PublishModal,
+    PublishErrorModal,
 }
