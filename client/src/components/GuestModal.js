@@ -12,8 +12,6 @@ function GuestModal(){
     const { auth } = useContext(AuthContext);
     
 
-    console.log("what fuck "+ auth.guestModal);
-
     const style = {
         width: 400,
         bgcolor: 'background.paper',

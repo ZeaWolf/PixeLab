@@ -23,7 +23,6 @@ export default function CommunityScreen() {
 
     useEffect(() => {
         store.loadResources();
-        hello();
     }, []);
 
     // function hello(){
@@ -34,9 +33,6 @@ export default function CommunityScreen() {
     let listCard = "";
     const filteredPairs = store.resourceList;
 
-    function hello(){
-        console.log("lllllllll"+filteredPairs);
-    }
 
     listCard = 
         <List className="resource-list" style={{ display: 'flex', flexDirection: 'row', flexWrap:'wrap'}}>
@@ -46,7 +42,8 @@ export default function CommunityScreen() {
                     key={pair._id}
                     resourceList={pair}
                     selected={false}
-                    ImgNamePair={{img:pair.Source, name:pair.Name, tilesetID:pair._id}}
+                    ImgNamePair={{img:pair.Source, name:pair.Name, tilesetID:pair._id,
+                        description:pair.Description}}
                 />
             ))
         }
