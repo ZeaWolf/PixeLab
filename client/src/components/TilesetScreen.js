@@ -9,64 +9,37 @@ import HomeTilesetCard from './HomeTilesetCard';
 //import DeletionModal from "./DeletionModal"
 import NavigationBar from "./NavigationBar"
 import AuthContext from '../auth'
-//import Statusbar from "./Statusbar"
 import LC from "literallycanvas";
 import "../literallycanvas.css";
 
 export default function TilesetScreen() {
     const { auth } = useContext(AuthContext);
-    // return (
-    //     <div className='full-screen'>
-    //         <NavigationBar/>
-    //         <div className='right-screen'>
-    //             <div id="tileset-screen">
-    //                 <Box>
-    //                     <Button>New</Button>
-    //                     <Button>Save</Button>
-    //                     <Button>Import</Button>
-    //                     <Button>Export</Button>
-    //                     <Button>Publish</Button>
-    //                     <Button>Share</Button>
-    //                 </Box>
-    //                 <LC.LiterallyCanvasReactComponent
-    //                 imageURLPrefix="/literallycanvasimg"
-    //                 />
-    //             </div>
-    //         </div>
-    //     </div>
-    // )
-
-    /* Above: Chengzhi's initial tileset screen */
-
-    let imageBounds =  {x: 0, y:0, width: 384, height: 384}
-    let backgroundImg = new Image();
-    backgroundImg.src = '../../public/8x8grid.png'
-
-    const [image, setImage] = useState("");
-    const [canvas, setCanvas] = useState({});
-    const [src, setSrc] = useState("");
     const { store } = useContext(GlobalStoreContext);
 
+    let imageBounds =  {x: 0, y:0, width: 384, height: 384}
+    const [image, setImage] = useState("");
+    const [canvas, setCanvas] = useState({});
+    const backgroundImg = new Image();
+    backgroundImg.src = '8x8grid.png'
+    // backgroundImg is 1600 x 1600
 
-    const onInit = async lc => {
+
+    const onInits = async (lc) => {
         setCanvas(lc);
+        console.log("Initial ID: " + store.currentTilesetId);
+        console.log(store.currentTilesetId)
         let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
             if(uploadedImage != null){
                 const img = new Image();
                 img.src = uploadedImage;
-                // img.src = image; // comment this when works
-                // console.log(typeof image);
+
+                // load tileset
                 let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
                 lc.saveShape(shape);
         }
-
-        // let uploadedImage = store.loadTilesetResourceImage(store.currentTilesetId);
-        // if(uploadedImage != null){
-        //     loadingImage();
-        // }
     }
 
-    const onSave = async event => {
+    const onSave = async (event) => {
         if (!canvas){
             return;
         }
@@ -75,12 +48,48 @@ export default function TilesetScreen() {
         try{
             const imgData = img.toDataURL();
             setImage(imgData);
-            console.log("URL: " + typeof imgData);
+            //console.log("URL: " + typeof imgData);
             await store.saveTilesetSpace(store.currentTilesetId, imgData);
         }
         catch(err){
             console.log(err);
         }
+    }
+
+    const onImport = async (event) =>{
+        const reader = new FileReader();
+        reader.addEventListener("load", ()=> {
+            var importImage = "";
+            importImage = reader.result;
+            const img = new Image();
+            img.src = importImage;
+            let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
+            canvas.saveShape(shape);
+        })
+        if(event.target.files && event.target.files[0]){
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        //fr.readAsDataURL(fileEl.files[0]);
+        //fr.addEvent
+    }
+    const onExport = async (event) =>{
+        event.preventDefault();
+        if (!canvas){
+            return;
+        }
+        // var data = canvas.getImage({rect: imageBounds}).toDataURL();
+        // var image = new Image();
+        // image.src = data;
+
+        // Get name
+        const link = document.createElement('a');
+        link.download = `${store.currentTilesetName}.png`;
+        link.href = canvas.getImage({rect: imageBounds}).toDataURL();
+        link.click();
+        //link.delete;
+        //const w = window.open("");
+        //w.document.write(image.outerHTML);
+        return;
     }
 
     // const loadingImage = async (event) => {
@@ -112,6 +121,17 @@ export default function TilesetScreen() {
             </Typography>
         </div>
 
+    let lcOptions = {
+        onInit: onInits,
+        imageURLPrefix: "/literallycanvasimg",
+        backgroundShapes: [
+            LC.createShape("Image", { x: 0, y: 0, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 128, y: 0, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 0, y: 128, image: backgroundImg, scale: 0.16 }),
+            LC.createShape("Image", { x: 128, y: 128, image: backgroundImg, scale: 0.16 }),
+        ]
+    }
+
     if(auth.loggedIn){
         tilesetPage = 
         <div className='full-screen'>
@@ -121,14 +141,15 @@ export default function TilesetScreen() {
                     <Box>
                         <Button>New</Button>
                         <Button onClick={onSave}>Save</Button>
-                        <Button>Import</Button>
-                        <Button>Export</Button>
+                        <Button onClick={onImport} component="label">Import <input type="file"hidden onChange={onImport}/></Button>
+                        <Button onClick={onExport}>Export</Button>
                         <Button onClick={publishTileset}>Publish</Button>
                         <Button>Share</Button>
                     </Box>
                         <LC.LiterallyCanvasReactComponent
-                        onInit={onInit}
-                        imageURLPrefix="/literallycanvasimg"
+                        // onInit={onInits}
+                        // imageURLPrefix="/literallycanvasimg"
+                        {...lcOptions}
                         />
                 </div>
             </div>

@@ -276,8 +276,7 @@ function AuthContextProvider(props) {
     }
 
     auth.resetPassword = async function(userData){
-        //try{
-            console.log("LOVE") 
+        try{
             let queryString = window.location.search;
             queryString = queryString.replace('?','');
             let queryParam = new URLSearchParams(queryString);
@@ -293,10 +292,10 @@ function AuthContextProvider(props) {
                 })
                 auth.showErrorModal("Password has been reset!");
             }
-        // }catch(err){
-        //     const message = err.response.data.errorMessage;
-        //     auth.showErrorModal(message);
-        // }
+        }catch(err){
+            const message = err.response.data.errorMessage;
+            auth.showErrorModal(message);
+        }
     }
 
     auth.OpenGuestModal = function() {

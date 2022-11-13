@@ -18,8 +18,9 @@ export default function HomeTilesetCard(props) {
   const [editActive, setEditActive] = useState(false);
   const [text, setText] = useState("");
 
-  const handleOpenTileset = event => {
-    store.loadTilesetPage(ImgNamePair.tilesetID);
+  const handleOpenTileset = async event => {
+    console.log("HomeTilesetCardID: " + ImgNamePair.tilesetID);
+    await store.loadTilesetPage(ImgNamePair.tilesetID);
     // push to the tileset-editor screen by router
   }
 
@@ -50,6 +51,11 @@ export default function HomeTilesetCard(props) {
   function handleUpdateText(event) {
     setText(event.target.value);
   }
+  let tilesetImg = "/defaultpic.png"
+  let tileSrc = ImgNamePair.src
+  if (tileSrc !== ""){
+    tilesetImg = tileSrc;
+  }
 
   let TilesetItem =
   <Card className="home-tileset-card" style={{background:"linear-gradient(to bottom, #64cdfa 5%, #f6f5dd)"}}>
@@ -57,7 +63,7 @@ export default function HomeTilesetCard(props) {
         <CardMedia
           component="img"
           height="100"
-          image={ImgNamePair.img}
+          image={tilesetImg}
           alt="img"
           onClick={handleOpenTileset}
         />

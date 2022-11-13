@@ -22,12 +22,6 @@ export const GlobalStoreActionType = {
     // CLOSE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     CREATE_NEW_TILESET: "CREATE_NEW_TILESET",
     DELETE_TILESET: "DELETE_TILESET",
-    // LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
-    // MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
-    // UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
-    // SET_CURRENT_LIST: "SET_CURRENT_LIST",
-    // SET_ITEM_EDIT_ACTIVE: "SET_ITEM_EDIT_ACTIVE",
-    // SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     // SEARCH_LIST:"SEARCH_LIST",
     // SORT_LIST:"SORT_LIST",
     // LOAD_COMMUNITY_LISTS:"LOAD_COMMUNITY_LISTS"
@@ -35,6 +29,7 @@ export const GlobalStoreActionType = {
     LOADING_A_TILESET: "LOADING_A_TILESET",
     DELETING_A_TILESET: "DELETING_A_TILESET",
     PUBLISH_TILESET: "PUBLISH_TILESET",
+    LOAD_RESOURCES: "LOAD_RESOURCES",
     // LOAD_MAPS: "LOAD_MAPS"
 }
 
@@ -48,6 +43,7 @@ function GlobalStoreContextProvider(props) {
     const [store, setStore] = useState({
         tilesetList: [],
         currentTilesetId: null,
+        currentTilesetName:null,
         TilesetIdForDelete: null,
         resourceList: [],
         // maps: []
@@ -68,14 +64,26 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     tilesetList: payload,
                     currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
                 });
+            }
+            // GET ALL THE RESOURCE LIST
+            case GlobalStoreActionType.LOAD_RESOURCES: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    resourceList: payload,
+                })
             }
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
                 })
@@ -84,6 +92,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
                 })
@@ -91,7 +100,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOADING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: payload,
+                    currentTilesetId: payload.id,
+                    currentTilesetName: payload.name,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
                 })
@@ -100,6 +110,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: payload,
                     resourceList: store.resourceList,
                 })
@@ -108,7 +119,8 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
-                    TilesetIdForDelete: payload,
+                    currentTilesetName: store.currentTilesetName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: payload,
                 })
             }
@@ -125,9 +137,10 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success){
                 let tileset = response.data.data;  // these 2 lines can be deleted since the payload can just be id in this case
                 let tilesetID = tileset._id;       // but whatever
+                let tilesetName = tileset.Name;
                 storeReducer({
                     type: GlobalStoreActionType.LOADING_A_TILESET,
-                    payload: tilesetID
+                    payload: {id: tilesetID, name: tilesetName}
                 })
             }
             console.log(response.data);
@@ -141,9 +154,7 @@ function GlobalStoreContextProvider(props) {
     store.loadTilesetResourceImage = async function(id){
         try{
             let response = await api.getTilesetById(id);
-            console.log("wtf");
             let value = response.data.data.Source;
-            console.log(typeof response.data.data.Source);
             return value;
         }catch(err){
             console.log("err:"+err);
@@ -206,6 +217,27 @@ function GlobalStoreContextProvider(props) {
             
         }catch(err){
             console.log("err:"+err);
+        }
+    }
+    
+    // THIS FUNCTION LOADS ALL NAME PAIRS FOR THE RESOURCE
+    store.loadResources = async function () {
+        try{
+            const response = await api.getResourceLists();
+            if(response.data.success){
+                let pairsArray = response.data.idInfoPairs;
+                // community's filter, sort, search by text should be written here
+
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_RESOURCES,
+                    payload: pairsArray,
+                })
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }catch(err){
+            console.log("error msg: "+err);
         }
     }
 
