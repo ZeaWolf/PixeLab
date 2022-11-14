@@ -20,9 +20,9 @@ function DeleteModal(){
         pb: 3,
     };
 
-    const handleClick = (event) => {
+    const handleClick = async (event) => {
         event.preventDefault();
-        store.DeleteTilesetFile();    
+        await store.DeleteTilesetFile();    
     }
 
     

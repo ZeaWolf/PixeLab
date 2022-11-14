@@ -396,10 +396,11 @@ function GlobalStoreContextProvider(props) {
     store.DeleteTilesetFile = async function(){
         let response = await api.deleteTileset(store.TilesetIdForDelete);
         if (response.data.success) {
-            storeReducer({
-                type: GlobalStoreActionType.DELETING_A_TILESET,
-                payload: null,
-            })
+            // storeReducer({
+            //     type: GlobalStoreActionType.DELETING_A_TILESET,
+            //     payload: null,
+            // })
+            store.TilesetIdForDelete = null;
             store.loadTilesets();
         }
     };
@@ -407,7 +408,7 @@ function GlobalStoreContextProvider(props) {
     store.MarkDeleteTileset = function (id){
         storeReducer({
             type: GlobalStoreActionType.DELETING_A_TILESET,
-            payload: null,
+            payload:id,
         })
     };
 
