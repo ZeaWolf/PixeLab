@@ -56,7 +56,7 @@ export default function CommunityResourceCard(props) {
       <Typography> {ImgNamePair.like} </Typography>
     </Button>
 
-  if(auth.user.likeList.includes(ImgNamePair.id)==true){
+  if(auth.user && auth.user.likeList.includes(ImgNamePair.id)==true){
     likeButton = 
       <Button size="small" onClick={handleLike}>
         <ThumbUpIcon/>
@@ -70,7 +70,7 @@ export default function CommunityResourceCard(props) {
       <Typography></Typography>
     </Button>
 
-  if(auth.user.collectionList.includes(ImgNamePair.id)==true){
+  if(auth.user && auth.user.collectionList.includes(ImgNamePair.id)==true){
     CollectionButton = 
       <Button size="small" onClick={handleCollection}>
         <StarIcon/>
