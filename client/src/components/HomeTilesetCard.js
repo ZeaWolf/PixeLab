@@ -84,7 +84,7 @@ export default function HomeTilesetCard(props) {
       <CardMedia
         component="img"
         height="100"
-        image={ImgNamePair.img}
+        image={tilesetImg}
         alt="img"
         onClick={handleOpenTileset}
       />
