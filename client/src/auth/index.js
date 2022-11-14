@@ -363,7 +363,6 @@ function AuthContextProvider(props) {
                 }
                 console.log("爱爱爱爱你,才怪");
                 console.log(auth.user.collectionList);
-                history.push("/community/");
             }
         }catch(err){
             const message = err.response.data.errorMessage;

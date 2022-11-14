@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import { GlobalStoreContext } from '../store';
 import AuthContext from '../auth'
 import { useContext, useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
@@ -22,6 +23,7 @@ export default function CommunityResourceCard(props) {
   const { ImgNamePair } = props;
   const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
+  const history = useHistory();
 
   const handleLoadResource = () => {
     store.setCurrentResource(ImgNamePair.id);
@@ -45,9 +47,10 @@ export default function CommunityResourceCard(props) {
     store.handleDownload(ImgNamePair.id);
   };
 
-  function handleCollection(event){
+  async function handleCollection(event){
     event.stopPropagation();
-    auth.updateUserCollectionlist(ImgNamePair.id);
+    await auth.updateUserCollectionlist(ImgNamePair.id);
+    history.push("/community/");
   };
 
   let likeButton = 
@@ -97,10 +100,10 @@ export default function CommunityResourceCard(props) {
       <CardActions height="20">
         {likeButton}
 
-        <Button size="small" onClick={handleDownload}>
+        {/* <Button size="small" onClick={handleDownload}>
           <DownloadIcon/>
           <Typography> {ImgNamePair.downloads} </Typography>
-        </Button>
+        </Button> */}
 
         {CollectionButton}
 
