@@ -29,15 +29,17 @@ export default function CommunityResourceCard(props) {
     store.setCurrentResource(ImgNamePair.id);
   }
 
-  function handleLike(event){
+  async function handleLike(event){
     event.stopPropagation();
     if (auth.user.likeList.includes(ImgNamePair.id)==false){
-      store.likeTileset(ImgNamePair.id, "+");
-      auth.updateUserLikelist(ImgNamePair.id);
+      await store.likeResource(ImgNamePair.id, "+");
+      await auth.updateUserLikelist(ImgNamePair.id);
+      await store.loadResources();
     }
     else{
-      store.likeTileset(ImgNamePair.id, "-");
-      auth.updateUserLikelist(ImgNamePair.id);
+      await store.likeResource(ImgNamePair.id, "-");
+      await auth.updateUserLikelist(ImgNamePair.id);
+      await store.loadResources();
     }
   };
 
