@@ -25,13 +25,14 @@ export default function ResourceScreen(){
     const { store } = useContext(GlobalStoreContext);
     const [text, setText] = useState("");
 
-
     useEffect(() => {                                   
-        // let url = window.location.href;
-        // let indexBeforeURL = url.lastIndexOf("/");
-        // let loadingListID = url.substring(indexBeforeURL+1);
-        store.setCurrentResource(store.currentResource._id);
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
+        // store.closeCurrentResource();
+        store.setCurrentResource(loadingListID);
     }, []);
+    
 
     const handleReturnCommunity = () => {
         store.closeCurrentResource();
@@ -56,17 +57,27 @@ export default function ResourceScreen(){
     </IconButton>
 
     /* replace # with download number*/
+    let downloadNumber = 0;
+    if(store.currentResource){
+        downloadNumber = store.currentResource.Downloads;
+    }
     let downloadButton = 
     <IconButton>
         <DownloadIcon/>
-        <Typography> {store.currentResource.Downloads} </Typography>
+        <Typography> {downloadNumber} </Typography>
     </IconButton>
 
+
+
     /* replace # with like number*/
+    let likeNumber = 0;
+    if(store.currentResource){
+        likeNumber = store.currentResource.Like;
+    }
     let likeButton = 
     <IconButton>
         <ThumbUpOffAltIcon/>
-        <Typography> {store.currentResource.Like} </Typography>
+        <Typography> {likeNumber} </Typography>
     </IconButton>
 
     let starButton =
@@ -74,6 +85,10 @@ export default function ResourceScreen(){
         <StarBorderIcon/>
     </IconButton>
 
+    let imageSourceText = "";
+    if(store.currentResource){
+        imageSourceText = store.currentResource.Image;
+    }
     let resourceImage = 
     <Card>
         <CardMedia
@@ -81,29 +96,42 @@ export default function ResourceScreen(){
         alt="Satoshi Wins"
         height="265px"
         width='100%'
-        image={store.currentResource.Image}
+        image={imageSourceText}
         sx={{mb:'0%', ml:'0%',mt:'0%'}}
         />
     </Card>
 
     // C: inside the typograph, replace it with resource description
+
+    let textDescription = "";
+    if(store.currentResource){
+        textDescription = store.currentResource.Description;
+    }
     let resourceDescription =
     <Box>
         <Typography variant="h5">
-            {store.currentResource.Description}
+            {textDescription}
         </Typography>
     </Box>
 
     // C: inside the typograph, replace it with resource name
+    let textName = ""
+    if(store.currentResource){
+        textName = store.currentResource.Name;
+    }
     let resourceName = 
     <Box>
-        <Typography variant="h4"> {store.currentResource.Name} </Typography>
+        <Typography variant="h4"> {textName} </Typography>
     </Box>
 
     // C: inside the typograph, replace it with author
+    let textAuthor = ""
+    if(store.currentResource){
+        textAuthor = store.currentResource.Author;
+    }
     let resourceAuthor =
     <Box>
-        <Typography variant="h6"> By: {store.currentResource.Author} </Typography>
+        <Typography variant="h6"> By: {textAuthor} </Typography>
     </Box>
 
     let handleSubmit =  (event) =>{
@@ -114,7 +142,10 @@ export default function ResourceScreen(){
     }
 
     // C: comment board
-    let comments = store.currentResource.Comments;
+    let comments = [];
+    if(store.currentResource){
+        comments = store.currentResource.Comments;
+    }
 
     let commentBoard = 
     <Box class='resource-bottom'>

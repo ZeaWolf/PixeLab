@@ -69,7 +69,7 @@ function GlobalStoreContextProvider(props) {
                     currentTilesetName: store.currentTilesetName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     resourceList: store.resourceList,
-                    currentResource: payload.currentResource,
+                    currentResource: payload.Resource,
                 })
             }
             case GlobalStoreActionType.CLOSING_A_RESOURCE: {
@@ -281,7 +281,7 @@ function GlobalStoreContextProvider(props) {
                 let resourceID = resource._id;
                 storeReducer({
                     type: GlobalStoreActionType.LOADING_A_RESOURCE,
-                    payload: {currentResource: resource}
+                    payload: {Resource: resource}
                 })
                 history.push("/resource/"+resourceID);
             }
@@ -315,7 +315,7 @@ function GlobalStoreContextProvider(props) {
                 console.log("post comment comment: " + comment);
                 response = await api.updateResource(id, resource);
                 if(response.data.success){
-                    // await store.setCurrentResource(id);
+                    store.setCurrentResource(id);
                 }
             }
         }catch(err){
