@@ -318,6 +318,59 @@ function AuthContextProvider(props) {
         })
     }
 
+    auth.updateUserLikelist = async function (id){
+        let payload = {
+            id: auth.user._id,
+            list: "likeList",
+            itemId: id,
+        }
+        try{
+            const response = await api.updateLists(payload);   
+            if (response.status === 200) {
+
+                var index = auth.user.likeList.indexOf(id)
+                if (index !== -1) {
+                    auth.user.likeList.splice(index, 1);
+                }
+                else{
+                    auth.user.likeList.push(id)
+                }
+                console.log("爱爱爱爱你");
+                console.log(auth.user.likeList);
+            }
+        }catch(err){
+            const message = err.response.data.errorMessage;
+            auth.showErrorModal(message);
+        }
+    }
+
+    auth.updateUserCollectionlist = async function (id){
+        let payload = {
+            id: auth.user._id,
+            list: "collectionList",
+            itemId: id,
+        }
+        try{
+            const response = await api.updateLists(payload);   
+            if (response.status === 200) {
+
+                var index = auth.user.collectionList.indexOf(id)
+                if (index !== -1) {
+                    auth.user.collectionList.splice(index, 1);
+                }
+                else{
+                    auth.user.collectionList.push(id)
+                }
+                console.log("爱爱爱爱你,才怪");
+                console.log(auth.user.collectionList);
+                history.push("/community/");
+            }
+        }catch(err){
+            const message = err.response.data.errorMessage;
+            auth.showErrorModal(message);
+        }
+    }
+
     return (
         <AuthContext.Provider value={{
             auth

@@ -12,6 +12,11 @@ import Button from '@mui/material/Button';
 import { GlobalStoreContext } from '../store';
 import AuthContext from '../auth'
 import { useContext, useState, useEffect } from 'react'
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
+import DownloadIcon from '@mui/icons-material/Download';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 export default function CommunityResourceCard(props) {
   const { ImgNamePair } = props;
@@ -22,9 +27,56 @@ export default function CommunityResourceCard(props) {
     store.setCurrentResource(ImgNamePair.id);
   }
 
-  function handleShare(){
-   
+  function handleLike(event){
+    event.stopPropagation();
+    if (auth.user.likeList.includes(ImgNamePair.id)==false){
+      store.likeTileset(ImgNamePair.id, "+");
+      auth.updateUserLikelist(ImgNamePair.id);
+    }
+    else{
+      store.likeTileset(ImgNamePair.id, "-");
+      auth.updateUserLikelist(ImgNamePair.id);
+    }
   };
+
+
+  function handleDownload(event){
+    event.stopPropagation();
+    store.handleDownload(ImgNamePair.id);
+  };
+
+  function handleCollection(event){
+    event.stopPropagation();
+    auth.updateUserCollectionlist(ImgNamePair.id);
+  };
+
+  let likeButton = 
+    <Button size="small" onClick={handleLike}>
+      <ThumbUpOffAltIcon/>
+      <Typography> {ImgNamePair.like} </Typography>
+    </Button>
+
+  if(auth.user.likeList.includes(ImgNamePair.id)==true){
+    likeButton = 
+      <Button size="small" onClick={handleLike}>
+        <ThumbUpIcon/>
+        <Typography> {ImgNamePair.like} </Typography>
+      </Button>
+  }
+  
+  let CollectionButton = 
+    <Button size="small" onClick={handleCollection}>
+      <StarBorderIcon/>
+      <Typography></Typography>
+    </Button>
+
+  if(auth.user.collectionList.includes(ImgNamePair.id)==true){
+    CollectionButton = 
+      <Button size="small" onClick={handleCollection}>
+        <StarIcon/>
+        <Typography></Typography>
+      </Button>
+  }
 
   return (
     <Grid item xs={3}>
@@ -43,8 +95,15 @@ export default function CommunityResourceCard(props) {
         </Typography>
       </CardContent>
       <CardActions height="20">
-        <Button size="small" onClick={handleShare}>Share</Button>
-        <Button size="small">Learn More</Button>
+        {likeButton}
+
+        <Button size="small" onClick={handleDownload}>
+          <DownloadIcon/>
+          <Typography> {ImgNamePair.downloads} </Typography>
+        </Button>
+
+        {CollectionButton}
+
       </CardActions>
 
     </Card>

@@ -49,7 +49,7 @@ createTileset = async(req, res) => {
 updateTileset = async(req, res) => {
     try{
         const body = req.body;
-        console.log("updateTile: " + JSON.stringify(body));
+        // console.log("updateTile: " + JSON.stringify(body));
         if(!body){
             return res.status(400).json({
                 success: false,
@@ -58,7 +58,7 @@ updateTileset = async(req, res) => {
         }
         // find the tileset based on _id
         Tileset.findOne({ _id: req.params.id}, (err, tileset) => {
-            console.log("tileset found: " + JSON.stringify(tileset));
+            // console.log("tileset found: " + JSON.stringify(tileset));
             if(err){
                 return res.status(404).json({
                     err,
@@ -85,7 +85,7 @@ updateTileset = async(req, res) => {
             tileset
                 .save()
                 .then(() => {
-                    console.log("SUCESS!!!");
+                    // console.log("SUCESS!!!");
                     return res.status(200).json({
                         success: true,
                         id: tileset._id,
@@ -208,7 +208,7 @@ createTile = async(req, res) => {
 
         // create a tile based on the request's body
         const tile = new Tile(body);
-        console.log("creating tileset: " + JSON.stringify(tile));
+        // console.log("creating tileset: " + JSON.stringify(tile));
         
         // if creation of the tile not success
         if(!tile){
@@ -263,7 +263,7 @@ getTileById = async (req, res) => {
 updateTile = async (req, res) => {
     try{
         const body = req.body;
-        console.log("updateTile: " + JSON.stringify(body));
+        // console.log("updateTile: " + JSON.stringify(body));
         if(!body){
             return res.status(400).json({
                 success: false,
@@ -272,7 +272,7 @@ updateTile = async (req, res) => {
         }
         // find the tile based on _id
         Tile.findOne({ _id: req.params.id}, (err, tile) => {
-            console.log("Tile found: " + JSON.stringify(tile));
+            // console.log("Tile found: " + JSON.stringify(tile));
             if(err){
                 return res.status(404).json({
                     err,
@@ -294,7 +294,7 @@ updateTile = async (req, res) => {
             tile
                 .save()
                 .then(() => {
-                    console.log("SUCESS!!!");
+                    // console.log("SUCESS!!!");
                     return res.status(200).json({
                         success: true,
                         id: tile._id,

@@ -90,6 +90,7 @@ getLoggedIn = async (req, res) => {
                     likeList: loggedInUser.likeList,
                     mapList: loggedInUser.mapList,
                     tilesetList: loggedInUser.tilesetList,
+                    _id: loggedInUser._id,
                 }
             }).send();
         }catch(err){
@@ -120,7 +121,7 @@ loginUser = async (req, res) => {
                 })
         }
 
-        console.log(existingUser)
+        // console.log(existingUser)
         const isValidPassword = bcrypt.compareSync(password, existingUser.passwordHash);
         if( !isValidPassword ){
             return res
@@ -131,7 +132,7 @@ loginUser = async (req, res) => {
                 })
         }
 
-        console.log(isValidPassword);
+        // console.log(isValidPassword);
         const token = auth.signToken(existingUser);
 
         await res.cookie("token", token, {
@@ -148,6 +149,7 @@ loginUser = async (req, res) => {
                 likeList: existingUser.likeList,
                 mapList: existingUser.mapList,
                 tilesetList: existingUser.tilesetList,
+                _id: existingUser._id
             }
         }).send();
     }catch (err) {
@@ -281,33 +283,46 @@ updateLists = async(req, res) => {
         if(!user) return res.status(400).json({ errorMessage: "User not found!"});
 
         var index;
+        console.log("55555")
         switch(list){
             case "collectionList":
                 if( (index = user.collectionList.indexOf(itemId)) == -1){
                     user.collectionList.push(itemId);
+                    user.save();
                 }else{
-                    user.collectionList.slice(index, 1);
+                    user.collectionList.splice(index, 1);
+                    user.save();
                 }
                 break;
             case "likeList":
                 if( (index = user.likeList.indexOf(itemId)) == -1){
+                    console.log("chengzhi is gay")
+                    console.log(user)
                     user.likeList.push(itemId);
+                    user.save();
+                    console.log(user)
                 }else{
-                    user.likeList.slice(index, 1);
+                    console.log("GG boy")
+                    user.likeList.splice(index, 1);
+                    user.save();
                 }
                 break;
             case "mapList":
                 if( (index = user.mapList.indexOf(itemId)) == -1){
                     user.mapList.push(itemId);
+                    user.save();
                 }else{
-                    user.mapList.slice(index, 1);
+                    user.mapList.splice(index, 1);
+                    user.save();
                 }
                 break;
             case "tilesetList":
                 if( (index = user.tilesetList.indexOf(itemId)) == -1){
                     user.tilesetList.push(itemId);
+                    user.save();
                 }else{
-                    user.tilesetList.slice(index, 1);
+                    user.tilesetList.splice(index, 1);
+                    user.save();
                 }
                 break;
         }

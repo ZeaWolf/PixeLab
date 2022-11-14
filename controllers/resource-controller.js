@@ -49,7 +49,7 @@ createResource = (req, res) => {
 updateResource = async(req, res) => {
     try{
         const body = req.body;
-        console.log("updateResource: " + JSON.stringify(body));
+        // console.log("updateResource: " + JSON.stringify(body));
         if(!body){
             return res.status(400).json({
                 success: false,
@@ -58,7 +58,7 @@ updateResource = async(req, res) => {
         }
         // find the resource based on _id
         Resource.findOne({ _id: req.params.id}, (err, resource) => {
-            console.log("resource found: " + JSON.stringify(resource));
+            // console.log("resource found: " + JSON.stringify(resource));
             if(err){
                 return res.status(404).json({
                     err,

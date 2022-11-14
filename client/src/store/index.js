@@ -392,6 +392,53 @@ function GlobalStoreContextProvider(props) {
         })
     };
 
+    store.likeTileset = async function(id, type){
+        try{
+            let response = await api.getResourceById(id);
+            console.log("shugui ohoh");
+            console.log(response);
+            if(response.data.success){
+                let resource = response.data.resource;
+                console.log(resource);
+                if(type=="+"){
+                    resource.Like ++;
+                }
+                else if(type=="-"){
+                    resource.Like --;
+                }
+                // async function updateTileset(id, tileset){
+                response = await api.updateResource(id, resource);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+                store.loadResources();
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    store.handleDownload = async function(id){
+        try{
+            let response = await api.getResourceById(id);
+            console.log("shugui ohoh");
+            console.log(response);
+            if(response.data.success){
+                let resource = response.data.resource;
+                console.log(resource);
+                resource.Downloads ++;
+                // async function updateTileset(id, tileset){
+                response = await api.updateResource(id, resource);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+                store.loadResources();
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
     return (
         <GlobalStoreContext.Provider value={{
             store
