@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import IconButton from '@mui/material/IconButton';
@@ -23,16 +23,31 @@ import NavigationBar from './NavigationBar';
 export default function ResourceScreen(){
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+    const [text, setText] = useState("");
 
-    // useEffect(() => {                                   
-    //     let url = window.location.href;
-    //     let indexBeforeURL = url.lastIndexOf("/");
-    //     let loadingListID = url.substring(indexBeforeURL+1);
-    //     store.setCurrentResource(loadingListID);
-    // }, []);
+
+    useEffect(() => {                                   
+        // let url = window.location.href;
+        // let indexBeforeURL = url.lastIndexOf("/");
+        // let loadingListID = url.substring(indexBeforeURL+1);
+        store.setCurrentResource(store.currentResource._id);
+    }, []);
 
     const handleReturnCommunity = () => {
         store.closeCurrentResource();
+    }
+
+    const handlePostComment = async () => {
+        console.log("handleUpdateText:" + text);
+        let currentComment = [auth.user.userName, text];
+        console.log(currentComment);
+        let id = store.currentResource._id;
+        store.postComment(id, currentComment);
+    }
+
+    const handleUpdateText = (event) => {
+        event.preventDefault();
+        setText(event.target.value);
     }
 
     let returnButton = 
@@ -63,7 +78,7 @@ export default function ResourceScreen(){
     <Card>
         <CardMedia
         component="img"
-        alt="Pikachu"
+        alt="Satoshi Wins"
         height="265px"
         width='100%'
         image={store.currentResource.Image}
@@ -88,7 +103,7 @@ export default function ResourceScreen(){
     // C: inside the typograph, replace it with author
     let resourceAuthor =
     <Box>
-        <Typography variant="h6"> By: author </Typography>
+        <Typography variant="h6"> By: {store.currentResource.Author} </Typography>
     </Box>
 
     let handleSubmit =  (event) =>{
@@ -99,31 +114,38 @@ export default function ResourceScreen(){
     }
 
     // C: comment board
+    let comments = store.currentResource.Comments;
+
     let commentBoard = 
     <Box class='resource-bottom'>
         <Box class='resource-commentboard'>
-            <list>
-                {/*  */}
-                <ResourceScreenCommentCard></ResourceScreenCommentCard>
-                <ResourceScreenCommentCard></ResourceScreenCommentCard>
-                <ResourceScreenCommentCard></ResourceScreenCommentCard>
-                <ResourceScreenCommentCard></ResourceScreenCommentCard>
-                <ResourceScreenCommentCard></ResourceScreenCommentCard>
-            </list>
+            <List>
+                {
+                    comments.map((key) => (
+                    <ResourceScreenCommentCard
+                        NameCommentPair= {{user: key[0], comment: key[1]}}
+                    />
+                    ))
+                }
+            </List>
         </Box>
-        <Box component="form" noValidate onSubmit={handleSubmit} class = "resource-commentboard-textfield">
+        <Box class = "resource-commentboard-textfield">
             <TextField
+                disabled = {!auth.loggedIn}
                 name="send-comment-textfield"
                 id="send-comment-textfile"
                 label="Add Comment"
+                onChange={handleUpdateText}
+                hintText="Message Field"
                 required
                 fullWidth
                 inputProps={{style: {fontSize:12}}}
-                // onKeyPress={(e)=>{if(e.key === "Enter" && e.target.value != ""){handleSubmit}}}
+                // onKeyPress={(e)=>{if(e.key === "Enter" && e.target.value != ""){console.log("dick")}}}
             />
             <IconButton
-                type="submit"
+                disabled = {!auth.loggedIn}
                 variant="contained"
+                onClick={handlePostComment}
             >
                 Send
             </IconButton>
@@ -173,25 +195,5 @@ export default function ResourceScreen(){
                 {commentBoard}
             </Box>
         </Box>
-        // <Grid container spacing={0} className='right-resource-screen'>
-        //     <Grid item xs={1} height='7%'>
-        //         {returnButton}
-        //     </Grid>
-        //     <Grid item xs={9} height='7%'>
-        //         {resourceName}
-        //     </Grid>
-        //     <Grid item xs={2} height='7%'>
-        //         {resourceAuthor}
-        //     </Grid>
-        //     <Grid item xs={6} height='41%'>
-        //         {resourceImage}
-        //     </Grid>
-        //     <Grid item xs={6} height='41%'>
-        //         {resourceDescription}
-        //     </Grid>
-        //     <Grid>
-
-        //     </Grid>
-        // </Grid>
     );
 }

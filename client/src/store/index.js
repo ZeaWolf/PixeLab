@@ -304,6 +304,24 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    // THIS FUNCTION WILL POST A COMMENT TO A SPECIFIC RESOURCE BY ID
+    store.postComment = async function(id, comment){
+        try{
+            let response = await api.getResourceById(id);
+            if(response.data.success){
+                let resource = response.data.resource;
+                resource.Comments.push(comment)
+                console.log("post comment id: " + id);
+                console.log("post comment comment: " + comment);
+                response = await api.updateResource(id, resource);
+                if(response.data.success){
+                    // await store.setCurrentResource(id);
+                }
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     store.createNewTileset = async function () {
         let newTilesetName = "Untitled";
@@ -340,12 +358,13 @@ function GlobalStoreContextProvider(props) {
 
     store.publishTileset = async function(id, text){
         const response = await api.getTilesetById(id);
+        console.log(auth.user);
         if (response.data.success) {
             let tileset = response.data.data;
             let payload = {
                 Type:           "tileset",
                 Name:           tileset.Name,
-                Author:         tileset.OwnerEmail,
+                Author:         auth.user.userName,
                 Image:          tileset.Source,
                 Source:         tileset.Source,
                 Like:           0,
