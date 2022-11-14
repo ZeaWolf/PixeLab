@@ -2,9 +2,12 @@ import { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import DownloadIcon from '@mui/icons-material/Download';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 import { Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -56,18 +59,49 @@ export default function ResourceScreen(){
         <KeyboardReturnIcon/>
     </IconButton>
 
+
+    async function handleDownload(event){
+        event.stopPropagation();
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
+        await store.handleDownload(loadingListID);
+        if(store.currentResource.Type == "tileset"){
+            const link = document.createElement('a');
+            link.download = `${store.currentResource.Name}.png`;
+            link.href = store.currentResource.Source;
+            link.click();
+        }
+        await store.setCurrentResource(loadingListID);
+    }
     /* replace # with download number*/
     let downloadNumber = 0;
     if(store.currentResource){
         downloadNumber = store.currentResource.Downloads;
     }
     let downloadButton = 
-    <IconButton>
+    <IconButton onClick={handleDownload}>
         <DownloadIcon/>
         <Typography> {downloadNumber} </Typography>
     </IconButton>
 
 
+    async function handleLike(event){
+        event.stopPropagation();
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
+        if (auth.user.likeList.includes(loadingListID)==false){
+            await store.likeResource(loadingListID, "+");
+            await auth.updateUserLikelist(loadingListID);
+            await store.setCurrentResource(loadingListID);
+        }
+        else{
+            await store.likeResource(loadingListID, "-");
+            await auth.updateUserLikelist(loadingListID);
+            await store.setCurrentResource(loadingListID);
+        }
+    };
 
     /* replace # with like number*/
     let likeNumber = 0;
@@ -75,15 +109,39 @@ export default function ResourceScreen(){
         likeNumber = store.currentResource.Like;
     }
     let likeButton = 
-    <IconButton>
+    <Button onClick={handleLike}>
         <ThumbUpOffAltIcon/>
         <Typography> {likeNumber} </Typography>
-    </IconButton>
+    </Button>
 
+    if(auth.user && store.currentResource && auth.user.likeList.includes(store.currentResource._id)==true){
+        likeButton = 
+        <Button onClick={handleLike}>
+            <ThumbUpIcon/>
+            <Typography> {likeNumber} </Typography>
+        </Button>
+    }
+
+
+    async function handleCollection(event){
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
+        event.stopPropagation();
+        await auth.updateUserCollectionlist(loadingListID);
+        await store.setCurrentResource(loadingListID);
+      };
     let starButton =
-    <IconButton>
+    <Button onClick={handleCollection}>
         <StarBorderIcon/>
-    </IconButton>
+    </Button>
+    if(auth.user && store.currentResource && auth.user.collectionList.includes(store.currentResource._id)==true){
+        starButton = 
+        <Button onClick={handleCollection}>
+            <StarIcon/>
+        </Button>
+    }
+
 
     let imageSourceText = "";
     if(store.currentResource){
