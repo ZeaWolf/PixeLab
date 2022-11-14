@@ -3,8 +3,9 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 
 function ResourceScreenCommentCard(props){
-    let userName = "Example User"
-    let commentText = "Example Comment Text Example Comment Text Example Comment Text Example Comment Text Example Comment Text Example Comment Text Example Comment Text Example Comment Text Example Comment Text "
+    const {NameCommentPair} = props;
+    let userName = NameCommentPair.user;
+    let commentText = NameCommentPair.comment;
     let separator = ": "
     let commentCard = 
         <ListItem>
