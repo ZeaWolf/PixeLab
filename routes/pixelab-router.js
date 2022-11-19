@@ -12,8 +12,10 @@ router.post('/register', UserController.registerUser)
 router.get('/loggedIn', UserController.getLoggedIn)
 router.post('/login', UserController.loginUser)
 router.get('/logout', UserController.logoutUser)
+
 router.post('/forgot-password', UserController.forgotPassword)
 router.put('/reset-password', auth.isResetTokenValid, UserController.resetPassword)
+
 router.put('/lists', auth.verify, UserController.updateLists)
 
 //For resource controllers
