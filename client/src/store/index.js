@@ -32,8 +32,9 @@ export const GlobalStoreActionType = {
     LOAD_RESOURCES: "LOAD_RESOURCES",
     LOADING_A_RESOURCE: "LOADING_A_RESOURCE",
     CLOSING_A_RESOURCE: "CLOSING_A_RESOURCE",
-    
-    // LOAD_MAPS: "LOAD_MAPS"
+    LOAD_MAPS: "LOAD_MAPS",
+    LOADING_A_MAP: "LOADING_A_MAP",
+    DELETING_A_MAP: "DELETING_A_MAP",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -47,10 +48,13 @@ function GlobalStoreContextProvider(props) {
         tilesetList: [],
         currentTilesetId: null,
         currentTilesetName:null,
+        currentMapId: null,
+        currentMapName: null,
         TilesetIdForDelete: null,
+        MapIdForDelete: null,
         resourceList: [],
         currentResource: null,
-        // maps: []
+        mapList: []
     });
     const history = useHistory();
 
@@ -67,9 +71,13 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
-                    currentResource: payload.Resource,
+                    currentResource: payload.Map,
+                    mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.CLOSING_A_RESOURCE: {
@@ -77,9 +85,13 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: null,
+                    mapList: store.mapList,
                 })
             }
 
@@ -89,9 +101,13 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: payload,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
                 });
             }
             // GET ALL THE RESOURCE LIST
@@ -100,9 +116,13 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: payload,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.CREATE_NEW_LIST: {
@@ -110,9 +130,13 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.DELETE_TILESET: {
@@ -120,9 +144,13 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.LOADING_A_TILESET: {
@@ -130,9 +158,27 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: payload.id,
                     currentTilesetName: payload.name,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
+                })
+            }
+            case GlobalStoreActionType.LOADING_A_MAP: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTilesetId: payload.id,
+                    currentTilesetName: payload.name,
+                    currentMapId: payload.id,
+                    currentMapNmae: payload.name,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.DELETING_A_TILESET: {
@@ -140,9 +186,27 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: payload,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
+                })
+            }
+            case GlobalStoreActionType.DELETING_A_MAP: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: payload,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.PUBLISH_TILESET: {
@@ -150,9 +214,27 @@ function GlobalStoreContextProvider(props) {
                     tilesetList: store.tilesetList,
                     currentTilesetId: store.currentTilesetId,
                     currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
                     TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
+                    mapList: store.mapList,
+                })
+            }
+            case GlobalStoreActionType.LOAD_MAPS: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: payload,
                 })
             }
             default:
@@ -175,6 +257,26 @@ function GlobalStoreContextProvider(props) {
             }
             console.log(response.data);
             history.push("/tileset-editor");
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    store.loadMapPage = async function(id) {
+        try{
+            console.log(id);
+            let response = await api.getMapById(id);
+            if (response.data.success){
+                let map = response.data.data;  // these 2 lines can be deleted since the payload can just be id in this case
+                let mapID = map._id;       // but whatever
+                let mapName = map.Name;
+                storeReducer({
+                    type: GlobalStoreActionType.LOADING_A_MAP,
+                    payload: {id: mapID, name: mapName}
+                })
+            }
+            console.log(response.data);
+            history.push("/map-editor");
         }catch(err){
             console.log("err:"+err);
         }
@@ -229,6 +331,24 @@ function GlobalStoreContextProvider(props) {
         }
     };
 
+    store.RenameMap = async function (id,name){
+        try{
+            let response = await api.getMapById(id);
+            if(response.data.success){
+                let map = response.data.data;
+                map.Name = name;
+                // async function updateTileset(id, tileset){
+                response = await api.updateMap(id, map);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+                store.loadMaps();
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    };
+
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadTilesets = async function () {
@@ -245,6 +365,26 @@ function GlobalStoreContextProvider(props) {
                 console.log("API FAILED TO GET THE LIST PAIRS");
             }
             
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    store.loadMaps = async function () {
+        try{
+            const response = await api.getMapLists();
+            console.log("fkfkfkfkfkfkfk"+responese.data);
+            if (response.data.success) {
+                let pairsArray = response.data.data;
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_MAPS,
+                    payload: pairsArray
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+            console.log(store.mapList);
         }catch(err){
             console.log("err:"+err);
         }
@@ -452,6 +592,13 @@ function GlobalStoreContextProvider(props) {
     store.MarkDeleteTileset = function (id){
         storeReducer({
             type: GlobalStoreActionType.DELETING_A_TILESET,
+            payload:id,
+        })
+    };
+
+    store.MarkDeleteMap = function (id){
+        storeReducer({
+            type: GlobalStoreActionType.DELETING_A_MAP,
             payload:id,
         })
     };
