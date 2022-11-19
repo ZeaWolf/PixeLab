@@ -323,6 +323,50 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    // this method will create a new layer
+    store.createLayer = async function (name = "layer", height = 32, width = 32){
+        let payload = {
+            Name: name,
+            Type: "layer",
+            Height: height,
+            Width: width,
+            Content: [],
+            Locked: false,
+            Opacity: 1,
+            Visible: false,
+            X: 0,
+            Y: 0
+        };
+        const response = await api.createLayer(payload);
+        if(response.data.success){
+            console.log(response.data.layer);
+            return response.data.layer;
+        }
+    }
+
+    // this method will create a new map
+    store.createMap = async function (name = "untiled", height = 32, width = 32){
+        let newLayer = await store.createLayer("layer", height, width);
+        let layers = [];
+        layers.push(newLayer);
+        let payload = {
+            OwnerEmail: auth.user.email,
+            Name: name,
+            Type: "map",
+            ShareList: [],
+            Source: "",
+            Height: height,
+            Width: width,
+            Layers: layers,
+            Tileset: "",
+        }
+        const response = await api.createMap(payload);
+        if (response.data.success) {
+            console.log(response.data.map);
+            history.push("/home");
+        }
+    }
+
     store.createNewTileset = async function () {
         let newTilesetName = "Untitled";
         let payload = {

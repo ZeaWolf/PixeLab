@@ -35,6 +35,10 @@ export default function HomeScreen() {
         'borderRadius': '12px',
     })
 
+    async function handleCreateNewMap() {
+        await store.createMap("untitle",32, 32);
+    }
+
     function handleCreateNewTileset() {
         store.createNewTileset();
     }
@@ -80,7 +84,7 @@ export default function HomeScreen() {
                         <Box>
                             <Grid container spacing={2}>
                                 <Grid item xs={4} md={2}>
-                                    <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
+                                    <AddButton onClick = {handleCreateNewMap}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
                                 </Grid>
                                 <Grid item xs={6} md={10}>
                                     <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
