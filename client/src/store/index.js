@@ -353,9 +353,10 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadTilesets = async function () {
         try{
-            const response = await api.getTilesetLists();
+            const response = await api.getTilesetLists(auth.user._id);
             if (response.data.success) {
                 let pairsArray = response.data.data;
+                console.log(pairsArray);
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_TILESETS,
                     payload: pairsArray
@@ -372,10 +373,10 @@ function GlobalStoreContextProvider(props) {
 
     store.loadMaps = async function () {
         try{
-            const response = await api.getMapLists();
-            console.log("fkfkfkfkfkfkfk"+responese.data);
+            const response = await api.getMapLists(auth.user._id);
             if (response.data.success) {
                 let pairsArray = response.data.data;
+                console.log(pairsArray);
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_MAPS,
                     payload: pairsArray
@@ -384,7 +385,6 @@ function GlobalStoreContextProvider(props) {
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
             }
-            console.log(store.mapList);
         }catch(err){
             console.log("err:"+err);
         }
@@ -504,6 +504,7 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             console.log(response.data.map);
             history.push("/home");
+            store.loadMaps();
         }
     }
 
