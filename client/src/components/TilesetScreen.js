@@ -57,7 +57,7 @@ export default function TilesetScreen() {
         if (!canvas){
             return;
         }
-        const img = canvas.getImage({rect: imageBounds});
+        const img = LC.renderSnapshotToImage(canvas.getSnapshot(['shapes', 'imageSize', 'colors', 'position', 'scale']), {rect: imageBounds});
         if(!img) return;
         try{
             const imgData = img.toDataURL();
