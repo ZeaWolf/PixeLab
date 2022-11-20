@@ -6,6 +6,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AuthContext from '../auth'
+import { useHistory } from 'react-router-dom'
 // var tilesetContainer = document.querySelector(".tileset-container");
 // var tilesetSelection = document.querySelector(".tileset-container_selection");
 
@@ -18,8 +19,9 @@ export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     var isMouseDown = false;
     var currentLayer = 0;
-
     var selection = [0, 0];
+
+    const history = useHistory();
 
     useEffect(() => {
         // store.closeCurrentList();
@@ -34,6 +36,10 @@ export default function MapScreen() {
         justifyContent: 'center',
         backgroundColor: "rgb(235, 225, 225)"
     };
+
+    // if(!tilesetImage){
+    //     history.push("/map")
+    // }
     
     if(tilesetImage){
         var layers = [
@@ -41,8 +47,6 @@ export default function MapScreen() {
             {
                //Structure is "x-y": ["tileset_x", "tileset_y"]
                //EXAMPLE: "1-1": [3, 4],
-               "0-0": [0, 0],
-               "1-0": [1, 0],
             },
             //Middle
             {},
@@ -120,10 +124,11 @@ export default function MapScreen() {
             });
          }
 
+
         tilesetImage.onload = function() {
         // layers = defaultState;
             draw();
-        // setLayer(0);
+            // setLayer(0);
         }
 
         tilesetImage.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
@@ -158,16 +163,16 @@ export default function MapScreen() {
                     </div>
                     <div className="card">
                         <div className="card_center-column">
-                            <canvas style={styles} width="800%" height="500%">
+                            <canvas style={styles} width="800%" height="640%">
                             </canvas>
                         </div>
                         <div className="card_body">
                             <div className="card_body_2">
                                 <label style={{color: "black"}}>Layer: </label>
                                 <div className="layers">
-                                    <li><button tile-layer="2">Layer 1</button></li>
-                                    <li><button tile-layer="1">Layer 2</button></li>
-                                    <li><button tile-layer="0">Layer 3</button></li>
+                                    {/* <li><button class="layer" onclick={setLayer(0)} tile-layer="2">Layer 1</button></li>
+                                    <li><button class="layer" onclick={setLayer(1)} tile-layer="1">Layer 2</button></li>
+                                    <li><button class="layer" onclick={setLayer(2)} tile-layer="0">Layer 3</button></li> */}
                                 </div>
                                 <button>+</button>
                                 <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
