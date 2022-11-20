@@ -30,6 +30,7 @@ export default function MapScreen() {
         setTilesetContainer(document.querySelector(".tileset-container"));
         setCanvas(document.querySelector("canvas"));
 
+        tilesetImage = document.querySelector("#tileset-source");
         console.log(tilesetImage)
         console.log(tilesetSelection)
         console.log(tilesetContainer)
@@ -134,10 +135,17 @@ export default function MapScreen() {
             });
          }
 
-        // setLayer = function (layer){
-        //     console.log("True")
-        // }
-
+        function setLayer(newLayer) {
+            //Update the layer
+            currentLayer = newLayer;
+         
+            //Update the UI to show updated layer
+            var oldActiveLayer = document.querySelector(".layer.active");
+            if (oldActiveLayer) {
+               oldActiveLayer.classList.remove("active");
+            }
+            document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
+         }
 
         tilesetImage.onload = function() {
         // layers = defaultState;

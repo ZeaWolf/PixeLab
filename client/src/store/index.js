@@ -47,10 +47,8 @@ function GlobalStoreContextProvider(props) {
     // THESE ARE ALL THE THINGS OUR DATA STORE WILL MANAGE
     const [store, setStore] = useState({
         tilesetList: [],
-        currentTilesetId: null,
-        currentTilesetName:null,
-        currentMapId: null,
-        currentMapName: null,
+        currentTileset: null,
+        currentMap: null,
         TilesetIdForDelete: null,
         MapIdForDelete: null,
         resourceList: [],
@@ -70,24 +68,20 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOADING_A_RESOURCE: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
-                    currentResource: payload.Map,
+                    currentResource: payload.Resource,
                     mapList: store.mapList,
                 })
             }
             case GlobalStoreActionType.CLOSING_A_RESOURCE: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -100,10 +94,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_TILESETS: {
                 return setStore({
                     tilesetList: payload,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -115,10 +107,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_RESOURCES: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: payload,
@@ -129,10 +119,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.DELETE_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -143,10 +131,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOADING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: payload.id,
-                    currentTilesetName: payload.name,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: payload.ctileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -157,10 +143,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOADING_A_MAP: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: payload.id,
-                    currentTilesetName: payload.name,
-                    currentMapId: payload.id,
-                    currentMapNmae: payload.name,
+                    currentTileset: store.currentTileset,
+                    currentMap: payload.cmap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -171,10 +155,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.DELETING_A_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: payload,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -185,10 +167,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.DELETING_A_MAP: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: payload,
                     resourceList: store.resourceList,
@@ -199,10 +179,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.PUBLISH_TILESET: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -213,10 +191,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_MAPS: {
                 return setStore({
                     tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -227,10 +203,8 @@ function GlobalStoreContextProvider(props) {
             case GlobalStoreActionType.LOAD_HOMESCREEN: {
                 return setStore({
                     tilesetList: payload.tileset,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: store.resourceList,
@@ -248,12 +222,10 @@ function GlobalStoreContextProvider(props) {
             console.log(id);
             let response = await api.getTilesetById(id);
             if (response.data.success){
-                let tileset = response.data.data;  // these 2 lines can be deleted since the payload can just be id in this case
-                let tilesetID = tileset._id;       // but whatever
-                let tilesetName = tileset.Name;
+                let tileset = response.data.data;
                 storeReducer({
                     type: GlobalStoreActionType.LOADING_A_TILESET,
-                    payload: {id: tilesetID, name: tilesetName}
+                    payload: {ctileset: tileset}
                 })
             }
             console.log(response.data);
@@ -268,12 +240,10 @@ function GlobalStoreContextProvider(props) {
             console.log(id);
             let response = await api.getMapById(id);
             if (response.data.success){
-                let map = response.data.map;  // these 2 lines can be deleted since the payload can just be id in this case
-                let mapID = map._id;       // but whatever
-                let mapName = map.Name;
+                let map = response.data.map;
                 storeReducer({
                     type: GlobalStoreActionType.LOADING_A_MAP,
-                    payload: {id: mapID, name: mapName}
+                    payload: {cmap: map}
                 })
             }
             console.log("fkkfkfkfkfkfklllllll");
@@ -630,10 +600,10 @@ function GlobalStoreContextProvider(props) {
             if(response.data.success){
                 let resource = response.data.resource;
                 console.log(resource);
-                if(type=="+"){
+                if(type==="+"){
                     resource.Like ++;
                 }
-                else if(type=="-"){
+                else if(type==="-"){
                     resource.Like --;
                 }
                 // async function updateTileset(id, tileset){

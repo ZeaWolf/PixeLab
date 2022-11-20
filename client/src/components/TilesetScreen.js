@@ -34,7 +34,7 @@ export default function TilesetScreen() {
         setIsPublish(false);
     }
     const setPublishDescriptionFunction = (text) => {
-        store.publishTileset(store.currentTilesetId, text);
+        store.publishTileset(store.currentTileset._id, text);
         setIsPublish(false);
     }
 
@@ -42,7 +42,7 @@ export default function TilesetScreen() {
         setCanvas(lc);
         //console.log("Initial ID: " + store.currentTilesetId);
         //console.log(store.currentTilesetId)
-        let uploadedImage = await store.loadTilesetResourceImage(store.currentTilesetId);
+        let uploadedImage = await store.loadTilesetResourceImage(store.currentTileset._id);
             if(uploadedImage != null){
                 const img = new Image();
                 img.src = uploadedImage;
@@ -63,7 +63,7 @@ export default function TilesetScreen() {
             const imgData = img.toDataURL();
             setImage(imgData);
             //console.log("URL: " + typeof imgData);
-            await store.saveTilesetSpace(store.currentTilesetId, imgData);
+            await store.saveTilesetSpace(store.currentTileset._id, imgData);
         }
         catch(err){
             console.log(err);
@@ -97,7 +97,7 @@ export default function TilesetScreen() {
 
         // Get name
         const link = document.createElement('a');
-        link.download = `${store.currentTilesetName}.png`;
+        link.download = `${store.currentTileset.Name}.png`;
         link.href = LC.renderSnapshotToImage(canvas.getSnapshot(['shapes', 'imageSize', 'colors', 'position', 'scale']), {rect: imageBounds}).toDataURL();
         //link.href = canvas.getImage({rect: imageBounds}).toDataURL();
         link.click();
@@ -108,7 +108,7 @@ export default function TilesetScreen() {
     }
 
     const publishTileset = async event => {
-        let response = await api.getTilesetById(store.currentTilesetId);
+        let response = await api.getTilesetById(store.currentTileset._id);
         if(response.data.success){
             let tilesetSource = response.data.data.Source;
             if(tilesetSource !== ""){
