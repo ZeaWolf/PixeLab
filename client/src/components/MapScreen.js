@@ -17,8 +17,9 @@ export default function MapScreen() {
     const [tilesetSelection, setTilesetSelection] = useState("");
     const [tilesetContainer, setTilesetContainer] = useState("");
     const [canvas, setCanvas] = useState("");
-    const [currentLayer, setCurrentLayer] = useState(0);
+    // const [currentLayer, setCurrentLayer] = useState(0);
     const [layers, setLayers] = useState([{},{},{}])
+    let currentLayer = 0;
     var isMouseDown = false;
     //var currentLayer = 0;
     var selection = [0, 0];
@@ -78,13 +79,15 @@ export default function MapScreen() {
             if (mouseEvent.shiftKey) {
                delete layers[currentLayer][key];
             } else {
+                console.log("currentLayer: " + currentLayer + "pos: " + "key" + " with selection(x, y): " + selection[0] + ", " + selection[1])
                layers[currentLayer][key] = [selection[0], selection[1]];
             }
             draw();
          }
 
-        canvas.addEventListener("mousedown", () => {
+        canvas.addEventListener("mousedown", (event) => {
             isMouseDown = true;
+            addTile(event);
          });
          canvas.addEventListener("mouseup", () => {
             isMouseDown = false;
@@ -92,7 +95,7 @@ export default function MapScreen() {
          canvas.addEventListener("mouseleave", () => {
             isMouseDown = false;
          });
-         canvas.addEventListener("mousedown", addTile);
+        //  canvas.addEventListener("mousedown", addTile);
          canvas.addEventListener("mousemove", (event) => {
             if (isMouseDown) {
                addTile(event);
@@ -140,9 +143,10 @@ export default function MapScreen() {
             let newLayer = Number(event.target.getAttribute("tile-layer"));
 
             //Update the layer
-            setCurrentLayer(newLayer);
+            currentLayer = newLayer;
 
-            console.log("here is :" + layers[newLayer])
+            console.log("here is layer#" + newLayer + " with object array:" )
+            console.log(layers[newLayer])
             //Update the UI to show updated layer
             var oldActiveLayer = document.querySelector(".layer.active");
             if (oldActiveLayer) {
@@ -151,6 +155,7 @@ export default function MapScreen() {
             //document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
         }
 
+
         tilesetImage.onload = function() {
         // layers = defaultState;
             draw();
@@ -158,6 +163,17 @@ export default function MapScreen() {
         }
 
         tilesetImage.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
+    }
+    function importTileset(event){
+        const reader = new FileReader();
+        reader.addEventListener("load", ()=> {
+            var importImage = "";
+            importImage = reader.result;
+            tilesetImage.src = importImage;
+        })
+        if(event.target.files && event.target.files[0]){
+            reader.readAsDataURL(event.target.files[0]);
+        }
     }
 
     // tilesetImage.onload = function() {
@@ -182,7 +198,7 @@ export default function MapScreen() {
                     <div className="mapbanner">
                         <Button>New</Button>
                         <Button>Save</Button>
-                        <Button>Import</Button>
+                        <Button onClick={importTileset} component="label">Import <input type="file"hidden onChange={importTileset}/></Button>
                         <Button>Export</Button>
                         <Button>Publish</Button>
                         <Button>Share</Button>
