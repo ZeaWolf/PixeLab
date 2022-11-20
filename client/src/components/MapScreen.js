@@ -26,6 +26,7 @@ export default function MapScreen() {
     useEffect(() => {
         // store.closeCurrentList();
         console.log("FUCK")
+        tilesetImage = document.querySelector("#tileset-source");
         console.log(tilesetImage)
         // store.loadMaps();
     }, []);
@@ -37,10 +38,10 @@ export default function MapScreen() {
         backgroundColor: "rgb(235, 225, 225)"
     };
 
-    // if(!tilesetImage){
-    //     history.push("/map")
-    // }
-    
+    if(!tilesetImage){
+        history.push("/map/")
+    }
+
     if(tilesetImage){
         var layers = [
             //Bottom
@@ -124,6 +125,17 @@ export default function MapScreen() {
             });
          }
 
+        function setLayer(newLayer) {
+            //Update the layer
+            currentLayer = newLayer;
+         
+            //Update the UI to show updated layer
+            var oldActiveLayer = document.querySelector(".layer.active");
+            if (oldActiveLayer) {
+               oldActiveLayer.classList.remove("active");
+            }
+            document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
+         }
 
         tilesetImage.onload = function() {
         // layers = defaultState;
