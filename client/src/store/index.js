@@ -35,6 +35,7 @@ export const GlobalStoreActionType = {
     LOAD_MAPS: "LOAD_MAPS",
     LOADING_A_MAP: "LOADING_A_MAP",
     DELETING_A_MAP: "DELETING_A_MAP",
+    LOAD_HOMESCREEN: "LOAD_HOMESCREEN",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -121,20 +122,6 @@ function GlobalStoreContextProvider(props) {
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: payload,
-                    currentResource: store.currentResource,
-                    mapList: store.mapList,
-                })
-            }
-            case GlobalStoreActionType.CREATE_NEW_LIST: {
-                return setStore({
-                    tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
-                    TilesetIdForDelete: store.TilesetIdForDelete,
-                    MapIdForDelete: store.MapIdForDelete,
-                    resourceList: store.resourceList,
                     currentResource: store.currentResource,
                     mapList: store.mapList,
                 })
@@ -237,6 +224,20 @@ function GlobalStoreContextProvider(props) {
                     mapList: payload,
                 })
             }
+            case GlobalStoreActionType.LOAD_HOMESCREEN: {
+                return setStore({
+                    tilesetList: payload.tileset,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: payload.map,
+                })
+            }
             default:
                 return store;
         }
@@ -267,7 +268,7 @@ function GlobalStoreContextProvider(props) {
             console.log(id);
             let response = await api.getMapById(id);
             if (response.data.success){
-                let map = response.data.data;  // these 2 lines can be deleted since the payload can just be id in this case
+                let map = response.data.map;  // these 2 lines can be deleted since the payload can just be id in this case
                 let mapID = map._id;       // but whatever
                 let mapName = map.Name;
                 storeReducer({
@@ -275,8 +276,8 @@ function GlobalStoreContextProvider(props) {
                     payload: {id: mapID, name: mapName}
                 })
             }
-            console.log(response.data);
-            history.push("/map-editor");
+            console.log("fkkfkfkfkfkfklllllll");
+            history.push("/map/");
         }catch(err){
             console.log("err:"+err);
         }
@@ -335,7 +336,7 @@ function GlobalStoreContextProvider(props) {
         try{
             let response = await api.getMapById(id);
             if(response.data.success){
-                let map = response.data.data;
+                let map = response.data.map;
                 map.Name = name;
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
@@ -353,7 +354,7 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadTilesets = async function () {
         try{
-            const response = await api.getTilesetLists();
+            const response = await api.getTilesetLists(auth.user._id);
             if (response.data.success) {
                 let pairsArray = response.data.data;
                 storeReducer({
@@ -364,7 +365,6 @@ function GlobalStoreContextProvider(props) {
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
             }
-            
         }catch(err){
             console.log("err:"+err);
         }
@@ -372,8 +372,8 @@ function GlobalStoreContextProvider(props) {
 
     store.loadMaps = async function () {
         try{
-            const response = await api.getMapLists();
-            console.log("fkfkfkfkfkfkfk"+response.data);
+            const response = await api.getMapLists(auth.user._id);
+            console.log(response);
             if (response.data.success) {
                 let pairsArray = response.data.data;
                 storeReducer({
@@ -384,7 +384,25 @@ function GlobalStoreContextProvider(props) {
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
             }
-            console.log(store.mapList);
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    store.loadHomeScreen = async function(){
+        try{
+            const response_tileset = await api.getTilesetLists();
+            const response_map = await api.getMapLists();
+            if (response_tileset.data.success && response_map.data.success) {
+                let pairsArray_tileset = response_tileset.data.data;
+                let pairsArray_map = response_map.data.data;
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_HOMESCREEN,
+                    payload: {tileset: pairsArray_tileset, map: pairsArray_map}
+                });
+            }else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
         }catch(err){
             console.log("err:"+err);
         }
@@ -504,6 +522,7 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             console.log(response.data.map);
             history.push("/home");
+            store.loadMaps();
         }
     }
 
@@ -523,16 +542,7 @@ function GlobalStoreContextProvider(props) {
         const response = await api.createTileset(payload);
         console.log(response);
         if (response.data.success) {
-            // tps.clearAllTransactions();
-            let newTileset = response.data.tilesetList;
-            storeReducer({
-                type: GlobalStoreActionType.CREATE_NEW_TILESET,
-                payload: newTileset
-            }
-            );
-
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/home");//////
+            history.push("/home");
             store.loadTilesets();
         }
         else {
@@ -586,6 +596,16 @@ function GlobalStoreContextProvider(props) {
             // })
             store.TilesetIdForDelete = null;
             store.loadTilesets();
+        }
+    };
+
+    store.DeleteMapFile = async function(){
+        // let response_map = await api.getMapById(store.MapIdForDelete);
+        // console.log(response_map);
+        let response_delete = await api.deleteMap(store.MapIdForDelete);
+        if (response_delete.data.success) {
+            store.MapIdForDelete = null;
+            store.loadMaps();
         }
     };
 

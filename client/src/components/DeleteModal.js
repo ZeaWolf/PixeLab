@@ -22,20 +22,24 @@ function DeleteModal(){
 
     const handleClick = async (event) => {
         event.preventDefault();
-        await store.DeleteTilesetFile();    
+        if(store.TilesetIdForDelete != null){
+            await store.DeleteTilesetFile();    
+        }else{
+            await store.DeleteMapFile();    
+        }
     }
 
     
     return(
         <Modal
-            open={store.TilesetIdForDelete==null ? false: true}
+            open={(store.TilesetIdForDelete==null && store.MapIdForDelete==null)? false: true}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{display:'flex',alignItems:'center',justifyContent:'center'}}
         >
             <Typography align="center">
                 <Box sx={style}>
-                    <Alert variant="filled" severity="warning">Do you want to delete this tileset</Alert>
+                    <Alert variant="filled" severity="warning">Do you want to delete this?</Alert>
                     <Typography id="empty-line-guest-modal" mt={2}></Typography>
                     <Box display="flex" justifyContent="center" alignItems="center">
                     <Stack spacing={6} direction="row">

@@ -18,9 +18,7 @@ export default function HomeScreen() {
     const { store } = useContext(GlobalStoreContext);
 
     useEffect(() => {
-        // store.closeCurrentList();
-        store.loadTilesets();
-        store.loadMaps();
+        store.loadHomeScreen();
     }, []);
 
     const AddButton = styled(IconButton)({
@@ -35,8 +33,8 @@ export default function HomeScreen() {
         'borderRadius': '12px',
     })
 
-    async function handleCreateNewMap() {
-        await store.createMap("untitle",32, 32);
+    function handleCreateNewMap() {
+        store.createMap("untitle",32, 32);
     }
 
     function handleCreateNewTileset() {

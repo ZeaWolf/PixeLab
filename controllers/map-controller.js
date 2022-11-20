@@ -1,5 +1,6 @@
 const Map = require('../models/map-model');
 const Layer = require('../models/layer-model');
+const User = require('../models/user-model');
 
 // create a new map in the server
 createMap = async(req, res) => {
