@@ -159,23 +159,6 @@ export default function TilesetScreen() {
         tilesetPage = 
         <div className='full-screen'>
             <NavigationBar/>
-            <div className='right-screen'>
-                <div id="tileset-screen" className='literally-screen'>
-                    <Box>
-                        <Button>New</Button>
-                        <Button onClick={onSave}>Save</Button>
-                        <Button onClick={onImport} component="label">Import <input type="file"hidden onChange={onImport}/></Button>
-                        <Button onClick={onExport}>Export</Button>
-                        <Button onClick={publishTileset}>Publish</Button>
-                        <Button>Share</Button>
-                    </Box>
-                        <LC.LiterallyCanvasReactComponent
-                        // onInit={onInits}
-                        // imageURLPrefix="/literallycanvasimg"
-                        {...lcOptions}
-                        />
-                </div>
-            </div>
             <PublishErrorModal
                 hasSource = {hasSource}
                 setHasSourceFunction = {setHasSourceFunction}
@@ -185,6 +168,25 @@ export default function TilesetScreen() {
                 setNotPublishFunction = {setNotPublishFunction}
                 setPublishDescriptionFunction = {setPublishDescriptionFunction}
             />
+            <Box className='right-screen'>
+                <Box id="tileset-screen" >
+                    <Box id="tileset-toolbar">
+                        <Button >New</Button>
+                        <Button onClick={onSave}>Save</Button>
+                        <Button onClick={onImport} component="label">Import <input type="file"hidden onChange={onImport}/></Button>
+                        <Button onClick={onExport}>Export</Button>
+                        <Button onClick={publishTileset}>Publish</Button>
+                        <Button>Share</Button>
+                    </Box>
+                    <Box id="drawing-box">
+                        <LC.LiterallyCanvasReactComponent
+                            // onInit={onInits}
+                            // imageURLPrefix="/literallycanvasimg"
+                            {...lcOptions}
+                        />
+                    </Box>
+                </Box>
+            </Box>
         </div>
     }
 

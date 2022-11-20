@@ -89,16 +89,16 @@ export default function HomeScreen() {
             <NavigationBar/>
             <DeleteModal/>
             <div className='right-screen'>
-                <div id="home-screen">
+                <Box id='home-screen'>
                     {/* upper half screen 50% */}
-                    <div className='upper-half-screen'>
-                        <Box sx={{ backgroundColor: 'warning.light'}}>
-                            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-                                Maps
+                    <Box id='home-map-section'>
+                        <Box className='home-section-name'>
+                            <Typography ml={3} style={{color: 'black', fontSize: 20, fontWeight: "bold"}}>
+                                 Maps
                             </Typography>
                         </Box>
-                        <Box>
-                            <Grid container spacing={2}>
+                        <Box className='home-section-card'>
+                            <Grid className='home-grid' container spacing={2}>
                                 <Grid item xs={4} md={2}>
                                     <AddButton onClick = {handleCreateNewMap}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
                                 </Grid>
@@ -113,37 +113,32 @@ export default function HomeScreen() {
                                 </Grid>
                             </Grid>
                         </Box>
-                    </div>
+                    </Box>
                     {/* lower half screen 50% */}
-                    <div className='upper-half-screen'>
-                        <Box sx={{ backgroundColor: 'warning.light'}}>
-                            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
+                    <Box id='home-tileset-section'>
+                        <Box className='home-section-name' >
+                            <Typography ml={3} style={{color: 'black', fontSize: 20, fontWeight: "bold"}}>
                                 Tilesets
                             </Typography>
                         </Box>
-                        <Box>
-                            <Box>
-                                <Grid container spacing={2}>
-
-                                    <Grid item xs={4} md={2}>
-                                        <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
-                                    </Grid>
-                                    <Grid item xs={6} md={10}>
-                                    {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                                        <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
-                                        <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
-                                    </List> */}
-                                    <div id="lists-selector">
-                                        {
-                                            listCard_tilesets
-                                        }
-                                    </div>
-                                    </Grid>
+                        <Box className='home-section-card'>
+                            <Grid className='home-grid' container spacing={2}>
+                                <Grid item xs={4} md={2}>
+                                    <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
                                 </Grid>
-                            </Box>
+                                <Grid item xs={6} md={10}>
+                                {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+                                    <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
+                                    <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
+                                </List> */}
+                                    {
+                                        listCard_tilesets
+                                    }
+                                </Grid>
+                            </Grid>
                         </Box>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </div>
         </div>
     }
