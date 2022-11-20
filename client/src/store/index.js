@@ -373,7 +373,7 @@ function GlobalStoreContextProvider(props) {
     store.loadMaps = async function () {
         try{
             const response = await api.getMapLists();
-            console.log("fkfkfkfkfkfkfk"+responese.data);
+            console.log("fkfkfkfkfkfkfk"+response.data);
             if (response.data.success) {
                 let pairsArray = response.data.data;
                 storeReducer({
