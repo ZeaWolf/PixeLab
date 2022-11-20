@@ -20,7 +20,7 @@ export default function HomeScreen() {
     useEffect(() => {
         // store.closeCurrentList();
         store.loadTilesets();
-        // store.loadMaps();
+        store.loadMaps();
     }, []);
 
     const AddButton = styled(IconButton)({
@@ -35,17 +35,21 @@ export default function HomeScreen() {
         'borderRadius': '12px',
     })
 
+    async function handleCreateNewMap() {
+        await store.createMap("untitle",32, 32);
+    }
+
     function handleCreateNewTileset() {
         store.createNewTileset();
     }
 
 
-    let listCard = "";
-    let filteredPairs = store.tilesetList;
-    listCard = 
+    let listCard_tilesets = "";
+    let filteredPairs_tilesets = store.tilesetList;
+    listCard_tilesets = 
         <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
         {
-            filteredPairs.map((pair) => (
+            filteredPairs_tilesets.map((pair) => (
                 <HomeTilesetCard
                     key={pair._id}
                     tilesetList={pair}
@@ -55,6 +59,23 @@ export default function HomeScreen() {
             ))
         }
         </List>;
+
+    let listCard_maps = "";
+    let filteredPairs_maps = store.mapList;
+    listCard_maps = 
+        <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+        {
+            filteredPairs_maps.map((pair) => (
+                <HomeMapCard
+                    key={pair._id}
+                    mapList={pair}
+                    selected={false}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, mapID:pair._id, src:pair.Source}}
+                />
+            ))
+        }
+        </List>;
+
 
     let homePage = 
         <div className='full-screen'>
@@ -80,19 +101,16 @@ export default function HomeScreen() {
                         <Box className='home-section-card'>
                             <Grid className='home-grid' container spacing={2}>
                                 <Grid item xs={4} md={2}>
-                                    <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
+                                    <AddButton onClick = {handleCreateNewMap}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
                                 </Grid>
                                 <Grid item xs={6} md={10}>
-                                    <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                                        {/* <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/> */}
-                                    </List>
+                                    {/* <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+                                    </List> */}
+                                    <div id="lists-selector">
+                                        {
+                                            listCard_maps
+                                        }
+                                    </div>
                                 </Grid>
                             </Grid>
                         </Box>
@@ -115,7 +133,7 @@ export default function HomeScreen() {
                                     <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
                                 </List> */}
                                     {
-                                        listCard
+                                        listCard_tilesets
                                     }
                                 </Grid>
                             </Grid>

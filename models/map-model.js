@@ -9,11 +9,11 @@ const MapSchema = new Schema(
         Name:           {type: String, required: true},
         Type:           {type: String, required: true},
         ShareList:      {type: [String], required: true},
-        Source:         {type: String, required: true},    // used for download/export
+        Source:         {type: String, required: false},    // used for download/export
         Height:         {type: Number, required: true},
         Width:          {type: Number, required: true},
         Layers:         {type: [Layer], required: true},
-        Tileset:        {type: String, required: true}
+        Tileset:        {type: String, required: false}
     },
     {timestamps: true}
 );
