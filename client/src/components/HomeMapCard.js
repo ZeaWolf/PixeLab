@@ -24,7 +24,6 @@ export default function HomeMapCard(props) {
   const [text, setText] = useState("");
 
   const handleOpenMap = async event => {
-    console.log("HomeMapCardID: " + ImgNamePair.mapID);
     await store.loadMapPage(ImgNamePair.mapID);
   }
 

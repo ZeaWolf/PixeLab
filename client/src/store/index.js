@@ -237,7 +237,6 @@ function GlobalStoreContextProvider(props) {
 
     store.loadMapPage = async function(id) {
         try{
-            console.log(id);
             let response = await api.getMapById(id);
             if (response.data.success){
                 let map = response.data.map;
@@ -246,7 +245,6 @@ function GlobalStoreContextProvider(props) {
                     payload: {cmap: map}
                 })
             }
-            console.log("fkkfkfkfkfkfklllllll");
             history.push("/map/");
         }catch(err){
             console.log("err:"+err);
@@ -449,6 +447,14 @@ function GlobalStoreContextProvider(props) {
         }catch(err){
             console.log(err);
         }
+    }
+
+    store.updateLayer = async function (name = "untiled", height = 32, width = 32) {
+        let newLayer = await store.createLayer("layer", height, width);
+        let layers = store.currentMap;
+        layers.Layers.push(newLayer);
+        store.currentMap = layers;
+        const response = await api.updateMap(layers._id,layers);
     }
 
     // this method will create a new layer
