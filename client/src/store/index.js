@@ -336,7 +336,7 @@ function GlobalStoreContextProvider(props) {
         try{
             let response = await api.getMapById(id);
             if(response.data.success){
-                let map = response.data.data;
+                let map = response.data.map;
                 map.Name = name;
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
@@ -357,7 +357,6 @@ function GlobalStoreContextProvider(props) {
             const response = await api.getTilesetLists(auth.user._id);
             if (response.data.success) {
                 let pairsArray = response.data.data;
-                console.log(pairsArray);
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_TILESETS,
                     payload: pairsArray
@@ -377,7 +376,6 @@ function GlobalStoreContextProvider(props) {
             console.log(response);
             if (response.data.success) {
                 let pairsArray = response.data.data;
-                console.log(pairsArray);
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_MAPS,
                     payload: pairsArray
@@ -393,8 +391,8 @@ function GlobalStoreContextProvider(props) {
 
     store.loadHomeScreen = async function(){
         try{
-            const response_tileset = await api.getTilesetLists(auth.user._id);
-            const response_map = await api.getMapLists(auth.user._id);
+            const response_tileset = await api.getTilesetLists();
+            const response_map = await api.getMapLists();
             if (response_tileset.data.success && response_map.data.success) {
                 let pairsArray_tileset = response_tileset.data.data;
                 let pairsArray_map = response_map.data.data;
@@ -598,6 +596,16 @@ function GlobalStoreContextProvider(props) {
             // })
             store.TilesetIdForDelete = null;
             store.loadTilesets();
+        }
+    };
+
+    store.DeleteMapFile = async function(){
+        // let response_map = await api.getMapById(store.MapIdForDelete);
+        // console.log(response_map);
+        let response_delete = await api.deleteMap(store.MapIdForDelete);
+        if (response_delete.data.success) {
+            store.MapIdForDelete = null;
+            store.loadMaps();
         }
     };
 

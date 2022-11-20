@@ -30,7 +30,7 @@ export const createMap = (payload) => api.post(`/map`, payload)
 export const updateMap = (id, payload) => api.put(`/map/${id}`,payload)
 export const deleteMap = (id) => api.delete(`/map/${id}`)
 export const getMapById = (id) => api.get(`/map/${id}`)
-export const getMapLists = (payload) => api.get(`/maps`,payload)
+export const getMapLists = () => api.get(`/maps`)
 
 //Layer part
 export const createLayer = (payload) => api.post(`/layer`,payload)
@@ -44,7 +44,7 @@ export const createTileset = (payload) => api.post(`/tileset`,payload)
 export const updateTileset = (id, payload) => api.put(`/tileset/${id}`,payload)
 export const deleteTileset = (id) => api.delete(`/tileset/${id}`)
 export const getTilesetById = (id) => api.get(`/tileset/${id}`)
-export const getTilesetLists = (payload) => api.get(`/tilesets`,payload)
+export const getTilesetLists = () => api.get(`/tilesets`)
 
 //tile part
 export const createTile = (payload) => api.post('/tile',payload)
