@@ -12,11 +12,11 @@ import { useHistory } from 'react-router-dom'
 
 
 export default function MapScreen() {
-    var tilesetImage = document.querySelector("#tileset-source");
-    var tilesetSelection = document.querySelector(".tileset-container_selection");
-    var tilesetContainer = document.querySelector(".tileset-container");
-    let canvas = document.querySelector("canvas");
     const { auth } = useContext(AuthContext);
+    const [tilesetImage, setTilesetImage] = useState("");
+    const [tilesetSelection, setTilesetSelection] = useState("");
+    const [tilesetContainer, setTilesetContainer] = useState("");
+    const [canvas, setCanvas] = useState("");
     var isMouseDown = false;
     var currentLayer = 0;
     var selection = [0, 0];
@@ -25,8 +25,15 @@ export default function MapScreen() {
 
     useEffect(() => {
         // store.closeCurrentList();
-        console.log("FUCK")
+        setTilesetImage(document.querySelector("#tileset-source"));
+        setTilesetSelection(document.querySelector(".tileset-container_selection"));
+        setTilesetContainer(document.querySelector(".tileset-container"));
+        setCanvas(document.querySelector("canvas"));
+
         console.log(tilesetImage)
+        console.log(tilesetSelection)
+        console.log(tilesetContainer)
+        console.log(canvas)
         // store.loadMaps();
     }, []);
 
@@ -40,7 +47,10 @@ export default function MapScreen() {
     // if(!tilesetImage){
     //     history.push("/map")
     // }
-    
+    let setLayer = function (layer){
+        console.log("test");
+    }
+
     if(tilesetImage){
         var layers = [
             //Bottom
@@ -124,6 +134,10 @@ export default function MapScreen() {
             });
          }
 
+        // setLayer = function (layer){
+        //     console.log("True")
+        // }
+
 
         tilesetImage.onload = function() {
         // layers = defaultState;
@@ -170,9 +184,9 @@ export default function MapScreen() {
                             <div className="card_body_2">
                                 <label style={{color: "black"}}>Layer: </label>
                                 <div className="layers">
-                                    {/* <li><button class="layer" onclick={setLayer(0)} tile-layer="2">Layer 1</button></li>
+                                    <li><button class="layer" onclick={setLayer(0)} tile-layer="2">Layer 1</button></li>
                                     <li><button class="layer" onclick={setLayer(1)} tile-layer="1">Layer 2</button></li>
-                                    <li><button class="layer" onclick={setLayer(2)} tile-layer="0">Layer 3</button></li> */}
+                                    <li><button class="layer" onclick={setLayer(2)} tile-layer="0">Layer 3</button></li>
                                 </div>
                                 <button>+</button>
                                 <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
