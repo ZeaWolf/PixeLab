@@ -17,8 +17,10 @@ export default function MapScreen() {
     const [tilesetSelection, setTilesetSelection] = useState("");
     const [tilesetContainer, setTilesetContainer] = useState("");
     const [canvas, setCanvas] = useState("");
+    const [currentLayer, setCurrentLayer] = useState(0);
+    const [layers, setLayers] = useState([{},{},{}])
     var isMouseDown = false;
-    var currentLayer = 0;
+    //var currentLayer = 0;
     var selection = [0, 0];
 
     const history = useHistory();
@@ -29,8 +31,6 @@ export default function MapScreen() {
         setTilesetSelection(document.querySelector(".tileset-container_selection"));
         setTilesetContainer(document.querySelector(".tileset-container"));
         setCanvas(document.querySelector("canvas"));
-
-        tilesetImage = document.querySelector("#tileset-source");
         console.log(tilesetImage)
         console.log(tilesetSelection)
         console.log(tilesetContainer)
@@ -48,22 +48,22 @@ export default function MapScreen() {
     // if(!tilesetImage){
     //     history.push("/map")
     // }
-    let setLayer = function (layer){
+    let setLayer = async (event)=>{
         console.log("test");
     }
 
     if(tilesetImage){
-        var layers = [
-            //Bottom
-            {
-               //Structure is "x-y": ["tileset_x", "tileset_y"]
-               //EXAMPLE: "1-1": [3, 4],
-            },
-            //Middle
-            {},
-            //Top
-            {}
-         ];
+        // var layers = [
+        //     //Bottom
+        //     {
+        //        //Structure is "x-y": ["tileset_x", "tileset_y"]
+        //        //EXAMPLE: "1-1": [3, 4],
+        //     },
+        //     //Middle
+        //     {},
+        //     //Top
+        //     {}
+        //  ];
 
          tilesetContainer.addEventListener("mousedown", (event) => {
             selection = getCoords(event);
@@ -83,7 +83,7 @@ export default function MapScreen() {
             draw();
          }
 
-         canvas.addEventListener("mousedown", () => {
+        canvas.addEventListener("mousedown", () => {
             isMouseDown = true;
          });
          canvas.addEventListener("mouseup", () => {
@@ -135,17 +135,21 @@ export default function MapScreen() {
             });
          }
 
-        function setLayer(newLayer) {
+        setLayer = async (event) => {
+
+            let newLayer = Number(event.target.getAttribute("tile-layer"));
+
             //Update the layer
-            currentLayer = newLayer;
-         
+            setCurrentLayer(newLayer);
+
+            console.log("here is :" + layers[newLayer])
             //Update the UI to show updated layer
             var oldActiveLayer = document.querySelector(".layer.active");
             if (oldActiveLayer) {
                oldActiveLayer.classList.remove("active");
             }
-            document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
-         }
+            //document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
+        }
 
         tilesetImage.onload = function() {
         // layers = defaultState;
@@ -192,9 +196,9 @@ export default function MapScreen() {
                             <div className="card_body_2">
                                 <label style={{color: "black"}}>Layer: </label>
                                 <div className="layers">
-                                    <li><button class="layer" onclick={setLayer(0)} tile-layer="2">Layer 1</button></li>
-                                    <li><button class="layer" onclick={setLayer(1)} tile-layer="1">Layer 2</button></li>
-                                    <li><button class="layer" onclick={setLayer(2)} tile-layer="0">Layer 3</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
                                 </div>
                                 <button>+</button>
                                 <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
@@ -204,7 +208,7 @@ export default function MapScreen() {
                                     <label style={{color: "black"}}>Tileset: </label>
                                     <div className="tileset-container">
                                         <img id="tileset-source"/>
-                                        <div class="tileset-container_selection"></div>
+                                        <div className="tileset-container_selection"></div>
                                     </div>
                                 </aside>
                             </div>
