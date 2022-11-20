@@ -42,14 +42,18 @@ export default function TilesetScreen() {
         setCanvas(lc);
         //console.log("Initial ID: " + store.currentTilesetId);
         //console.log(store.currentTilesetId)
-        let uploadedImage = await store.loadTilesetResourceImage(store.currentTileset._id);
-            if(uploadedImage != null){
-                const img = new Image();
-                img.src = uploadedImage;
+        try{
+            let uploadedImage = await store.loadTilesetResourceImage(store.currentTileset._id);
+                if(uploadedImage != null){
+                    const img = new Image();
+                    img.src = uploadedImage;
 
-                // load tileset
-                let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
-                lc.saveShape(shape);
+                    // load tileset
+                    let shape = LC.createShape("Image", { x: 0, y: 0, image: img, scale: 1 });
+                    lc.saveShape(shape);
+            }
+        }catch(err){
+            console.log("TilesetID undefine: " + err);
         }
     }
 
@@ -97,7 +101,12 @@ export default function TilesetScreen() {
 
         // Get name
         const link = document.createElement('a');
-        link.download = `${store.currentTileset.Name}.png`;
+        if(store.currentTileset){
+            link.download = `${store.currentTileset.Name}.png`;
+        }
+        else{
+            link.download = `guestUntitled.png`;
+        }
         link.href = LC.renderSnapshotToImage(canvas.getSnapshot(['shapes', 'imageSize', 'colors', 'position', 'scale']), {rect: imageBounds}).toDataURL();
         //link.href = canvas.getImage({rect: imageBounds}).toDataURL();
         link.click();
@@ -108,14 +117,16 @@ export default function TilesetScreen() {
     }
 
     const publishTileset = async event => {
-        let response = await api.getTilesetById(store.currentTileset._id);
-        if(response.data.success){
-            let tilesetSource = response.data.data.Source;
-            if(tilesetSource !== ""){
-                setIsPublish(true);
-            }
-            else{
-                setHasSourceFunction(true);
+        if(store.currentTileset){
+            let response = await api.getTilesetById(store.currentTileset._id);
+            if(response.data.success){
+                let tilesetSource = response.data.data.Source;
+                if(tilesetSource !== ""){
+                    setIsPublish(true);
+                }
+                else{
+                    setHasSourceFunction(true);
+                }
             }
         }
     }
