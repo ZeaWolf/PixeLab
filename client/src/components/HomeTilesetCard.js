@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -8,13 +8,11 @@ import { Box, IconButton, CardActionArea } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { GlobalStoreContext } from '../store';
-import { useHistory } from 'react-router-dom'
-import DeleteModal from './DeleteModal';
+// import { useHistory } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 export default function HomeTilesetCard(props) {
   const { ImgNamePair} = props;
   const { store } = useContext(GlobalStoreContext);
-  const history = useHistory();
   const [editActive, setEditActive] = useState(false);
   const [text, setText] = useState("");
 
