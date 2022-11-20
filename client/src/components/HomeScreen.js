@@ -18,8 +18,7 @@ export default function HomeScreen() {
     const { store } = useContext(GlobalStoreContext);
 
     useEffect(() => {
-        store.loadTilesets();
-        store.loadMaps();
+        store.loadHomeScreen();
     }, []);
 
     const AddButton = styled(IconButton)({

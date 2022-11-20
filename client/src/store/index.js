@@ -35,6 +35,7 @@ export const GlobalStoreActionType = {
     LOAD_MAPS: "LOAD_MAPS",
     LOADING_A_MAP: "LOADING_A_MAP",
     DELETING_A_MAP: "DELETING_A_MAP",
+    LOAD_HOMESCREEN: "LOAD_HOMESCREEN",
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -121,20 +122,6 @@ function GlobalStoreContextProvider(props) {
                     TilesetIdForDelete: store.TilesetIdForDelete,
                     MapIdForDelete: store.MapIdForDelete,
                     resourceList: payload,
-                    currentResource: store.currentResource,
-                    mapList: store.mapList,
-                })
-            }
-            case GlobalStoreActionType.CREATE_NEW_LIST: {
-                return setStore({
-                    tilesetList: store.tilesetList,
-                    currentTilesetId: store.currentTilesetId,
-                    currentTilesetName: store.currentTilesetName,
-                    currentMapId: store.currentMapId,
-                    currentMapNmae: store.currentMapName,
-                    TilesetIdForDelete: store.TilesetIdForDelete,
-                    MapIdForDelete: store.MapIdForDelete,
-                    resourceList: store.resourceList,
                     currentResource: store.currentResource,
                     mapList: store.mapList,
                 })
@@ -235,6 +222,20 @@ function GlobalStoreContextProvider(props) {
                     resourceList: store.resourceList,
                     currentResource: store.currentResource,
                     mapList: payload,
+                })
+            }
+            case GlobalStoreActionType.LOAD_HOMESCREEN: {
+                return setStore({
+                    tilesetList: payload.tileset,
+                    currentTilesetId: store.currentTilesetId,
+                    currentTilesetName: store.currentTilesetName,
+                    currentMapId: store.currentMapId,
+                    currentMapNmae: store.currentMapName,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: payload.map,
                 })
             }
             default:
@@ -365,7 +366,6 @@ function GlobalStoreContextProvider(props) {
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
             }
-            
         }catch(err){
             console.log("err:"+err);
         }
@@ -374,6 +374,7 @@ function GlobalStoreContextProvider(props) {
     store.loadMaps = async function () {
         try{
             const response = await api.getMapLists(auth.user._id);
+            console.log(response);
             if (response.data.success) {
                 let pairsArray = response.data.data;
                 console.log(pairsArray);
@@ -383,6 +384,25 @@ function GlobalStoreContextProvider(props) {
                 });
             }
             else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    store.loadHomeScreen = async function(){
+        try{
+            const response_tileset = await api.getTilesetLists(auth.user._id);
+            const response_map = await api.getMapLists(auth.user._id);
+            if (response_tileset.data.success && response_map.data.success) {
+                let pairsArray_tileset = response_tileset.data.data;
+                let pairsArray_map = response_map.data.data;
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_HOMESCREEN,
+                    payload: {tileset: pairsArray_tileset, map: pairsArray_map}
+                });
+            }else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
             }
         }catch(err){
@@ -524,16 +544,7 @@ function GlobalStoreContextProvider(props) {
         const response = await api.createTileset(payload);
         console.log(response);
         if (response.data.success) {
-            // tps.clearAllTransactions();
-            let newTileset = response.data.tilesetList;
-            storeReducer({
-                type: GlobalStoreActionType.CREATE_NEW_TILESET,
-                payload: newTileset
-            }
-            );
-
-            // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            history.push("/home");//////
+            history.push("/home");
             store.loadTilesets();
         }
         else {
