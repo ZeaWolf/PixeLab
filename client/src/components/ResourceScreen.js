@@ -88,6 +88,9 @@ export default function ResourceScreen(){
 
     async function handleLike(event){
         event.stopPropagation();
+        if(!auth.user){
+            return;
+          }
         let url = window.location.href;
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
@@ -124,10 +127,13 @@ export default function ResourceScreen(){
 
 
     async function handleCollection(event){
+        event.stopPropagation();
+        if(!auth.user){
+            return;
+          }
         let url = window.location.href;
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
-        event.stopPropagation();
         await auth.updateUserCollectionlist(loadingListID);
         await store.setCurrentResource(loadingListID);
       };

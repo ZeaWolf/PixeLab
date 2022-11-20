@@ -31,6 +31,9 @@ export default function CommunityResourceCard(props) {
 
   async function handleLike(event){
     event.stopPropagation();
+    if(!auth.user){
+      return;
+    }
     if (auth.user.likeList.includes(ImgNamePair.id)==false){
       await store.likeResource(ImgNamePair.id, "+");
       await auth.updateUserLikelist(ImgNamePair.id);
@@ -51,6 +54,9 @@ export default function CommunityResourceCard(props) {
 
   async function handleCollection(event){
     event.stopPropagation();
+    if(!auth.user){
+      return;
+    }
     await auth.updateUserCollectionlist(ImgNamePair.id);
     history.push("/community/");
   };
