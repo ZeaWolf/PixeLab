@@ -9,6 +9,9 @@ function LayerCard(props){
     async function handleDeleteLayer(){
         console.log("call store delete function")
     }
+    async function handleToggleVisibility(){
+         
+    }
     let visibilityButton =
         <IconButton><VisibilityIcon/></IconButton>
 
