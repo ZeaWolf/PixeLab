@@ -1,5 +1,5 @@
 
-import { Fab, Typography, Box, Button } from '@mui/material';
+import { Fab, Typography, Box, Button,IconButton } from '@mui/material';
 import React, { useContext, useEffect, useState,useRef } from 'react'
 import NavigationBar from './NavigationBar'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -7,18 +7,24 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AuthContext from '../auth'
 import { useHistory } from 'react-router-dom'
+import { GlobalStoreContext } from '../store'
+import LayerCard from './LayerCard';
+import List from '@mui/material/List'
+import AddIcon from '@mui/icons-material/Add';
 // var tilesetContainer = document.querySelector(".tileset-container");
 // var tilesetSelection = document.querySelector(".tileset-container_selection");
 
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
     const [tilesetImage, setTilesetImage] = useState("");
     const [tilesetSelection, setTilesetSelection] = useState("");
     const [tilesetContainer, setTilesetContainer] = useState("");
     const [canvas, setCanvas] = useState("");
     const [currentLayer, setCurrentLayer] = useState(0);
-    const [layers, setLayers] = useState([{},{},{}])
+    const [layers, setLayers] = useState([{},{},{}]);
+    // var layers = [];
     var isMouseDown = false;
     //var currentLayer = 0;
     var selection = [0, 0];
@@ -31,11 +37,12 @@ export default function MapScreen() {
         setTilesetSelection(document.querySelector(".tileset-container_selection"));
         setTilesetContainer(document.querySelector(".tileset-container"));
         setCanvas(document.querySelector("canvas"));
-        console.log(tilesetImage)
-        console.log(tilesetSelection)
-        console.log(tilesetContainer)
-        console.log(canvas)
+        // console.log(tilesetImage)
+        // console.log(tilesetSelection)
+        // console.log(tilesetContainer)
+        // console.log(canvas)
         // store.loadMaps();
+        // setLayer();
     }, []);
 
     const styles = {
@@ -78,8 +85,10 @@ export default function MapScreen() {
             if (mouseEvent.shiftKey) {
                delete layers[currentLayer][key];
             } else {
-               layers[currentLayer][key] = [selection[0], selection[1]];
+                layers[currentLayer][key]=[selection[0], selection[1]];
             }
+            console.log(layers);
+            console.log("currentlayer:-------------------------------"+currentLayer);
             draw();
          }
 
@@ -107,7 +116,6 @@ export default function MapScreen() {
          }
 
         function draw() {
-            console.log(canvas);
             var ctx = canvas.getContext("2d");
             ctx.clearRect(0, 0, canvas.width, canvas.height);
          
@@ -141,8 +149,7 @@ export default function MapScreen() {
 
             //Update the layer
             setCurrentLayer(newLayer);
-
-            console.log("here is :" + layers[newLayer])
+            console.log("this is  new layer;---------------------"+newLayer);
             //Update the UI to show updated layer
             var oldActiveLayer = document.querySelector(".layer.active");
             if (oldActiveLayer) {
@@ -174,6 +181,28 @@ export default function MapScreen() {
     //     </div>
 
     // if(auth.loggedIn){
+
+    function handleCreateLayer(){
+        store.updateLayer();
+    }
+
+    let layerList = "";
+    let current_map = store.currentMap.Layers;
+    layerList = 
+        <List style={{ display: 'flex', flexDirection: 'column',flexWrap:'wrap', padding: 0}}>
+            {
+                current_map.map((pair) => (
+                    <LayerCard
+                        key={pair._id}
+                        layer={pair}
+                    />
+                ))
+            }
+        </List>;
+
+
+
+
     const  mapPage = 
         <div className='full-screen'>
             <NavigationBar/>
@@ -194,16 +223,18 @@ export default function MapScreen() {
                         </div>
                         <div className="card_body">
                             <div className="card_body_2">
+
                                 <label style={{color: "black"}}>Layer: </label>
+                                <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton>
                                 <div className="layers">
-                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    
+                                    {
+                                        layerList
+                                    }
+                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
                                 </div>
-                                <button>+</button>
-                                <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
-                                <button><ArrowDownwardIcon sx={{ fontSize: 10 }}></ArrowDownwardIcon></button>
-                                <button><ArrowUpwardIcon sx={{ fontSize: 10 }}></ArrowUpwardIcon></button>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
                                     <div className="tileset-container">
@@ -211,6 +242,7 @@ export default function MapScreen() {
                                         <div className="tileset-container_selection"></div>
                                     </div>
                                 </aside>
+
                             </div>
                         </div>
                     </div>
