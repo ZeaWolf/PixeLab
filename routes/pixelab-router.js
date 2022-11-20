@@ -20,7 +20,7 @@ router.put('/lists', auth.verify, UserController.updateLists)
 
 //For resource controllers
 router.post('/resource',auth.verify, ResourceController.createResource)
-router.put('/resource/:id', auth.verify, ResourceController.updateResource)
+router.put('/resource/:id', ResourceController.updateResource)
 router.get('/resource/:id', ResourceController.getResourceById)
 router.get('/resources', ResourceController.getResourceLists)
 
