@@ -7,3 +7,4 @@ server/.env
 client/.DS_Store
 server/.DS_Store
 .env
+client/src/omponents/shuguiTest.js

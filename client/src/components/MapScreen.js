@@ -19,6 +19,7 @@ export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [tilesetImage, setTilesetImage] = useState("");
+    const [matrix, setMatrix] = useState(Array.from({length: 20},()=> Array.from({length: 25}, () => "777")));
     const [tilesetSelection, setTilesetSelection] = useState("");
     const [tilesetContainer, setTilesetContainer] = useState("");
     const [canvas, setCanvas] = useState("");
@@ -169,6 +170,7 @@ export default function MapScreen() {
         tilesetImage.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
     }
     function importTileset(event){
+        console.log(matrix);
         const reader = new FileReader();
         reader.addEventListener("load", ()=> {
             var importImage = "";
@@ -241,12 +243,12 @@ export default function MapScreen() {
                                 <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton>
                                 <div className="layers">
                                     
-                                    {
+                                    {/* {
                                         layerList
-                                    }
-                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    } */}
+                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
