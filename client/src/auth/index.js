@@ -166,8 +166,6 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/home/");
-                store.loadTilesets();
-                // store.loadMaps();
             }
         }catch(err){
             // part 2

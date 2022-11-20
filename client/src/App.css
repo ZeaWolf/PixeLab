@@ -2,10 +2,10 @@
     background-color: var(--swatch-primary);
     font-family: "Lexend Exa";
     position: absolute;
-    width: 80%;
-    left: 10%;
-    height: 90%;
-    top: 5%; 
+    width: 100%;
+    left: 0%;
+    height: 100%;
+    top: 0%; 
     }
 
 #app-root {
@@ -320,7 +320,7 @@
 /*
 Chengzhi Dong
 */
-
+/* Welcome */
 #welcome-screen {
   background-image: url("img/welcomebackground.png");
   padding-left: 10%;
@@ -330,43 +330,58 @@ Chengzhi Dong
   height:75%;
   border-radius: 10px;
   background-size: cover;
-  /* color: #FFFEC3; */
-  /* font-size: 5vw;
-  font-weight: bold;
-  border-color: black;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 10px;
-  padding-left: 10%;
-  padding-right: 10%;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  height:80%;
-  width:85%;
-  text-align: center;
-  vertical-align: center; */
 }
 
-#tileset-screen{
-
-}
-
-/* .home-add-button{
+/* Home */
+#home-screen{
   position: relative;
-  background-color: #008CBA;
-  border-width: 5px;
-  color: white;
-  margin-left: 20%;
-  margin-top: 15%;
-  height: 60%;
-  width: 60%;
-  border-radius: 12px;
-} */
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+}
+#home-map-section{
+  position: relative;
+  top: 0%;
+  left: 0%;
+  height: 50%;
+  width: 100%;
+
+}
+#home-tileset-section{
+  position: relative;
+  top: 0%;
+  left: 0%;
+  height: 50%;
+  width: 100%;
+}
+
+.home-section-name{
+  position: relative;
+  background-color:bisque;
+  top: 0%;
+  left: 0%;
+  height: 10%;
+  width: 100%;
+}
+.home-section-card{
+  position: relative;
+  top: 5%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+}
+.home-grid{
+  position: relative;
+  top: 5%;
+  left: 0%;
+  height: 80%;
+}
 #home-map-list{
   position: relative;
   width: 98%;
   height: 95%;
-  margin: 1%;
+  margin-left: 1%;
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
@@ -376,7 +391,7 @@ Chengzhi Dong
   position: relative;
   width: 98%;
   height: 95%;
-  margin: 1%;
+  margin-left: 1%;
   display: flex;
   flex-direction: row;
   overflow-x: scroll;
@@ -398,6 +413,32 @@ Chengzhi Dong
   min-width: 20%;
   min-height: 70%;
   margin: 3%;
+}
+
+
+/* Tileset */
+#tileset-screen{
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+#tileset-toolbar{
+  position: relative;
+  top: 0%;
+  left: 0%;
+  height: 5%;
+  width: 100%;
+}
+/* .tileset-button{
+  background-color: #3166c7;
+  height: 100%;
+} */
+#drawing-box{
+  position: relative;
+  top: 0%;
+  left: 0%;
+  height: 95%;
+  width: 100%;
 }
 /*
 Chengzhi Dong
@@ -436,9 +477,9 @@ stephen tang
 #community-screen{
   position: absolute;
   width: 93%;
-  top: 2%;
-  height: 99%;
-  right: -0.1%;
+  top: 1%;
+  height: 100%;
+  right: 0%;
   overflow-y: scroll;
   background-color: #b3e5ff;
 }

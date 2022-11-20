@@ -1,5 +1,6 @@
 const Map = require('../models/map-model');
 const Layer = require('../models/layer-model');
+const User = require('../models/user-model');
 
 // create a new map in the server
 createMap = async(req, res) => {
@@ -155,7 +156,8 @@ getMapById = async (req, res) => {
 // get MapLists
 getMapLists = async (req, res) => {
     try{
-        await Map.find({}, (err, map) => {
+        const loggedInUser = await User.findOne({ _id: req.userId });
+        await Map.find({OwnerEmail: loggedInUser.email}, (err, map) => {
             if(err){
                 return res.status(400).json({ success: false, error: err})
             }
@@ -163,7 +165,7 @@ getMapLists = async (req, res) => {
                 console.log("no map");
                 return res
                     .status(404)
-                    .json({success: false, error: 'Maps not found'})
+                    .json({success: false, error: 'Map not found'})
             }
             else{
                 let pairs = [];
@@ -175,7 +177,7 @@ getMapLists = async (req, res) => {
                         OwnerEmail: list.OwnerEmail,
                         Name: list.Name,
                         Type: list.Type,
-                        ShareList: list.ShareList,
+                        SharedList: list.SharedList,
                         Source: list.Source,
                         Height: list.Height,
                         Width: list.Width,
@@ -185,7 +187,7 @@ getMapLists = async (req, res) => {
                     };
                     pairs.push(pair);
                 }
-                return res.status(200).json({success: true, idInfoPairs: pairs})
+                return res.status(200).json({success: true, data: map})
             }
         }).catch(err => console.log(err))
     }catch(err){

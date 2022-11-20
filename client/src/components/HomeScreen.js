@@ -18,9 +18,7 @@ export default function HomeScreen() {
     const { store } = useContext(GlobalStoreContext);
 
     useEffect(() => {
-        // store.closeCurrentList();
-        store.loadTilesets();
-        // store.loadMaps();
+        store.loadHomeScreen();
     }, []);
 
     const AddButton = styled(IconButton)({
@@ -35,17 +33,21 @@ export default function HomeScreen() {
         'borderRadius': '12px',
     })
 
+    function handleCreateNewMap() {
+        store.createMap("untitle",32, 32);
+    }
+
     function handleCreateNewTileset() {
         store.createNewTileset();
     }
 
 
-    let listCard = "";
-    let filteredPairs = store.tilesetList;
-    listCard = 
+    let listCard_tilesets = "";
+    let filteredPairs_tilesets = store.tilesetList;
+    listCard_tilesets = 
         <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
         {
-            filteredPairs.map((pair) => (
+            filteredPairs_tilesets.map((pair) => (
                 <HomeTilesetCard
                     key={pair._id}
                     tilesetList={pair}
@@ -55,6 +57,23 @@ export default function HomeScreen() {
             ))
         }
         </List>;
+
+    let listCard_maps = "";
+    let filteredPairs_maps = store.mapList;
+    listCard_maps = 
+        <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+        {
+            filteredPairs_maps.map((pair) => (
+                <HomeMapCard
+                    key={pair._id}
+                    mapList={pair}
+                    selected={false}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, mapID:pair._id, src:pair.Source}}
+                />
+            ))
+        }
+        </List>;
+
 
     let homePage = 
         <div className='full-screen'>
@@ -69,64 +88,56 @@ export default function HomeScreen() {
             <NavigationBar/>
             <DeleteModal/>
             <div className='right-screen'>
-                <div id="home-screen">
+                <Box id='home-screen'>
                     {/* upper half screen 50% */}
-                    <div className='upper-half-screen'>
-                        <Box sx={{ backgroundColor: 'warning.light'}}>
-                            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-                                Maps
+                    <Box id='home-map-section'>
+                        <Box className='home-section-name'>
+                            <Typography ml={3} style={{color: 'black', fontSize: 20, fontWeight: "bold"}}>
+                                 Maps
                             </Typography>
                         </Box>
-                        <Box>
-                            <Grid container spacing={2}>
+                        <Box className='home-section-card'>
+                            <Grid className='home-grid' container spacing={2}>
                                 <Grid item xs={4} md={2}>
-                                    <AddButton> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
+                                    <AddButton onClick = {handleCreateNewMap}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
                                 </Grid>
                                 <Grid item xs={6} md={10}>
-                                    <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                                        {/* <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/moutainforest.png", name:"Moutain Map"}}/>
-                                        <HomeMapCard ImgNamePair={{img:"/rockland.jpeg", name:"Rockland Map"}}/> */}
-                                    </List>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </div>
-                    {/* lower half screen 50% */}
-                    <div className='upper-half-screen'>
-                        <Box sx={{ backgroundColor: 'warning.light'}}>
-                            <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-                                Tilesets
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Box>
-                                <Grid container spacing={2}>
-
-                                    <Grid item xs={4} md={2}>
-                                        <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
-                                    </Grid>
-                                    <Grid item xs={6} md={10}>
-                                    {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
-                                        <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
-                                        <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
+                                    {/* <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
                                     </List> */}
                                     <div id="lists-selector">
                                         {
-                                            listCard
+                                            listCard_maps
                                         }
                                     </div>
-                                    </Grid>
                                 </Grid>
-                            </Box>
+                            </Grid>
                         </Box>
-                    </div>
-                </div>
+                    </Box>
+                    {/* lower half screen 50% */}
+                    <Box id='home-tileset-section'>
+                        <Box className='home-section-name' >
+                            <Typography ml={3} style={{color: 'black', fontSize: 20, fontWeight: "bold"}}>
+                                Tilesets
+                            </Typography>
+                        </Box>
+                        <Box className='home-section-card'>
+                            <Grid className='home-grid' container spacing={2}>
+                                <Grid item xs={4} md={2}>
+                                    <AddButton className="home-add-button" onClick = {handleCreateNewTileset}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton>
+                                </Grid>
+                                <Grid item xs={6} md={10}>
+                                {/* <List id="home-tileset-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
+                                    <HomeTilesetCard ImgNamePair={{img:"/pikachu.jpeg", name:"Pikachu Tileset"}}/>
+                                    <HomeTilesetCard ImgNamePair={{img:"/charmander.jpeg", name:"Charmander Tileset"}}/>
+                                </List> */}
+                                    {
+                                        listCard_tilesets
+                                    }
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Box>
+                </Box>
             </div>
         </div>
     }
