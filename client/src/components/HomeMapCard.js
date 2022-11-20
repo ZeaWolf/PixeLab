@@ -25,7 +25,7 @@ export default function HomeMapCard(props) {
 
   const handleOpenMap = async event => {
     console.log("HomeMapCardID: " + ImgNamePair.mapID);
-    await store.loadMapPage(ImgNamePair.tilesetID);
+    await store.loadMapPage(ImgNamePair.mapID);
   }
 
   const handleDeleteMap = async event => {

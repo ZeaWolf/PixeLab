@@ -268,7 +268,7 @@ function GlobalStoreContextProvider(props) {
             console.log(id);
             let response = await api.getMapById(id);
             if (response.data.success){
-                let map = response.data.data;  // these 2 lines can be deleted since the payload can just be id in this case
+                let map = response.data.map;  // these 2 lines can be deleted since the payload can just be id in this case
                 let mapID = map._id;       // but whatever
                 let mapName = map.Name;
                 storeReducer({
@@ -276,8 +276,8 @@ function GlobalStoreContextProvider(props) {
                     payload: {id: mapID, name: mapName}
                 })
             }
-            console.log(response.data);
-            history.push("/map-editor");
+            console.log("fkkfkfkfkfkfklllllll");
+            history.push("/map/");
         }catch(err){
             console.log("err:"+err);
         }
