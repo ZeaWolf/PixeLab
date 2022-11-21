@@ -11,39 +11,25 @@ import { GlobalStoreContext } from '../store'
 import LayerCard from './LayerCard';
 import List from '@mui/material/List'
 import AddIcon from '@mui/icons-material/Add';
-// var tilesetContainer = document.querySelector(".tileset-container");
-// var tilesetSelection = document.querySelector(".tileset-container_selection");
 
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
-    const [tilesetImage, setTilesetImage] = useState("");
     const [matrix, setMatrix] = useState(Array.from({length: 20},()=> Array.from({length: 25}, () => "777")));
-    const [tilesetSelection, setTilesetSelection] = useState("");
-    const [tilesetContainer, setTilesetContainer] = useState("");
-    const [canvas, setCanvas] = useState("");
-    const [currentLayer, setCurrentLayer] = useState(0);
+    const tilesetSelection = useRef(null);
+    const canvas = useRef(null);
+    const tilesetContainer = useRef(null);
+    const imageRef = useRef(null);  
+    let currentLayer = 0;
     const [layers, setLayers] = useState([{},{},{}]);
-    // var layers = [];
     var isMouseDown = false;
-    //var currentLayer = 0;
     var selection = [0, 0];
 
     const history = useHistory();
 
     useEffect(() => {
-        // store.closeCurrentList();
-        setTilesetImage(document.querySelector("#tileset-source"));
-        setTilesetSelection(document.querySelector(".tileset-container_selection"));
-        setTilesetContainer(document.querySelector(".tileset-container"));
-        setCanvas(document.querySelector("canvas"));
-        // console.log(tilesetImage)
-        // console.log(tilesetSelection)
-        // console.log(tilesetContainer)
-        // console.log(canvas)
-        // store.loadMaps();
-        // setLayer();
+        history.push('/map')
     }, []);
 
     const styles = {
@@ -53,14 +39,9 @@ export default function MapScreen() {
         backgroundColor: "rgb(235, 225, 225)"
     };
 
-    // if(!tilesetImage){
-    //     history.push("/map")
-    // }
-    let setLayer = async (event)=>{
-        console.log("test");
-    }
 
-    if(tilesetImage){
+    if(imageRef.current && tilesetSelection && canvas && tilesetContainer && imageRef.current){
+        console.log("being called");
         // var layers = [
         //     //Bottom
         //     {
@@ -73,15 +54,11 @@ export default function MapScreen() {
         //     {}
         //  ];
 
-         tilesetContainer.addEventListener("mousedown", (event) => {
-            selection = getCoords(event);
-            tilesetSelection.style.left = selection[0] * 32 + "px";
-            tilesetSelection.style.top = selection[1] * 32 + "px";
-         });
-
-         function addTile(mouseEvent) {
+        function addTile(mouseEvent) {
             var clicked = getCoords(mouseEvent);
             var key = clicked[0] + "-" + clicked[1];
+            console.log(clicked[0]);
+            console.log(clicked[1]);
          
             if (mouseEvent.shiftKey) {
                delete layers[currentLayer][key];
@@ -91,35 +68,49 @@ export default function MapScreen() {
             console.log(layers);
             console.log("currentlayer:-------------------------------"+currentLayer);
             draw();
-         }
+        }
+        if(true){
+            tilesetContainer.current.addEventListener("mousedown", (event) => {
+                selection = getCoords(event);
+                tilesetSelection.current.style.left = selection[0] * 32 + "px";
+                tilesetSelection.current.style.top = selection[1] * 32 + "px";
+            });
+            console.log("add event listeners");
+            console.log("add event listeners");
 
-        canvas.addEventListener("mousedown", (event) => {
-            isMouseDown = true;
-            addTile(event);
-         });
-         canvas.addEventListener("mouseup", () => {
-            isMouseDown = false;
-         });
-         canvas.addEventListener("mouseleave", () => {
-            isMouseDown = false;
-         });
-        //  canvas.addEventListener("mousedown", addTile);
-         canvas.addEventListener("mousemove", (event) => {
-            if (isMouseDown) {
-               addTile(event);
-            }
-         });
+            canvas.current.addEventListener("mousedown", (event) => {
+                console.log("QAQ onClick");
+                console.log(event);
+                event.stopPropagation();
+                isMouseDown = true;
+                addTile(event);
+                console.log(canvas.current);
+            });
+            canvas.current.addEventListener("mouseup", () => {
+                isMouseDown = false;
+            });
+            canvas.current.addEventListener("mouseleave", () => {
+                isMouseDown = false;
+            });
+            //  canvas.current.addEventListener("mousedown", addTile);
+            canvas.current.addEventListener("mousemove", (event) => {
+                event.stopPropagation();
+                if (isMouseDown) {
+                addTile(event);
+                }
+            });
+        }
 
         function getCoords(e) {
             const { x, y } = e.target.getBoundingClientRect();
             const mouseX = e.clientX - x;
             const mouseY = e.clientY - y;
             return [Math.floor(mouseX / 32), Math.floor(mouseY / 32)];
-         }
+        }
 
         function draw() {
-            var ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            var ctx = canvas.current.getContext("2d");
+            ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
          
             var size_of_crop = 32;
             
@@ -131,7 +122,7 @@ export default function MapScreen() {
                   var [tilesheetX, tilesheetY] = layer[key];
          
                   ctx.drawImage(
-                     tilesetImage,
+                     imageRef.current,
                      tilesheetX * 32,
                      tilesheetY * 32,
                      size_of_crop,
@@ -145,62 +136,41 @@ export default function MapScreen() {
             });
          }
 
-        setLayer = async (event) => {
 
-            let newLayer = Number(event.target.getAttribute("tile-layer"));
-
-            //Update the layer
-            setCurrentLayer(newLayer);
-            console.log("this is  new layer;---------------------"+newLayer);
-            //Update the UI to show updated layer
-            var oldActiveLayer = document.querySelector(".layer.active");
-            if (oldActiveLayer) {
-               oldActiveLayer.classList.remove("active");
-            }
-            //document.querySelector(`[tile-layer="${currentLayer}"]`).classList.add("active");
-        }
-
-
-        tilesetImage.onload = function() {
+        imageRef.current.onload = function() {
         // layers = defaultState;
             draw();
             // setLayer(0);
         }
 
-        tilesetImage.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
+        imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
     }
+    function setLayer(event){
+
+        let newLayer = Number(event.target.getAttribute("tile-layer"));
+
+        //Update the layer
+        currentLayer = newLayer;
+        console.log("this is  new layer;---------------------"+newLayer);
+        //Update the UI to show updated layer
+        var oldActiveLayer = document.querySelector(".layer.active");
+        if (oldActiveLayer) {
+           oldActiveLayer.classList.remove("active");
+        }
+    }
+    
     function importTileset(event){
-        console.log(matrix);
+        console.log("whyhwy");
         const reader = new FileReader();
         reader.addEventListener("load", ()=> {
             var importImage = "";
             importImage = reader.result;
-            tilesetImage.src = importImage;
+            imageRef.current.src = importImage;
         })
         if(event.target.files && event.target.files[0]){
             reader.readAsDataURL(event.target.files[0]);
         }
     }
-
-    // tilesetImage.onload = function() {
-    //     // layers = defaultState;
-    //     draw();
-    //     // setLayer(0);
-    // }
-
-    // let mapPage = 
-    //     <div className='full-screen'>
-    //         <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-    //             401: Unauthorized Access
-    //         </Typography>
-    //     </div>
-
-    // if(auth.loggedIn){
-
-    function handleCreateLayer(){
-        store.updateLayer();
-    }
-
     let layerList = "";
     let current_map = store.currentMap.Layers;
     layerList = 
@@ -215,9 +185,6 @@ export default function MapScreen() {
                 ))
             }
         </List>;
-
-
-
 
     const  mapPage = 
         <div className='full-screen'>
@@ -234,31 +201,30 @@ export default function MapScreen() {
                     </div>
                     <div className="card">
                         <div className="card_center-column">
-                            <canvas style={styles} width="800%" height="640%">
+                            <canvas ref={canvas} style={styles} width="800%" height="640%">
                             </canvas>
                         </div>
                         <div className="card_body">
                             <div className="card_body_2">
 
                                 <label style={{color: "black"}}>Layer: </label>
-                                <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton>
+                                {/* <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton> */}
                                 <div className="layers">
                                     
-                                    {
+                                    {/* {
                                         layerList
-                                    }
-                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    } */}
+                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
-                                    <div className="tileset-container">
-                                        <img id="tileset-source"/>
-                                        <div className="tileset-container_selection"></div>
+                                    <div className="tileset-container" ref={tilesetContainer}>
+                                        <img id="tileset-source" ref={imageRef}/>
+                                        <div className="tileset-container_selection" ref={tilesetSelection}></div>
                                     </div>
                                 </aside>
-
                             </div>
                         </div>
                     </div>
@@ -266,65 +232,9 @@ export default function MapScreen() {
             </div>
         </div>
 
-    // tilesetImage.onload = function() {
-    //     // layers = defaultState;
-    //     draw();
-    //     // setLayer(0);
-    // }
-    // }
-    // if(!auth.loggedIn){
-    //     // mapPage = 
-    //     // <div className='full-screen'>
-    //     //     <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
-    //     //         401: Unauthorized Access
-    //     //     </Typography>
-    //     // </div>
-    // }
-
     return (
         <div className='outer-screen'>
             {mapPage}
         </div>
-        // <div className='full-screen'>
-        //     <NavigationBar/>
-        //     <div className='right-screen'>
-        //         <div className="map">
-        //             <div className="mapbanner">
-        //                 <Button>New</Button>
-        //                 <Button>Save</Button>
-        //                 <Button>Import</Button>
-        //                 <Button>Export</Button>
-        //                 <Button>Publish</Button>
-        //                 <Button>Share</Button>
-        //             </div>
-        //             <div className="card">
-        //                 <div className="card_center-column">
-        //                     <canvas style={styles} width="800%" height="500%">
-        //                     </canvas>
-        //                 </div>
-        //                 <div className="card_body">
-        //                     <div className="card_body_2">
-        //                         <label style={{color: "black"}}>Layer: </label>
-        //                         <div className="layers">
-        //                             <li><button tile-layer="2">Layer 1</button></li>
-        //                             <li><button tile-layer="1">Layer 2</button></li>
-        //                             <li><button tile-layer="0">Layer 3</button></li>
-        //                         </div>
-        //                         <button>+</button>
-        //                         <button><DeleteIcon sx={{ fontSize: 10 }}></DeleteIcon></button>
-        //                         <button><ArrowDownwardIcon sx={{ fontSize: 10 }}></ArrowDownwardIcon></button>
-        //                         <button><ArrowUpwardIcon sx={{ fontSize: 10 }}></ArrowUpwardIcon></button>
-        //                         <aside>
-        //                             <label style={{color: "black"}}>Tileset: </label>
-        //                             <div className="tileset-container">
-        //                                 <img height="400" src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png" />
-        //                             </div>
-        //                         </aside>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
     )
 }
