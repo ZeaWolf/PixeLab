@@ -18,7 +18,6 @@ import GuestModal from './GuestModal'
 import DeleteModal from './DeleteModal'
 import PublishModal from './PublishModal'
 import PublishErrorModal from './PublishErrorModal'
-import ShuguiTest from './ShuguiTest'
 
 export{
     AppBanner,
@@ -41,5 +40,4 @@ export{
     DeleteModal,
     PublishModal,
     PublishErrorModal,
-    ShuguiTest,
 }
