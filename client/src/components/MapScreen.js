@@ -11,7 +11,7 @@ import { GlobalStoreContext } from '../store'
 import LayerCard from './LayerCard';
 import List from '@mui/material/List'
 import AddIcon from '@mui/icons-material/Add';
-
+import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
@@ -26,6 +26,7 @@ export default function MapScreen() {
     var tilesetSrc = "";     // store the selected tile source type
     var isMouseDown = false;
     var selection = [0, 0];
+    const [erase,setErase] = useState(false);
 
     const history = useHistory();
 
@@ -229,21 +230,44 @@ export default function MapScreen() {
             console.log(err);
         }
     }
+    function handleCreateLayer(){
+        store.updateLayer();
+    }
+
+    function handleErase(){
+        if(erase === false){
+            setErase(true);
+        }else{
+            setErase(false);
+        }
+        
+    }
 
     let layerList = "";
-    let current_map = store.currentMap.Layers;
-    layerList = 
-        <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100, padding: 0}}>
-            {
-                current_map.map((pair) => (
-                    <LayerCard
-                        key={pair._id}
-                        pairs={{map:pair, key:pair._id}}
-                        selected={false}
-                    />
-                ))
-            }
-        </List>;
+    var current_map;
+    if(store.currentMap === null){
+        layerList = 
+            <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
+                {
+                    
+                }
+            </List>;
+    }else{
+        current_map = store.currentMap.Layers;
+        layerList = 
+            <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
+                {
+                    current_map.map((pair) => (
+                        <LayerCard
+                            key={pair._id}
+                            pairs={{map:pair, key:pair._id}}
+                            selected={false}
+                        />
+                    ))
+                }
+            </List>;
+    }
+    
 
     const  mapPage = 
         <div className='full-screen'>
@@ -268,15 +292,16 @@ export default function MapScreen() {
                             <div className="card_body_2">
 
                                 <label style={{color: "black"}}>Layer: </label>
-                                {/* <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton> */}
+                                <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton>
+                                <IconButton><AutoFixNormalIcon onClick={handleErase}/></IconButton>
                                 <div className="layers">
                                     
-                                    {/* {
+                                    {
                                         layerList
-                                    } */}
-                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    }
+                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
