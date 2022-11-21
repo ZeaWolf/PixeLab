@@ -22,7 +22,7 @@ export default function MapScreen() {
     const tilesetContainer = useRef(null);
     const imageRef = useRef(null);  
     let currentLayer = 0;
-    const [layers, setLayers] = useState([{},{},{}]);
+    const [layers, setLayers] = useState(store.currentMap.Layers);
     var tilesetSrc = "";     // store the selected tile source type
     var isMouseDown = false;
     var selection = [0, 0];
@@ -41,7 +41,7 @@ export default function MapScreen() {
     };
 
 
-    if(imageRef.current && tilesetSelection && canvas && tilesetContainer && imageRef.current){
+    if(imageRef.current && tilesetSelection && canvas && tilesetContainer && store.currentMap){
         console.log("being called");
         // var layers = [
         //     //Bottom
@@ -54,6 +54,7 @@ export default function MapScreen() {
         //     //Top
         //     {}
         //  ];
+
 
         function addTile(mouseEvent) {
             var clicked = getCoords(mouseEvent);
@@ -159,7 +160,6 @@ export default function MapScreen() {
             });
          }
 
-
         imageRef.current.onload = function() {
         // layers = defaultState;
             draw();
@@ -217,6 +217,18 @@ export default function MapScreen() {
         return;
     }
 
+    const onSave = async (event) => {
+        if (!canvas){
+            return;
+        }
+        try{
+            //console.log("URL: " + typeof imgData);
+            await store.updateMapLayer(store.currentMap._id, layers);
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
 
     let layerList = "";
     let current_map = store.currentMap.Layers;
@@ -240,7 +252,7 @@ export default function MapScreen() {
                 <div className="map">
                     <div className="mapbanner">
                         <Button>New</Button>
-                        <Button>Save</Button>
+                        <Button onClick = {onSave}>Save</Button>
                         <Button onClick={importTileset} component="label">Import <input type="file"hidden onChange={importTileset}/></Button>
                         <Button onClick={onExport}>Export</Button>
                         <Button>Publish</Button>
@@ -248,8 +260,9 @@ export default function MapScreen() {
                     </div>
                     <div className="card">
                         <div className="card_center-column">
-                            <canvas ref={canvas} style={styles} width="800%" height="640%">
+                            <canvas ref={canvas} style={styles}  width="800%" height="640%">
                             </canvas>
+                            {/* <script> {initializeCanvas()} </script> */}
                         </div>
                         <div className="card_body">
                             <div className="card_body_2">
@@ -267,7 +280,7 @@ export default function MapScreen() {
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
-                                    <div className="tileset-container" ref={tilesetContainer}>
+                                    <div className="tileset-container" ref={tilesetContainer} >
                                         <img id="tileset-source" crossorigin="anonymous" ref={imageRef}/>
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
                                     </div>

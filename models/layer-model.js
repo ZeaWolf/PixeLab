@@ -12,6 +12,9 @@ const LayerSchema = new Schema(
         // OffsetY:            {type: Number, required: true},
         // Parallaxx:          {type: Number, required: true},
         // Parallaxy:          {type: Number, required: true},
+
+
+
         Name:               {type: String, required: true},
         Type:               {type: String, required: true},
         Height:             {type: Number, required: true},

@@ -12,7 +12,7 @@ const MapSchema = new Schema(
         Source:         {type: String, required: false},    // used for download/export
         Height:         {type: Number, required: true},
         Width:          {type: Number, required: true},
-        Layers:         {type: [Layer], required: true},
+        Layers:         {type: [{type: Map, of: String}], required: true},
         Tileset:        {type: String, required: false}
     },
     {timestamps: true}

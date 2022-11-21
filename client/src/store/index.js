@@ -254,6 +254,7 @@ function GlobalStoreContextProvider(props) {
             let response = await api.getMapById(id);
             if (response.data.success){
                 let map = response.data.map;
+                console.log(map);
                 storeReducer({
                     type: GlobalStoreActionType.LOADING_A_MAP,
                     payload: {cmap: map}
@@ -545,9 +546,9 @@ function GlobalStoreContextProvider(props) {
 
     // this method will create a new map
     store.createMap = async function (name = "untiled", height = 20, width = 25){
-        let newLayer = await store.createLayer("layer", height, width);
-        let layers = [];
-        layers.push(newLayer);
+        //let newLayer = await store.createLayer("layer", height, width);
+        let layers = [{},{},{}];
+        //layers.push(newLayer);
         let payload = {
             OwnerEmail: auth.user.email,
             Name: name,
@@ -564,6 +565,19 @@ function GlobalStoreContextProvider(props) {
             console.log(response.data.map);
             history.push("/home");
             store.loadMaps();
+        }
+    }
+
+    store.updateMapLayer = async function (id, layers){
+        //let newLayer = await store.createLayer("layer", height, width);
+        //layers.push(newLayer);
+        let payload = {
+            //OwnerEmail: auth.user.email,
+            Layers: layers,
+        }
+        const response = await api.updateMapLayer(id, payload);
+        if (response.data.success) {
+            console.log(response.data.map);
         }
     }
 

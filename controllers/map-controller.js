@@ -2,6 +2,61 @@ const Map = require('../models/map-model');
 const Layer = require('../models/layer-model');
 const User = require('../models/user-model');
 
+// update the editing change in the map editor
+updateMapLayer = async(req, res) => {
+    try{
+        const body = req.body;
+        console.log("updateMap: " + JSON.stringify(body));
+        if(!body){
+            return res.status(400).json({
+                success: false,
+                error: 'You must provide a body to update'
+            })
+        }
+        // find the map based on _id
+        Map.findOne({ _id: req.params.id}, (err, map) => {
+            console.log("map found: " + JSON.stringify(map));
+            if(err){
+                return res.status(404).json({
+                    err,
+                    message: 'Map not found!'
+                })
+            }
+            if(!map){
+                return res.status(404).json({
+                    err,
+                    message: 'Map not found!'
+                })
+            }
+            
+
+            map.Layers = body.Layers;
+
+            map
+                .save()
+                .then(() => {
+                    console.log("SUCESS!!!");
+                    return res.status(200).json({
+                        success: true,
+                        id: map._id,
+                        message: 'Map updated!',
+                    })
+                })
+                .catch(error => {
+                    console.log("FAILURE: " + JSON.stringify(error));
+                    return res.status(404).json({
+                        error,
+                        message: "Map not updated"
+                    })
+                })
+        })
+    }catch(err){
+        console.error(err);
+        res.status(500).send();
+    }
+}
+
+
 // create a new map in the server
 createMap = async(req, res) => {
     try{
@@ -396,6 +451,7 @@ getLayerLists = async (req, res) => {
 }
 
 module.exports = {
+    updateMapLayer,
     createMap,
     updateMap,
     deleteMap,
