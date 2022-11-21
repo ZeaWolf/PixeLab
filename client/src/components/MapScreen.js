@@ -23,6 +23,7 @@ export default function MapScreen() {
     const imageRef = useRef(null);  
     let currentLayer = 0;
     const [layers, setLayers] = useState([{},{},{}]);
+    var tilesetSrc = "";     // store the selected tile source type
     var isMouseDown = false;
     var selection = [0, 0];
 
@@ -63,7 +64,7 @@ export default function MapScreen() {
             if (mouseEvent.shiftKey) {
                delete layers[currentLayer][key];
             } else {
-                layers[currentLayer][key]=[selection[0], selection[1]];
+                layers[currentLayer][key]=tilesetSrc;
             }
             console.log(layers);
             console.log("currentlayer:-------------------------------"+currentLayer);
@@ -72,19 +73,39 @@ export default function MapScreen() {
         if(true){
             tilesetContainer.current.addEventListener("mousedown", (event) => {
                 selection = getCoords(event);
+
+                // create the highlight box to indicated the location of tile
                 tilesetSelection.current.style.left = selection[0] * 32 + "px";
                 tilesetSelection.current.style.top = selection[1] * 32 + "px";
-            });
-            console.log("add event listeners");
-            console.log("add event listeners");
 
+                // save the selected tile source which is the dataURL string
+                // create canvas then the tile information to the tilesetSrc
+                let canvas2 = document.createElement('canvas');
+                canvas2.width = 32; // 
+                canvas2.height = 32; //
+                let context = canvas2.getContext('2d');
+                context.drawImage(
+                    imageRef.current,
+                    selection[0] * 32,
+                    selection[1] * 32,
+                    32,
+                    32,
+                    0 * 32,
+                    0 * 32,
+                    32,
+                    32,
+                );
+                tilesetSrc = canvas2.toDataURL();
+            });
             canvas.current.addEventListener("mousedown", (event) => {
                 console.log("QAQ onClick");
+                if(layers){
+                    console.log(layers);
+                }
                 console.log(event);
                 event.stopPropagation();
                 isMouseDown = true;
                 addTile(event);
-                console.log(canvas.current);
             });
             canvas.current.addEventListener("mouseup", () => {
                 isMouseDown = false;
@@ -108,30 +129,32 @@ export default function MapScreen() {
             return [Math.floor(mouseX / 32), Math.floor(mouseY / 32)];
         }
 
-        function draw() {
+        function draw() {  // this is the onload function to render all layer
             var ctx = canvas.current.getContext("2d");
             ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
          
             var size_of_crop = 32;
             
             layers.forEach((layer) => {
-               Object.keys(layer).forEach((key) => {
-                  //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
-                  var positionX = Number(key.split("-")[0]);
-                  var positionY = Number(key.split("-")[1]);
-                  var [tilesheetX, tilesheetY] = layer[key];
-         
-                  ctx.drawImage(
-                     imageRef.current,
-                     tilesheetX * 32,
-                     tilesheetY * 32,
-                     size_of_crop,
-                     size_of_crop,
-                     positionX * 32,
-                     positionY * 32,
-                     size_of_crop,
-                     size_of_crop
-                  );
+                Object.keys(layer).forEach((key) => {
+                    //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
+                    var positionX = Number(key.split("-")[0]);
+                    var positionY = Number(key.split("-")[1]);
+                    //   var [tilesheetX, tilesheetY] = layer[key];
+                    var layerTileSrc = layer[key];
+                    const img = new Image();
+                    img.src = layerTileSrc;
+                    ctx.drawImage(
+                        img,
+                        0 * 32,
+                        0 * 32,
+                        size_of_crop,
+                        size_of_crop,
+                        positionX * 32,
+                        positionY * 32,
+                        size_of_crop,
+                        size_of_crop
+                    );
                });
             });
          }
@@ -160,7 +183,6 @@ export default function MapScreen() {
     }
     
     function importTileset(event){
-        console.log("whyhwy");
         const reader = new FileReader();
         reader.addEventListener("load", ()=> {
             var importImage = "";
@@ -221,7 +243,7 @@ export default function MapScreen() {
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
                                     <div className="tileset-container" ref={tilesetContainer}>
-                                        <img id="tileset-source" ref={imageRef}/>
+                                        <img id="tileset-source" crossorigin="anonymous" ref={imageRef}/>
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
                                     </div>
                                 </aside>
