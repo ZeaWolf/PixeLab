@@ -259,7 +259,7 @@ function GlobalStoreContextProvider(props) {
                     payload: {cmap: map}
                 })
             }
-            history.push("/map/");
+            history.push("/map");
         }catch(err){
             console.log("err:"+err);
         }
