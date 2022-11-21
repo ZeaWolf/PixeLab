@@ -22,6 +22,7 @@ function LayerCard(props){
     async function handleDeleteLayer(){
         store.DeleteLayer(pairs.key);
     }
+
     async function handleToggleVisibility(){
          
     }
@@ -38,7 +39,6 @@ function LayerCard(props){
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            console.log(text)
             store.RenameLayer(pairs.key, text);
             toggleEdit();
         }
@@ -47,6 +47,14 @@ function LayerCard(props){
     function handleUpdateText(event) {
         setText(event.target.value);
     }
+
+    async function handleArrowUpward(){
+         store.arrowUpward(pairs.key);
+    }
+
+    async function handleArrowDownward(){
+        store.arrowDownward(pairs.key);
+   }
 
     let visibilityButton =
         <IconButton><VisibilityIcon/></IconButton>
@@ -64,11 +72,11 @@ function LayerCard(props){
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="downward"><ArrowDownwardIcon /></IconButton>
+                    <IconButton aria-label="downward"><ArrowDownwardIcon onClick={handleArrowDownward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="upward"><ArrowUpwardIcon /></IconButton>
+                    <IconButton aria-label="upward"><ArrowUpwardIcon onClick={handleArrowUpward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>
@@ -101,11 +109,11 @@ function LayerCard(props){
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="downward"><ArrowDownwardIcon /></IconButton>
+                    <IconButton aria-label="downward"><ArrowDownwardIcon onClick={handleArrowDownward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="upward"><ArrowUpwardIcon /></IconButton>
+                    <IconButton aria-label="upward"><ArrowUpwardIcon onClick={handleArrowUpward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>

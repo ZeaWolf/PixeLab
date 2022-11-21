@@ -196,7 +196,7 @@ export default function MapScreen() {
     let layerList = "";
     let current_map = store.currentMap.Layers;
     layerList = 
-        <List style={{ overflowY: 'scroll', maxHeight:100, padding: 0}}>
+        <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100, padding: 0}}>
             {
                 current_map.map((pair) => (
                     <LayerCard
