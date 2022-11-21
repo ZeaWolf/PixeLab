@@ -16,27 +16,20 @@ import AddIcon from '@mui/icons-material/Add';
 export default function ShuguiTest() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
-    const [tilesetImage, setTilesetImage] = useState("");
     const [matrix, setMatrix] = useState(Array.from({length: 20},()=> Array.from({length: 25}, () => "777")));
     const tilesetSelection = useRef(null);
     const canvas = useRef(null);
     const tilesetContainer = useRef(null);
+    const imageRef = useRef(null);  
     let currentLayer = 0;
     const [layers, setLayers] = useState([{},{},{}]);
-    // var layers = [];
     var isMouseDown = false;
-    //var currentLayer = 0;
     var selection = [0, 0];
 
     const history = useHistory();
 
     useEffect(() => {
-        setTilesetImage(document.querySelector("#tileset-source"));
-        console.log(canvas.current);
-        console.log(tilesetContainer.current);
-        console.log(tilesetSelection.current);
-        console.log(document.querySelector(".tileset-container_selection"))
-
+        history.push('/map')
     }, []);
 
     const styles = {
@@ -46,11 +39,8 @@ export default function ShuguiTest() {
         backgroundColor: "rgb(235, 225, 225)"
     };
 
-    let setLayer = async (event)=>{
-        console.log("test");
-    }
 
-    if(tilesetImage && tilesetSelection && canvas && tilesetContainer){
+    if(imageRef.current && tilesetSelection && canvas && tilesetContainer && imageRef.current){
         console.log("being called");
         // var layers = [
         //     //Bottom
@@ -63,12 +53,6 @@ export default function ShuguiTest() {
         //     //Top
         //     {}
         //  ];
-
-        tilesetContainer.current.addEventListener("mousedown", (event) => {
-            selection = getCoords(event);
-            tilesetSelection.current.style.left = selection[0] * 32 + "px";
-            tilesetSelection.current.style.top = selection[1] * 32 + "px";
-        });
 
         function addTile(mouseEvent) {
             var clicked = getCoords(mouseEvent);
@@ -85,28 +69,37 @@ export default function ShuguiTest() {
             console.log("currentlayer:-------------------------------"+currentLayer);
             draw();
         }
+        if(true){
+            tilesetContainer.current.addEventListener("mousedown", (event) => {
+                selection = getCoords(event);
+                tilesetSelection.current.style.left = selection[0] * 32 + "px";
+                tilesetSelection.current.style.top = selection[1] * 32 + "px";
+            });
+            console.log("add event listeners");
+            console.log("add event listeners");
 
-        canvas.current.addEventListener("mousedown", (event) => {
-            console.log("QAQ onClick");
-            console.log(event);
-            event.stopPropagation();
-            isMouseDown = true;
-            addTile(event);
-            console.log(canvas.current);
-         });
-         canvas.current.addEventListener("mouseup", () => {
-            isMouseDown = false;
-         });
-         canvas.current.addEventListener("mouseleave", () => {
-            isMouseDown = false;
-         });
-        //  canvas.current.addEventListener("mousedown", addTile);
-        canvas.current.addEventListener("mousemove", (event) => {
-            event.stopPropagation();
-            if (isMouseDown) {
-               addTile(event);
-            }
-        });
+            canvas.current.addEventListener("mousedown", (event) => {
+                console.log("QAQ onClick");
+                console.log(event);
+                event.stopPropagation();
+                isMouseDown = true;
+                addTile(event);
+                console.log(canvas.current);
+            });
+            canvas.current.addEventListener("mouseup", () => {
+                isMouseDown = false;
+            });
+            canvas.current.addEventListener("mouseleave", () => {
+                isMouseDown = false;
+            });
+            //  canvas.current.addEventListener("mousedown", addTile);
+            canvas.current.addEventListener("mousemove", (event) => {
+                event.stopPropagation();
+                if (isMouseDown) {
+                addTile(event);
+                }
+            });
+        }
 
         function getCoords(e) {
             const { x, y } = e.target.getBoundingClientRect();
@@ -129,7 +122,7 @@ export default function ShuguiTest() {
                   var [tilesheetX, tilesheetY] = layer[key];
          
                   ctx.drawImage(
-                     tilesetImage,
+                     imageRef.current,
                      tilesheetX * 32,
                      tilesheetY * 32,
                      size_of_crop,
@@ -143,28 +136,27 @@ export default function ShuguiTest() {
             });
          }
 
-        setLayer = async (event) => {
 
-            let newLayer = Number(event.target.getAttribute("tile-layer"));
-
-            //Update the layer
-            currentLayer = newLayer;
-            console.log("this is  new layer;---------------------"+newLayer);
-            //Update the UI to show updated layer
-            var oldActiveLayer = document.querySelector(".layer.active");
-            if (oldActiveLayer) {
-               oldActiveLayer.classList.remove("active");
-            }
-        }
-
-
-        tilesetImage.onload = function() {
+        imageRef.current.onload = function() {
         // layers = defaultState;
             draw();
             // setLayer(0);
         }
 
-        tilesetImage.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
+        imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
+    }
+    function setLayer(event){
+
+        let newLayer = Number(event.target.getAttribute("tile-layer"));
+
+        //Update the layer
+        currentLayer = newLayer;
+        console.log("this is  new layer;---------------------"+newLayer);
+        //Update the UI to show updated layer
+        var oldActiveLayer = document.querySelector(".layer.active");
+        if (oldActiveLayer) {
+           oldActiveLayer.classList.remove("active");
+        }
     }
     
     function importTileset(event){
@@ -173,7 +165,7 @@ export default function ShuguiTest() {
         reader.addEventListener("load", ()=> {
             var importImage = "";
             importImage = reader.result;
-            tilesetImage.src = importImage;
+            imageRef.current.src = importImage;
         })
         if(event.target.files && event.target.files[0]){
             reader.readAsDataURL(event.target.files[0]);
@@ -215,11 +207,10 @@ export default function ShuguiTest() {
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
                                     <div className="tileset-container" ref={tilesetContainer}>
-                                        <img id="tileset-source"/>
+                                        <img id="tileset-source" ref={imageRef}/>
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
                                     </div>
                                 </aside>
-
                             </div>
                         </div>
                     </div>
