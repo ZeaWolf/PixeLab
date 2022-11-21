@@ -16,8 +16,7 @@ import {
     TilesetScreen,
     ResourceScreen,
     ForgotPasswordScreen,
-    ResetPasswordScreen,
-    ShuguiTest,
+    ResetPasswordScreen
 } from './components'
 
 // ** components no implemented
@@ -38,7 +37,7 @@ const App = () => {
                         <Route path="/map/" exact component={MapScreen} />
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
-                        <Route path='/shugui' exact component={ShuguiTest} />
+                        
                     </Switch>
                 </GlobalStoreContextProvider>
             </AuthContextProvider>
