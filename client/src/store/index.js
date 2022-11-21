@@ -332,6 +332,35 @@ function GlobalStoreContextProvider(props) {
         }
     };
 
+    store.RenameLayer = async function (id,name){
+        try{
+            let response = await api.getLayerById(id);
+            if(response.data.success){
+                let layer = response.data.layer;
+                layer.Name = name;
+                response = await api.updateLayer(id, layer);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+
+                let layers = store.currentMap.Layers;
+
+                for( var i = 0; i < layers.length; i++){ 
+                    if ( layers[i]._id === id) { 
+                        layers[i].Name = name; 
+                    }
+                }
+                let map = store.currentMap;
+                map.Layers = layers;
+                store.currentMap.Layers = layers;
+                const responseMap = await api.updateMap(map._id, map);
+                store.loadLayers();
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    };
+
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadTilesets = async function () {
