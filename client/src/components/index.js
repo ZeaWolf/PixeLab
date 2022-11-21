@@ -39,5 +39,5 @@ export{
     GuestModal,
     DeleteModal,
     PublishModal,
-    PublishErrorModal,
+    PublishErrorModal
 }

@@ -513,7 +513,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.updateLayer = async function (name = "untiled", height = 32, width = 32) {
+    store.updateLayer = async function (name = "untiled", height = 20, width = 25) {
         let newLayer = await store.createLayer("layer", height, width);
         let map = store.currentMap;
         map.Layers.push(newLayer);
@@ -523,7 +523,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     // this method will create a new layer
-    store.createLayer = async function (name = "layer", height = 32, width = 32){
+    store.createLayer = async function (name = "layer", height = 20, width = 25){
         let payload = {
             Name: name,
             Type: "layer",
@@ -544,7 +544,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     // this method will create a new map
-    store.createMap = async function (name = "untiled", height = 32, width = 32){
+    store.createMap = async function (name = "untiled", height = 20, width = 25){
         let newLayer = await store.createLayer("layer", height, width);
         let layers = [];
         layers.push(newLayer);

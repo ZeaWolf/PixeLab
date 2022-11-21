@@ -193,6 +193,31 @@ export default function MapScreen() {
             reader.readAsDataURL(event.target.files[0]);
         }
     }
+
+    const onExport = async (event) =>{
+        event.preventDefault();
+        if (!canvas || !canvas.current){
+            return;
+        }
+
+        // Get name
+        const link = document.createElement('a');
+        if(store.currentMap){
+            link.download = `${store.currentMap.Name}.png`;
+        }
+        else{
+            link.download = `guestUntitled.png`;
+        }
+        link.href = canvas.current.toDataURL();
+        //link.href = canvas.getImage({rect: imageBounds}).toDataURL();
+        link.click();
+        //link.delete;
+        //const w = window.open("");
+        //w.document.write(image.outerHTML);
+        return;
+    }
+
+
     let layerList = "";
     let current_map = store.currentMap.Layers;
     layerList = 
@@ -217,7 +242,7 @@ export default function MapScreen() {
                         <Button>New</Button>
                         <Button>Save</Button>
                         <Button onClick={importTileset} component="label">Import <input type="file"hidden onChange={importTileset}/></Button>
-                        <Button>Export</Button>
+                        <Button onClick={onExport}>Export</Button>
                         <Button>Publish</Button>
                         <Button>Share</Button>
                     </div>

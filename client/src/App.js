@@ -16,7 +16,7 @@ import {
     TilesetScreen,
     ResourceScreen,
     ForgotPasswordScreen,
-    ResetPasswordScreen,
+    ResetPasswordScreen
 } from './components'
 
 // ** components no implemented
