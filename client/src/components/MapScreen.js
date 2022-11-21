@@ -296,12 +296,12 @@ export default function MapScreen() {
                                 <IconButton><AutoFixNormalIcon onClick={handleErase}/></IconButton>
                                 <div className="layers">
                                     
-                                    {
+                                    {/* {
                                         layerList
-                                    }
-                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    } */}
+                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
