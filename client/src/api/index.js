@@ -1,8 +1,8 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 const api = axios.create({
-    baseURL: "http://localhost:4000/api",
-    // baseURL: 'https://sbucsepixelab.herokuapp.com/api',
+    // baseURL: "http://localhost:4000/api",
+    baseURL: 'https://sbucsepixelab.herokuapp.com/api',
 })
 
 // User part
@@ -31,7 +31,7 @@ export const updateMap = (id, payload) => api.put(`/map/${id}`,payload)
 export const deleteMap = (id) => api.delete(`/map/${id}`)
 export const getMapById = (id) => api.get(`/map/${id}`)
 export const getMapLists = () => api.get(`/maps`)
-export const updateMapLayer = (id, payload) => api.put(`/map/${id}`,payload)
+// export const updateMapLayer = (id, payload) => api.put(`/map/${id}`,payload)
 
 //Layer part
 export const createLayer = (payload) => api.post(`/layer`,payload)
@@ -77,7 +77,7 @@ const apis = {
     deleteLayer,
     getLayerById,
     getLayerLists,
-    updateMapLayer,
+    //updateMapLayer,
 
     createTileset,
     updateTileset,

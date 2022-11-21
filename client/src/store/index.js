@@ -322,14 +322,17 @@ function GlobalStoreContextProvider(props) {
                 let map = response.data.map;
                 map.Name = name;
                 // async function updateTileset(id, tileset){
+                console.log(response);
                 response = await api.updateMap(id, map);
+
+                
                 if(response.data.sucess){
                     console.log("updated tileset src success");
                 }
                 store.loadMaps();
             }
         }catch(err){
-            console.log("err:"+err);
+            console.log("err:"+err.message);
         }
     };
 
@@ -545,7 +548,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     // this method will create a new map
-    store.createMap = async function (name = "untiled", height = 20, width = 25){
+    store.createMap = async function (name = "Untiled", height = 20, width = 25){
         //let newLayer = await store.createLayer("layer", height, width);
         let layers = [{},{},{}];
         //layers.push(newLayer);
@@ -571,14 +574,26 @@ function GlobalStoreContextProvider(props) {
     store.updateMapLayer = async function (id, layers){
         //let newLayer = await store.createLayer("layer", height, width);
         //layers.push(newLayer);
-        let payload = {
-            //OwnerEmail: auth.user.email,
-            Layers: layers,
-        }
-        const response = await api.updateMapLayer(id, payload);
-        if (response.data.success) {
-            console.log(response.data.map);
-        }
+        // let payload = {
+        //     //OwnerEmail: auth.user.email,
+        //     Layers: layers,
+        // }
+        // const response = await api.updateMapLayer(id, payload);
+        // if (response.data.success) {
+        //     console.log(response.data.map);
+        // }
+
+        ///
+        let response = await api.getMapById(id);
+            if(response.data.success){
+                let map = response.data.map;
+                map.Layers = layers;
+                // async function updateTileset(id, tileset){
+                response = await api.updateMap(id, map);
+                if(response.data.sucess){
+                    console.log("updated tileset src success");
+                }
+            }
     }
 
     store.createNewTileset = async function () {

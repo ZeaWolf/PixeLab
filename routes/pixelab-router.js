@@ -26,12 +26,12 @@ router.get('/resources', ResourceController.getResourceLists)
 
 //For map controllers
 router.post('/map', auth.verify, MapController.createMap)
-//router.put('/map/:id', auth.verify, MapController.updateMap)
+router.put('/map/:id', auth.verify, MapController.updateMap)
 router.delete('/map/:id', auth.verify, MapController.deleteMap)
 router.get('/map/:id', auth.verify, MapController.getMapById)
 router.get('/maps', auth.verify, MapController.getMapLists)
 
-router.put('/map/:id', auth.verify, MapController.updateMapLayer)
+// router.put('/map/:id', auth.verify, MapController.updateMapLayer)
 
 //For layer controllers
 router.post('/layer', auth.verify, MapController.createLayer)
