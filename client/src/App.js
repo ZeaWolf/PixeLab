@@ -16,8 +16,7 @@ import {
     TilesetScreen,
     ResourceScreen,
     ForgotPasswordScreen,
-    ResetPasswordScreen,
-    // ShuguiTest,
+    ResetPasswordScreen
 } from './components'
 
 // ** components no implemented
