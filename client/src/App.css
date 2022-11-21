@@ -270,12 +270,13 @@
   margin-left: 5%;
 }
 .layers {
+  background-color: #fdffdc;
+  border-radius: 10px;
+  border: 2px solid #8AC007;
   /* list-style-type:none;
   margin:0;
   padding:0; */
-  margin-left: 5%;
-  overflow-y: scroll;
-  height: 15%;
+  /* margin-left: 5%; */
   /* padding-left: 800px; */
   /* button {
      appearance:none;

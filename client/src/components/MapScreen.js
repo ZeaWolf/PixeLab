@@ -204,12 +204,13 @@ export default function MapScreen() {
     let layerList = "";
     let current_map = store.currentMap.Layers;
     layerList = 
-        <List style={{ display: 'flex', flexDirection: 'column',flexWrap:'wrap', padding: 0}}>
+        <List style={{ overflowY: 'scroll', maxHeight:100, padding: 0}}>
             {
                 current_map.map((pair) => (
                     <LayerCard
                         key={pair._id}
-                        layer={pair}
+                        pairs={{map:pair, key:pair._id}}
+                        selected={false}
                     />
                 ))
             }
@@ -243,12 +244,12 @@ export default function MapScreen() {
                                 <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton>
                                 <div className="layers">
                                     
-                                    {/* {
+                                    {
                                         layerList
-                                    } */}
-                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    }
+                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>
