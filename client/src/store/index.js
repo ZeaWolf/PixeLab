@@ -37,7 +37,7 @@ export const GlobalStoreActionType = {
     DELETING_A_MAP: "DELETING_A_MAP",
     LOAD_HOMESCREEN: "LOAD_HOMESCREEN",
     LOAD_LAYERS: "LOAD_LAYERS",
-    
+
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -723,6 +723,40 @@ function GlobalStoreContextProvider(props) {
         }catch(err){
             console.log("err:"+err);
         }
+    }
+
+    store.arrowUpward =async function(id){
+        let layers = store.currentMap.Layers;
+        for( var i = 1; i < layers.length; i++){ 
+            if ( layers[i]._id === id) { 
+                var temp = layers[i];
+                layers[i] = layers[i-1];
+                layers[i-1] = temp;
+                break;
+            }
+        }
+        let map = store.currentMap;
+        map.Layers = layers;
+        store.currentMap = map;
+        const response = await api.updateMap(map._id, map);
+        history.push("/map/");
+    }
+
+    store.arrowDownward =async function(id){
+        let layers = store.currentMap.Layers;
+        for( var i = 0; i < layers.length-1; i++){ 
+            if ( layers[i]._id === id) { 
+                var temp = layers[i];
+                layers[i] = layers[i+1];
+                layers[i+1] = temp;
+                break;
+            }
+        }
+        let map = store.currentMap;
+        map.Layers = layers;
+        store.currentMap = map;
+        const response = await api.updateMap(map._id, map);
+        history.push("/map/");
     }
 
     return (
