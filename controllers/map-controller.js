@@ -386,7 +386,7 @@ getLayerLists = async (req, res) => {
                     };
                     pairs.push(pair);
                 }
-                return res.status(200).json({success: true, idInfoPairs: pairs})
+                return res.status(200).json({success: true, data: pairs})
             }
         }).catch(err => console.log(err))
     }catch(err){

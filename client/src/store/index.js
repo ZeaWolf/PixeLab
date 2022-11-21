@@ -36,6 +36,8 @@ export const GlobalStoreActionType = {
     LOADING_A_MAP: "LOADING_A_MAP",
     DELETING_A_MAP: "DELETING_A_MAP",
     LOAD_HOMESCREEN: "LOAD_HOMESCREEN",
+    LOAD_LAYERS: "LOAD_LAYERS",
+    
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -212,6 +214,18 @@ function GlobalStoreContextProvider(props) {
                     mapList: payload.map,
                 })
             }
+            case GlobalStoreActionType.LOAD_LAYERS: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: store.mapList,
+                })
+            }
             default:
                 return store;
         }
@@ -357,6 +371,27 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.loadLayers = async function () {
+        try{
+            const response = await api.getLayerLists(auth.user._id);
+            if (response.data.success) {
+                let layers = response.data.data;
+                let new_map = store.currentMap;
+                new_map.Layers = layers;
+
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_LAYERS,
+                    payload: new_map
+                });
+            }
+            else {
+                console.log("API FAILED TO GET THE LIST PAIRS");
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
     store.loadHomeScreen = async function(){
         try{
             const response_tileset = await api.getTilesetLists();
@@ -451,10 +486,11 @@ function GlobalStoreContextProvider(props) {
 
     store.updateLayer = async function (name = "untiled", height = 32, width = 32) {
         let newLayer = await store.createLayer("layer", height, width);
-        let layers = store.currentMap;
-        layers.Layers.push(newLayer);
-        store.currentMap = layers;
-        const response = await api.updateMap(layers._id,layers);
+        let map = store.currentMap;
+        map.Layers.push(newLayer);
+        store.currentMap = map;
+        const response = await api.updateMap(map._id,map);
+        store.loadLayers();
     }
 
     // this method will create a new layer
@@ -583,6 +619,22 @@ function GlobalStoreContextProvider(props) {
             store.MapIdForDelete = null;
             store.loadMaps();
         }
+    };
+
+    store.DeleteLayer = async function (id){
+        let layers = store.currentMap.Layers;
+
+        for( var i = 0; i < layers.length; i++){ 
+            if ( layers[i]._id === id) { 
+                layers.splice(i, 1); 
+            }
+        }
+        let map = store.currentMap;
+        map.Layers = layers;
+        store.currentMap.Layers = layers;
+        const response = await api.updateMap(map._id, map);
+        let response_deleteLayer = await api.deleteLayer(id);
+        store.loadLayers();
     };
 
     store.MarkDeleteTileset = function (id){
