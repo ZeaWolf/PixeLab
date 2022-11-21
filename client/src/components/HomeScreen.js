@@ -34,7 +34,7 @@ export default function HomeScreen() {
     })
 
     function handleCreateNewMap() {
-        store.createMap("Untitled",32, 32);
+        store.createMap("untitle",20, 25);
     }
 
     function handleCreateNewTileset() {
