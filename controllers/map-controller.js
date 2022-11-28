@@ -104,7 +104,7 @@ createMap = async(req, res) => {
 updateMap = async(req, res) => {
     try{
         const body = req.body;
-        console.log("updateMap: " + JSON.stringify(body));
+        // console.log("updateMap: " + JSON.stringify(body));
         if(!body){
             return res.status(400).json({
                 success: false,
@@ -112,6 +112,7 @@ updateMap = async(req, res) => {
             })
         }
         // find the map based on _id
+
 
         Map.findOne({ _id: req.params.id}, (err, map) => {
             console.log("map found: " + JSON.stringify(map));
@@ -127,7 +128,9 @@ updateMap = async(req, res) => {
                     message: 'Map not found!'
                 })
             }
-            
+            console.log("map name: " + map.Name);
+            console.log("body name: " + body.Name);
+            let name = "asd";
             map.OwnerEmail = body.OwnerEmail;
             map.Name = body.Name;
             map.Type = body.Type;
@@ -137,8 +140,10 @@ updateMap = async(req, res) => {
             map.Width = body.Width;
             map.Layers = body.Layers;
             map.Tileset = body.Tileset;
+            map.markModified('Layers');
+            // console.log("layers: " + map.Layers);
 
-            console.log(map._id);
+            console.log("correct information: " + map._id);
             map
                 .save()
                 .then(() => {
@@ -151,13 +156,14 @@ updateMap = async(req, res) => {
                 })
                 .catch(error => {
                     console.log("FAILURE: " + JSON.stringify(error));
-                    return res.status(404).json({
+                    return res.status(400).json({
                         error,
                         message: "Map not updated"
                     })
                 })
         })
     }catch(err){
+        console.log("what is up: " + err);
         console.error(err);
         res.status(500).send();
     }
