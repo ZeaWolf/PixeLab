@@ -26,6 +26,7 @@ export default function CommunityScreen() {
     const [tilesetFilter,setTilesetFilter] = useState([]);
     const [collectionFilter,setCollectionFilter] = useState([]);
     const [sortShow,setSortShow] = useState("Sort By Lastest");
+    const [searchFilter,setSearchFilter] = useState(false);
 
     useEffect(() => {
         store.loadResources();
@@ -132,12 +133,37 @@ export default function CommunityScreen() {
         setSortShow(sort);
     }
 
+    function handleSearchBar(event){
+        let value = document.getElementById('search-bar').value;
+        if(value !== ""){
+            setSearchFilter(true);
+        }else{
+            setSearchFilter(false);
+        }
+
+    }
+
 
     let listCard = "";
     const filteredPairs = store.resourceList;
 
-
-    listCard = 
+    if(searchFilter === true){
+        listCard = 
+        <List className="resource-list" style={{ display: 'flex', flexDirection: 'row', flexWrap:'wrap'}}>
+        {
+            filteredPairs.filter((pair)=> !pair.Name.indexOf(document.getElementById('search-bar').value)).map((pair) => (
+                <CommunityResourceCard
+                    key={pair._id}
+                    resourceList={pair}
+                    selected={false}
+                    ImgNamePair={{img:pair.Source, name:pair.Name, id:pair._id,
+                        description:pair.Description, like:pair.Like, downloads:pair.Downloads }}
+                />
+            ))
+        }
+        </List>;
+    }else{
+        listCard = 
         <List className="resource-list" style={{ display: 'flex', flexDirection: 'row', flexWrap:'wrap'}}>
         {
             filteredPairs.map((pair) => (
@@ -151,6 +177,8 @@ export default function CommunityScreen() {
             ))
         }
         </List>;
+    }
+    
 	
 	return (
 
@@ -170,9 +198,11 @@ export default function CommunityScreen() {
                 <div>
                     <div>
                         <TextField
+                            id="search-bar"
                             variant="outlined"
                             fullWidth
                             label="Search"
+                            onChange={(event)=>{handleSearchBar(event);}}
                         />
                      </div>
                 </div>
