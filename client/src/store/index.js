@@ -448,7 +448,6 @@ function GlobalStoreContextProvider(props) {
     store.loadResources = async function (criteria) {
         try{
             const response = await api.getResourceLists(criteria);
-            console.log("im in store");
             if(response.data.success){
                 let pairsArray = response.data.idInfoPairs;
                 storeReducer({
@@ -722,6 +721,13 @@ function GlobalStoreContextProvider(props) {
                 }
                 // async function updateTileset(id, tileset){
                 response = await api.updateResource(id, resource);
+                response = await api.getResourceById(id);
+                for(let i = 0; i<store.resourceList.length; i++){
+                    if(store.resourceList[i]._id === id){
+                        store.resourceList[i] = response.data.resource;
+                    }
+                }
+
                 if(response.data.sucess){
                     console.log("updated tileset src success");
                 }
@@ -784,6 +790,19 @@ function GlobalStoreContextProvider(props) {
         store.currentMap = map;
         const response = await api.updateMap(map._id, map);
         history.push("/map/");
+    }
+
+    store.filterController = async function (resourceList) {
+        try{
+            await api.getResourceLists();
+            storeReducer({
+                type: GlobalStoreActionType.LOAD_RESOURCES,
+                payload: resourceList,
+            })
+        
+        }catch(err){
+            console.log("error msg: "+err);
+        }
     }
 
     return (
