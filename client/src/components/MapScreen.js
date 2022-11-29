@@ -22,17 +22,23 @@ export default function MapScreen() {
     const tilesetContainer = useRef(null);
     const imageRef = useRef(null);  
     let currentLayer = 0;
-    const [layers, setLayers] = useState(store.currentMap.Layers);
+    // const [layers, setLayers] = useState(store.currentMap.Layers);
+    var layers = [];
     var tilesetSrc = "";     // store the selected tile source type
     var isMouseDown = false;
+    let [renderLayer, setRenderLayer] = useState(false);    // if true, the layer editor will re-render
+    const [isAddedEvent, setIsAddedEvent] = useState(false);
     var selection = [0, 0];
     const [erase,setErase] = useState(false);
-
     const history = useHistory();
 
     useEffect(() => {
         history.push('/map')
     }, []);
+
+    if(store.currentMap){
+        layers = store.currentMap.Layers;
+    }
 
     const styles = {
         display: 'flex',
@@ -72,7 +78,8 @@ export default function MapScreen() {
             console.log("currentlayer:-------------------------------"+currentLayer);
             draw();
         }
-        if(true){
+        if(!isAddedEvent){
+            setIsAddedEvent(true);
             tilesetContainer.current.addEventListener("mousedown", (event) => {
                 selection = getCoords(event);
 
@@ -169,18 +176,33 @@ export default function MapScreen() {
 
         imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
     }
-    function setLayer(event){
+    // function setLayer(event){
 
-        let newLayer = Number(event.target.getAttribute("tile-layer"));
+    //     let newLayer = Number(event.target.getAttribute("tile-layer"));
 
-        //Update the layer
-        currentLayer = newLayer;
-        console.log("this is  new layer;---------------------"+newLayer);
-        //Update the UI to show updated layer
-        var oldActiveLayer = document.querySelector(".layer.active");
-        if (oldActiveLayer) {
-           oldActiveLayer.classList.remove("active");
-        }
+    //     //Update the layer
+    //     currentLayer = newLayer;
+    //     console.log("this is  new layer;---------------------"+newLayer);
+    //     //Update the UI to show updated layer
+    //     var oldActiveLayer = document.querySelector(".layer.active");
+    //     if (oldActiveLayer) {
+    //        oldActiveLayer.classList.remove("active");
+    //     }
+    // }
+
+    // pass to the props: layer card
+    function setLayer(number){
+        currentLayer = number;
+        console.log("currentLayer's index: " + currentLayer);
+    }
+
+    // create a new layer
+    function createLayer(event){
+        console.log("number of layers before create: " + layers.length);
+        layers.push({});
+        console.log("number of layers after create: " + layers.length);
+        console.log(layers);
+        setRenderLayer(true);
     }
     
     function importTileset(event){
@@ -230,9 +252,9 @@ export default function MapScreen() {
             console.log(err);
         }
     }
-    function handleCreateLayer(){
-        store.updateLayer();
-    }
+    // function handleCreateLayer(){
+    //     store.updateLayer();
+    // }
 
     function handleErase(){
         if(erase === false){
@@ -245,22 +267,38 @@ export default function MapScreen() {
 
     let layerList = "";
     var current_map;
-    if(store.currentMap === null){
+    if(layers.length != 0){
+        current_map = layers;
+        layerList = 
+            <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
+                {
+                    current_map.map((element, index) => (
+                        <LayerCard
+                            setLayer = {setLayer}
+                            pairs={{position: index, value: element}}
+                            selected={false}
+                        />
+                    ))
+                }
+            </List>;
+    }else{
         layerList = 
             <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
                     
                 }
             </List>;
-    }else{
-        current_map = store.currentMap.Layers;
+    }
+    // trigger render layer
+    if(renderLayer === true){
+        setRenderLayer(false);
         layerList = 
             <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
-                    current_map.map((pair) => (
+                    current_map.map((element, index) => (
                         <LayerCard
-                            key={pair._id}
-                            pairs={{map:pair, key:pair._id}}
+                            setLayer = {setLayer}
+                            pairs={{position: index, value: element}}
                             selected={false}
                         />
                     ))
@@ -277,7 +315,8 @@ export default function MapScreen() {
                     <div className="mapbanner">
                         <Button>New</Button>
                         <Button onClick = {onSave}>Save</Button>
-                        <Button onClick={importTileset} component="label">Import <input type="file"hidden onChange={importTileset}/></Button>
+                        <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button>
+                        <Button>Import Map</Button>
                         <Button onClick={onExport}>Export</Button>
                         <Button>Publish</Button>
                         <Button>Share</Button>
@@ -286,22 +325,20 @@ export default function MapScreen() {
                         <div className="card_center-column">
                             <canvas ref={canvas} style={styles}  width="800%" height="640%">
                             </canvas>
-                            {/* <script> {initializeCanvas()} </script> */}
                         </div>
                         <div className="card_body">
                             <div className="card_body_2">
 
                                 <label style={{color: "black"}}>Layer: </label>
-                                <IconButton><AddIcon onClick={handleCreateLayer}/></IconButton>
+                                <IconButton><AddIcon onClick={createLayer}/></IconButton>
                                 <IconButton><AutoFixNormalIcon onClick={handleErase}/></IconButton>
                                 <div className="layers">
-                                    
-                                    {/* {
+                                    {
                                         layerList
-                                    } */}
-                                    <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
+                                    }
+                                    {/* <li><button className="layer" onClick={setLayer} tile-layer="0">Layer 1</button></li>
                                     <li><button className="layer" onClick={setLayer} tile-layer="1">Layer 2</button></li>
-                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li>
+                                    <li><button className="layer" onClick={setLayer} tile-layer="2">Layer 3</button></li> */}
                                 </div>
                                 <aside>
                                     <label style={{color: "black"}}>Tileset: </label>

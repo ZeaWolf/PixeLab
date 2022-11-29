@@ -14,13 +14,19 @@ import TextField from '@mui/material/TextField';
 
 
 function LayerCard(props){
-    const { pairs } = props;
+    // setLayer will set the current layer to this layer's index
+    const { pairs, setLayer } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
 
+    function setCurrentLayer(event){
+        console.log(pairs.position);
+        setLayer(pairs.position);
+    }
+
     async function handleDeleteLayer(){
-        store.DeleteLayer(pairs.key);
+        // store.DeleteLayer(pairs.key);
     }
 
     async function handleToggleVisibility(){
@@ -39,7 +45,7 @@ function LayerCard(props){
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            store.RenameLayer(pairs.key, text);
+            // store.RenameLayer(pairs.key, text);
             toggleEdit();
         }
     }
@@ -49,22 +55,22 @@ function LayerCard(props){
     }
 
     async function handleArrowUpward(){
-         store.arrowUpward(pairs.key);
+        //  store.arrowUpward(pairs.key);
     }
 
     async function handleArrowDownward(){
-        store.arrowDownward(pairs.key);
+        // store.arrowDownward(pairs.key);
    }
 
     let visibilityButton =
         <IconButton><VisibilityIcon/></IconButton>
 
     let LayerList = 
-        <ListItem>
+        <ListItem onClick={setCurrentLayer}>
             <Grid container spacing={1} >
 
                 <Grid item xs={4.75}>
-                    <Typography style={{color:'rgb(35, 35, 35)'}}>{pairs.map.Name}</Typography>
+                    <Typography style={{color:'rgb(35, 35, 35)'}}>Layer</Typography>
                 </Grid>
 
                 <Grid item xs={1.25}>
