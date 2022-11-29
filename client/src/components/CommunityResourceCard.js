@@ -37,12 +37,12 @@ export default function CommunityResourceCard(props) {
     if (auth.user.likeList.includes(ImgNamePair.id)==false){
       await store.likeResource(ImgNamePair.id, "+");
       await auth.updateUserLikelist(ImgNamePair.id);
-      await store.loadResources();
+      history.push("/community/");
     }
     else{
       await store.likeResource(ImgNamePair.id, "-");
       await auth.updateUserLikelist(ImgNamePair.id);
-      await store.loadResources();
+      history.push("/community/");
     }
   };
 
