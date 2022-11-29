@@ -131,38 +131,144 @@ getResourceById = async (req, res) => {
 // get resourceLists
 getResourceLists = async (req, res) => {
     try{
-        await Resource.find({}, (err, resources) => {
-            if(err){
-                return res.status(400).json({ success: false, error: err})
-            }
-            if(!resources){
-                console.log("no resource");
-                return res
-                    .status(404)
-                    .json({success: false, error: 'Resources not found'})
-            }
-            else{
-                let pairs = [];
-                for(let key in resources){
-                    let list = resources[key];
-                    let pair = {
-                        _id: list._id,
-                        Type: list.Type,
-                        Name: list.Name,
-                        Author: list.Author,
-                        Image: list.Image,
-                        Source: list.Source,
-                        Like: list.Like,
-                        Downloads: list.Downloads,
-                        Comments: list.Comments,
-                        PublishTime: list.PublishTime,
-                        Description: list.Description
-                    };
-                    pairs.push(pair);
+        const criteria = req.query;
+        if(criteria.filter === "tileset"){
+            await Resource.find({ Type: "tileset"}, (err, resources) => {
+                if(err){
+                    return res.status(400).json({ success: false, error: err})
                 }
-                return res.status(200).json({success: true, idInfoPairs: pairs})
+                if(!resources){
+                    console.log("no resource");
+                    return res
+                        .status(404)
+                        .json({success: false, error: 'Resources not found'})
+                }
+                else{
+                    let pairs = [];
+                    for(let key in resources){
+                        let list = resources[key];
+                        let pair = {
+                            _id: list._id,
+                            Type: list.Type,
+                            Name: list.Name,
+                            Author: list.Author,
+                            Image: list.Image,
+                            Source: list.Source,
+                            Like: list.Like,
+                            Downloads: list.Downloads,
+                            Comments: list.Comments,
+                            PublishTime: list.PublishTime,
+                            Description: list.Description
+                        };
+                        pairs.push(pair);
+                    }
+                    return res.status(200).json({success: true, idInfoPairs: pairs})
+                }
+            }).catch(err => console.log(err))
+        }else if(criteria.filter === "map"){
+            await Resource.find({Type: "map"}, (err, resources) => {
+                if(err){
+                    return res.status(400).json({ success: false, error: err})
+                }
+                if(!resources){
+                    console.log("no resource");
+                    return res
+                        .status(404)
+                        .json({success: false, error: 'Resources not found'})
+                }
+                else{
+                    let pairs = [];
+                    for(let key in resources){
+                        let list = resources[key];
+                        let pair = {
+                            _id: list._id,
+                            Type: list.Type,
+                            Name: list.Name,
+                            Author: list.Author,
+                            Image: list.Image,
+                            Source: list.Source,
+                            Like: list.Like,
+                            Downloads: list.Downloads,
+                            Comments: list.Comments,
+                            PublishTime: list.PublishTime,
+                            Description: list.Description
+                        };
+                        pairs.push(pair);
+                    }
+                    return res.status(200).json({success: true, idInfoPairs: pairs})
+                }
+            }).catch(err => console.log(err))
+        }else if(criteria.filter === "collection"){
+            const loggedInUser = await User.findOne({ _id: req.query.id });
+            if(loggedInUser === null){
+                return res.status(200).json({success: true, idInfoPairs: []})
             }
-        }).catch(err => console.log(err))
+            await Resource.find({_id:{ $in : loggedInUser.collectionList }}, (err, resources) => {
+                if(err){
+                    return res.status(400).json({ success: false, error: err})
+                }
+                if(!resources){
+                    console.log("no resource");
+                    return res
+                        .status(404)
+                        .json({success: false, error: 'Resources not found'})
+                }
+                else{
+                    let pairs = [];
+                    for(let key in resources){
+                        let list = resources[key];
+                        let pair = {
+                            _id: list._id,
+                            Type: list.Type,
+                            Name: list.Name,
+                            Author: list.Author,
+                            Image: list.Image,
+                            Source: list.Source,
+                            Like: list.Like,
+                            Downloads: list.Downloads,
+                            Comments: list.Comments,
+                            PublishTime: list.PublishTime,
+                            Description: list.Description
+                        };
+                        pairs.push(pair);
+                    }
+                    return res.status(200).json({success: true, idInfoPairs: pairs})
+                }
+            }).catch(err => console.log(err))
+        }else{
+            await Resource.find({}, (err, resources) => {
+                if(err){
+                    return res.status(400).json({ success: false, error: err})
+                }
+                if(!resources){
+                    console.log("no resource");
+                    return res
+                        .status(404)
+                        .json({success: false, error: 'Resources not found'})
+                }
+                else{
+                    let pairs = [];
+                    for(let key in resources){
+                        let list = resources[key];
+                        let pair = {
+                            _id: list._id,
+                            Type: list.Type,
+                            Name: list.Name,
+                            Author: list.Author,
+                            Image: list.Image,
+                            Source: list.Source,
+                            Like: list.Like,
+                            Downloads: list.Downloads,
+                            Comments: list.Comments,
+                            PublishTime: list.PublishTime,
+                            Description: list.Description
+                        };
+                        pairs.push(pair);
+                    }
+                    return res.status(200).json({success: true, idInfoPairs: pairs})
+                }
+            }).catch(err => console.log(err))
+        }
     }catch(err){
         console.error(err);
         res.status(500).send();

@@ -15,19 +15,62 @@ import TextField from '@mui/material/TextField';
 import GuestModal from './GuestModal';
 import List from '@mui/material/List'
 import CommunityResourceCard from './CommunityResourceCard';
+import Checkbox from '@mui/material/Checkbox';
 
 export default function CommunityScreen() {
 
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+    const [check,setCheck] = useState([false,false,false]);
+    const [sortShow,setSortShow] = useState("Sort By Lastest");
 
     useEffect(() => {
         store.loadResources();
     }, []);
 
-    // function hello(){
-    //     console.log(filteredPairs);
-    // }
+    function handleMap(event, filter){
+        event.preventDefault();
+        store.loadResources({filter:filter, id:auth.user._id});
+        setCheck([event.target.checked,check[1],check[2]]);
+        console.log(filter);
+    }
+
+    function handleTileset(event, filter){
+        event.preventDefault();
+        store.loadResources({filter:filter, id:auth.user._id});
+        setCheck([check[0],event.target.checked,check[2]]);
+        console.log(filter);
+    }
+
+    function handleCollection(event, filter){
+        event.preventDefault();
+        store.loadResources({filter:filter, id:auth.user._id});
+        setCheck([check[0],check[1],event.target.checked]);
+        console.log(filter);
+    }
+
+    function handleLastest(event,sort){
+        store.resourceList.sort(function(a, b) {
+            if(a.PublishTime === undefined){
+                return 1;
+            }
+            if(b.PublishTime === undefined){
+                return -1;
+            }
+            return new Date(b.PublishTime) - new Date(a.PublishTime);
+        });
+        setSortShow(sort);
+    }
+
+    function handleMostLike(event,sort){
+        store.resourceList.sort(function(a, b) {return b.Like - a.Like;});
+        setSortShow(sort);
+    }
+
+    function handleMostDownload(event,sort){
+        store.resourceList.sort(function(a, b) {return b.Downloads - a.Downloads;});
+        setSortShow(sort);
+    }
 
 
     let listCard = "";
@@ -83,13 +126,13 @@ export default function CommunityScreen() {
                 <form>
                     <fieldset data-role = "controlgroup" data-type = "horizontal">
                     
-                        <input type="checkbox" value="map" />
+                        <input type="checkbox" value="map" onChange={(event)=>{handleMap(event, "map")}} checked = {check[0]}/>
                         <label for="map">Map</label>
                     
-                        <input type="checkbox" value="tileset" />
+                        <input type="checkbox" value="tileset" onChange={(event)=>{handleTileset(event, "tileset");}} checked = {check[1]}/>
                         <label for="tileset">Tileset</label>
 
-                        <input type="checkbox" value="collection" />
+                        <input type="checkbox" value="collection" onChange={(event)=>{handleCollection(event, "collection")}} checked = {check[2]}/>
                         <label for="collection">Collection</label>
                     
                     </fieldset>
@@ -98,11 +141,11 @@ export default function CommunityScreen() {
 
             <Grid item xs={2.2}>
                 <div className="dropdown">
-                    <button className="dropbtn">Sort By Lastest</button>
+                    <button className="dropbtn">{sortShow}</button>
                     <div className="dropdown-content">
-                        <a href="#">Sort By Lastest</a>
-                        <a href="#">Sort By Most Like</a>
-                        <a href="#">Sort By Most Download</a>
+                        <a href="#" onClick = {(event)=>{handleLastest(event,"Sort By Lastest");}} >Sort By Lastest</a>
+                        <a href="#" onClick = {(event)=>{handleMostLike(event,"Sort By Most Like");}} >Sort By Most Like</a>
+                        <a href="#" onClick = {(event)=>{handleMostDownload(event,"Sort By Most Download");}} >Sort By Most Download</a>
                     </div>
                 </div>
             </Grid>
@@ -116,126 +159,7 @@ export default function CommunityScreen() {
             }
             </Grid>
         </Box>
-            {/* <Grid item xs={3}>
-                <Card sx={{ width: '95%', height: '100%'}}>
-                    <CardMedia
-                            component="img"
-                            alt="moutainforest"
-                            height="50%"
-                            image="/moutainforest.png"
-                    />
-                    <CardContent height="45%">
-                        <Typography gutterBottom variant="h5" component="div">
-                            moutain forest
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
-                        A mountain is an elevated portion of the Earth's crust, generally with steep sides that show significant exposed bedrock. Although definitions vary, a mountain may differ from a plateau in having a limited summit area, and is usually higher than a hill, typically rising at least 300 metres (1,000 feet) above the surrounding land. A few mountains are isolated summits, but most occur in mountain ranges.
-                        </Typography>
-                    </CardContent>
-                    <CardActions height="5%">
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ width: '95%', height: '100%'}}>
-                    <CardMedia
-                            component="img"
-                            alt="rockland"
-                            height="50%"
-                            image="/rockland.jpeg"
-                    />
-                    <CardContent height="45%">
-                        <Typography gutterBottom variant="h5" component="div">
-                            rockland
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
-                        Rockland County is the southernmost county on the west side of the Hudson River in the U.S. state of New York. It is part of the New York City metropolitan statistical area. It is about 6 miles (10 kilometers) from the Bronx at their closest points. The county's population, as of the 2020 United States Census, is 338,329,[4] making it the state's third-most densely populated county outside New York City (after Nassau and neighboring Westchester Counties, respectively).
-                        </Typography>
-                    </CardContent >
-                    <CardActions height="5%">
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ width: '95%', height: '100%'}}>
-                    <CardMedia
-                            component="img"
-                            alt="Pikachu"
-                            height="50%"
-                            image="/charmander.jpeg"
-                    />
-                    <CardContent height="45%">
-                        <Typography gutterBottom variant="h5" component="div">
-                            Charmander
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
-                            Charmander (Japanese: ヒトカゲ Hitokage) is a Fire-type Pokémon introduced in Generation I.
-                        </Typography>
-                    </CardContent>
-                    <CardActions height="5%">
-                            <Button size="small">Share</Button>
-                            <Button size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ width: '95%', height: '100%'}}>
-                    <CardMedia
-                            component="img"
-                            alt="Pikachu"
-                            height="50%"
-                            image="/pikachu.jpeg"
-                    />
-                    <CardContent height="45%">
-                        <Typography gutterBottom variant="h5" component="div">
-                            Pikachu
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
-                            Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
-                        </Typography>
-                    </CardContent>
-                    <CardActions height="5%">
-                            <Button size="small">Share</Button>
-                            <Button component={Link} to="/resource" size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid>
-
-            <Grid item xs={3}>
-                <Card sx={{ width: '95%', height: '100%'}}>
-                    <CardMedia
-                            component="img"
-                            alt="Pikachu"
-                            height="50%"
-                            image="/pikachu.jpeg"
-                    />
-                    <CardContent height="45%">
-                        <Typography gutterBottom variant="h5" component="div">
-                            Pikachu
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" className = "content_scroll">
-                            Pikachu (Japanese: ピカチュウ Pikachu) is an Electric-type Pokémon introduced in Generation I.
-                        </Typography>
-                    </CardContent>
-                    <CardActions height="5%">
-                            <Button size="small">Share</Button>
-                            <Button component={Link} to="/resource" size="small">Learn More</Button>
-                    </CardActions>
-                </Card>
-            </Grid> */}
             
-        {/* <Grid container spacing={0} rowSpacing={1} id="community-resource-list">
-            {
-                listCard
-            }
-        </Grid> */}
         </Box>
 
 		
