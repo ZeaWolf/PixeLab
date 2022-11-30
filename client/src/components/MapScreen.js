@@ -16,18 +16,22 @@ import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+
+    // below 4 are reference to the html object.
     const tilesetSelection = useRef(null);
     const canvas = useRef(null);
     const tilesetContainer = useRef(null);
     const imageRef = useRef(null);  
     const [currentLayer, setCurrentLayer] = useState(0);
+    // check if there is a default image
+    const [defaultImage, setDefaultImage] = useState(false);
 
     // const [layers, setLayers] = useState(store.currentMap.Layers);
     let layers = [];
-    var tilesetSrc = "";     // store the selected tile source type
-    var isMouseDown = false;
-    const [renderLayer, setRenderLayer] = useState(false);    // if true, the layer editor will re-render
-    var selection = [0, 0];
+    let tilesetSrc = "";     // store the selected tile source type
+    let isMouseDown = false;
+    const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
+    let selection = [-1, -1];
     const [erase,setErase] = useState(false);
     const history = useHistory();
 
@@ -55,6 +59,7 @@ export default function MapScreen() {
     // draw the layer
     function draw() {  // this is the onload function to render all layer
         var ctx = canvas.current.getContext("2d");
+        // clear drawing from the canvas first
         ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
      
         var size_of_crop = 32;
@@ -85,18 +90,20 @@ export default function MapScreen() {
 
     // add tile to the layers
     function addTile(mouseEvent) {
-        var clicked = getCoords(mouseEvent);
-        var key = clicked[0] + "-" + clicked[1];
-        console.log(clicked[0]);
-        console.log(clicked[1]);
-     
-        if (mouseEvent.shiftKey) {
-           delete layers[currentLayer][key];
-        } else {
-            layers[currentLayer][key]=tilesetSrc;
+        if(layers.length !== 0 && tilesetSrc !== ""){
+            var clicked = getCoords(mouseEvent);
+            var key = clicked[0] + "-" + clicked[1];
+            console.log(clicked[0]);
+            console.log(clicked[1]);
+        
+            if (mouseEvent.shiftKey) {
+            delete layers[currentLayer][key];
+            } else {
+                layers[currentLayer][key]=tilesetSrc;
+            }
+            console.log(layers);
+            console.log("currentlayer:-------------------------------"+currentLayer);
         }
-        console.log(layers);
-        console.log("currentlayer:-------------------------------"+currentLayer);
         draw();
     }
     // canvas mouse down
@@ -105,7 +112,6 @@ export default function MapScreen() {
         if(layers){
             console.log(layers);
         }
-        console.log(event);
         isMouseDown = true;
         addTile(event);
     }
@@ -154,7 +160,6 @@ export default function MapScreen() {
     // image on load
     function handleImageOnLoad(){
         draw();
-        // imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
     }
 
 
@@ -172,13 +177,14 @@ export default function MapScreen() {
         //     {}
         //  ];
 
-        // imageRef.current.onload = function() {
-        // // layers = defaultState;
-        //     draw();
-        //     // setLayer(0);
-        // }
+        imageRef.current.onload = function() {
+            draw();
+        }
 
-        imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
+        if(!defaultImage){
+            imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
+            setDefaultImage(true);
+        }
     }
 
     // pass to the props: layer card
@@ -196,16 +202,49 @@ export default function MapScreen() {
         console.log(layers);
         setRenderLayer(true);
     }
+    // delete a layer
+    function deleteLayer(index){
+        console.log("number of layers before create: " + layers.length);
+        layers.splice(index, 1) // remove layer at index
+        console.log("number of layers after create: " + layers.length);
+        console.log(layers);
+        setRenderLayer(true);
+        draw();     // redraw the layers after a layer is remove
+    }
+    // move a layer up
+    function moveLayerUp(currentIndex){
+        // boundary check since you can't move index 0 element to -1
+        if(currentIndex != 0){
+            let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
+            layers.splice(currentIndex-1, 0, oldPosition[0]); // move the layer to the front
+            setRenderLayer(true);
+            draw();     // redraw the layers after a layer is remove
+        }
+    }
+    // move a layer down
+    function moveLayerDown(currentIndex){
+        // boundary check since you can't move out of the array
+        if(currentIndex+1 != layers.length){
+            let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
+            layers.splice(currentIndex+1, 0, oldPosition[0]); // move the layer to the back
+            setRenderLayer(true);
+            draw();     // redraw the layers after a layer is remove
+        }
+    }
     
     function importTileset(event){
-        const reader = new FileReader();
-        reader.addEventListener("load", ()=> {
-            var importImage = "";
-            importImage = reader.result;
-            imageRef.current.src = importImage;
-        })
-        if(event.target.files && event.target.files[0]){
-            reader.readAsDataURL(event.target.files[0]);
+        try{
+            const reader = new FileReader();
+            reader.addEventListener("load", ()=> {
+                var importImage = "";
+                importImage = reader.result;
+                imageRef.current.src = importImage;
+            })
+            if(event.target.files && event.target.files[0]){
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }catch(err){
+            console.log(err);
         }
     }
 
@@ -258,7 +297,7 @@ export default function MapScreen() {
     }
 
     let layerList = "";
-    var current_map;
+    let current_map;
     if(layers.length != 0){
         current_map = layers;
         layerList = 
@@ -267,6 +306,10 @@ export default function MapScreen() {
                     current_map.map((element, index) => (
                         <LayerCard
                             setLayer = {setLayer}
+                            moveLayerUp = {moveLayerUp}
+                            moveLayerDown = {moveLayerDown}
+                            deleteLayer = {deleteLayer}
+                            currentLayer = {currentLayer}
                             pairs={{position: index, value: element}}
                             selected={false}
                         />
@@ -282,20 +325,30 @@ export default function MapScreen() {
             </List>;
     }
     // trigger render layer
-    if(renderLayer === true){
+    if(renderLayer){
+        console.log("re-renderLayer");
         setRenderLayer(false);
-        layerList = 
+        if(current_map){  // prevent running empty
+            layerList = 
             <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
                     current_map.map((element, index) => (
                         <LayerCard
                             setLayer = {setLayer}
+                            moveLayerUp = {moveLayerUp}
+                            moveLayerDown = {moveLayerDown}
+                            deleteLayer = {deleteLayer}
+                            currentLayer = {currentLayer}
                             pairs={{position: index, value: element}}
                             selected={false}
                         />
                     ))
                 }
             </List>;
+        }
+        else{
+            layerList = "";
+        }
     }
     
 

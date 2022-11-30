@@ -15,18 +15,21 @@ import TextField from '@mui/material/TextField';
 
 function LayerCard(props){
     // setLayer will set the current layer to this layer's index
-    const { pairs, setLayer } = props;
+    const { pairs, setLayer, currentLayer, deleteLayer, moveLayerUp, moveLayerDown } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
 
     function setCurrentLayer(event){
-        console.log(pairs.position);
         setLayer(pairs.position);
+        console.log(currentLayer);
+        console.log(pairs.position);
     }
 
-    async function handleDeleteLayer(){
-        // store.DeleteLayer(pairs.key);
+    async function handleDeleteLayer(event){
+        event.stopPropagation();
+        console.log("deleting layer: " + pairs.position);
+        deleteLayer(pairs.position);
     }
 
     async function handleToggleVisibility(){
@@ -54,20 +57,29 @@ function LayerCard(props){
         setText(event.target.value);
     }
 
-    async function handleArrowUpward(){
-        //  store.arrowUpward(pairs.key);
+    async function handleArrowUpward(event){
+        event.stopPropagation();
+        moveLayerUp(pairs.position);
     }
 
-    async function handleArrowDownward(){
-        // store.arrowDownward(pairs.key);
+    async function handleArrowDownward(event){
+        event.stopPropagation();
+        moveLayerDown(pairs.position);
    }
+    let cardColor = 'black'
+    if(pairs.position === currentLayer){
+        cardColor = 'blue';
+    }
+    else{
+        cardColor = 'black';
+    }
 
     let visibilityButton =
         <IconButton><VisibilityIcon/></IconButton>
 
     let LayerList = 
         <ListItem onClick={setCurrentLayer}>
-            <Grid container spacing={1} >
+            <Grid container spacing={1} style={{borderColor: {cardColor},borderStyle:"solid"}}>
 
                 <Grid item xs={4.75}>
                     <Typography style={{color:'rgb(35, 35, 35)'}}>Layer</Typography>
