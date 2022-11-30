@@ -191,7 +191,7 @@ export default function MapScreen() {
     function setLayer(number){
         // currentLayer = number;
         setCurrentLayer(number);
-        console.log("currentLayer's index: " + currentLayer);
+        console.log("currentLayer's index before change: " + currentLayer);
     }
 
     // create a new layer
@@ -215,8 +215,12 @@ export default function MapScreen() {
     function moveLayerUp(currentIndex){
         // boundary check since you can't move index 0 element to -1
         if(currentIndex != 0){
+            console.log("before move up: ");
+            console.log(layers);
             let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
             layers.splice(currentIndex-1, 0, oldPosition[0]); // move the layer to the front
+            console.log("after move up: ")
+            console.log(layers);
             setRenderLayer(true);
             draw();     // redraw the layers after a layer is remove
         }

@@ -22,8 +22,7 @@ function LayerCard(props){
 
     function setCurrentLayer(event){
         setLayer(pairs.position);
-        console.log(currentLayer);
-        console.log(pairs.position);
+        console.log("set currentLayer to index: " + pairs.position);
     }
 
     async function handleDeleteLayer(event){
