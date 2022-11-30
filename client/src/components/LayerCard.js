@@ -65,20 +65,13 @@ function LayerCard(props){
         event.stopPropagation();
         moveLayerDown(pairs.position);
    }
-    let cardColor = 'black'
-    if(pairs.position === currentLayer){
-        cardColor = 'blue';
-    }
-    else{
-        cardColor = 'black';
-    }
 
     let visibilityButton =
         <IconButton><VisibilityIcon/></IconButton>
 
     let LayerList = 
         <ListItem onClick={setCurrentLayer}>
-            <Grid container spacing={1} style={{borderColor: {cardColor},borderStyle:"solid"}}>
+            <Grid container spacing={1} style={{borderColor: pairs.position === currentLayer ? 'blue' : '#fdffdc',borderStyle:"solid"}}>
 
                 <Grid item xs={4.75}>
                     <Typography style={{color:'rgb(35, 35, 35)'}}>Layer</Typography>
