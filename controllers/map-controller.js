@@ -104,7 +104,7 @@ createMap = async(req, res) => {
 updateMap = async(req, res) => {
     try{
         const body = req.body;
-        console.log("updateMap: " + JSON.stringify(body));
+        // console.log("updateMap: " + JSON.stringify(body));
         if(!body){
             return res.status(400).json({
                 success: false,
@@ -114,7 +114,7 @@ updateMap = async(req, res) => {
         // find the map based on _id
 
         Map.findOne({ _id: req.params.id}, (err, map) => {
-            console.log("map found: " + JSON.stringify(map));
+            // console.log("map found: " + JSON.stringify(map));
             if(err){
                 return res.status(404).json({
                     err,
@@ -138,7 +138,9 @@ updateMap = async(req, res) => {
             map.Layers = body.Layers;
             map.Tileset = body.Tileset;
 
-            console.log(map._id);
+            map.markModified('Layers')
+            console.log(map);
+            console.log("???????");
             map
                 .save()
                 .then(() => {

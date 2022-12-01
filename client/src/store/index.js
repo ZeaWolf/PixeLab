@@ -321,18 +321,24 @@ function GlobalStoreContextProvider(props) {
             if(response.data.success){
                 let map = response.data.map;
                 map.Name = name;
+                // map.Height = 90;
                 // async function updateTileset(id, tileset){
+                console.log("Rename");
+                console.log(typeof(name));
+                console.log(response.data.map._id);
+                console.log(id);
                 console.log(response);
-                response = await api.updateMap(id, map);
+
+                let response2 = await api.updateMap(map._id, map);
 
                 
-                if(response.data.sucess){
-                    console.log("updated tileset src success");
-                }
+                // if(response2.data.sucess){
+                //     console.log("updated tileset src success");
+                // }
                 store.loadMaps();
             }
         }catch(err){
-            console.log("err:"+err.message);
+            console.log("err:"+err);
         }
     };
 
@@ -550,7 +556,7 @@ function GlobalStoreContextProvider(props) {
     // this method will create a new map
     store.createMap = async function (name = "Untiled", height = 20, width = 25){
         //let newLayer = await store.createLayer("layer", height, width);
-        let layers = [{},{},{}];
+        let layers = [{"0-0":""},{"0-0":""},{"0-0":""}];
         //layers.push(newLayer);
         let payload = {
             OwnerEmail: auth.user.email,
