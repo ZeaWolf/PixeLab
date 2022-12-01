@@ -23,7 +23,7 @@ export const resetPassword = (payload, query) => api.put(`/reset-password`, payl
 export const createResource = (payload) => api.post(`/resource`, payload)
 export const updateResource = (id,payload) => api.put(`/resource/${id}`, payload)
 export const getResourceById = (id) => api.get(`/resource/${id}`)
-export const getResourceLists = () => api.get(`/resources`)
+export const getResourceLists = (query) => api.get(`/resources`,{params:query})
 
 //map part
 export const createMap = (payload) => api.post(`/map`, payload)

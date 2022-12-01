@@ -14,13 +14,21 @@ import TextField from '@mui/material/TextField';
 
 
 function LayerCard(props){
-    const { pairs } = props;
+    // setLayer will set the current layer to this layer's index
+    const { pairs, setLayer, currentLayer, deleteLayer, moveLayerUp, moveLayerDown } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
 
-    async function handleDeleteLayer(){
-        store.DeleteLayer(pairs.key);
+    function setCurrentLayer(event){
+        setLayer(pairs.position);
+        console.log("set currentLayer to index: " + pairs.position);
+    }
+
+    async function handleDeleteLayer(event){
+        event.stopPropagation();
+        console.log("deleting layer: " + pairs.position);
+        deleteLayer(pairs.position);
     }
 
     async function handleToggleVisibility(){
@@ -39,7 +47,7 @@ function LayerCard(props){
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            store.RenameLayer(pairs.key, text);
+            // store.RenameLayer(pairs.key, text);
             toggleEdit();
         }
     }
@@ -48,23 +56,25 @@ function LayerCard(props){
         setText(event.target.value);
     }
 
-    async function handleArrowUpward(){
-         store.arrowUpward(pairs.key);
+    async function handleArrowUpward(event){
+        event.stopPropagation();
+        moveLayerUp(pairs.position);
     }
 
-    async function handleArrowDownward(){
-        store.arrowDownward(pairs.key);
+    async function handleArrowDownward(event){
+        event.stopPropagation();
+        moveLayerDown(pairs.position);
    }
 
     let visibilityButton =
         <IconButton><VisibilityIcon/></IconButton>
 
     let LayerList = 
-        <ListItem>
-            <Grid container spacing={1} >
+        <ListItem onClick={setCurrentLayer}>
+            <Grid container spacing={1} style={{borderColor: pairs.position === currentLayer ? 'blue' : '#fdffdc',borderStyle:"solid"}}>
 
                 <Grid item xs={4.75}>
-                    <Typography style={{color:'rgb(35, 35, 35)'}}>{pairs.map.Name}</Typography>
+                    <Typography style={{color:'rgb(35, 35, 35)'}}>Layer</Typography>
                 </Grid>
 
                 <Grid item xs={1.25}>
