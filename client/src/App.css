@@ -234,6 +234,11 @@
   background: hwb(0 100% 0%);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+.Editbar{
+  position:relative;
+  width: 5%;
+}
 .card_body {
   display:flex;
   /* padding-left: 800px; */

@@ -17,7 +17,7 @@ const MapSchema = new Schema(
         // new layers
         Layers:         {type: [ {Name: {type: String}, Opacity: {type: Number}, Layer: {type: Map, of: String} } ], required: true},
         Tileset:        {type: String, required: false},
-        IsEditing:      {type: Boolean, required: true},
+        IsEditing:      {type: String, required: true},
     },
     {timestamps: true}
 );
