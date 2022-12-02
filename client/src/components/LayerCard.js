@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 
 function LayerCard(props){
     // setLayer will set the current layer to this layer's index
-    const { pairs, setLayer, currentLayer, deleteLayer, toggleLayerOpacity, moveLayerUp, moveLayerDown, lastLayerIndex } = props;
+    const { pairs, setLayer, currentLayer, deleteLayer, toggleLayerOpacity, changeLayerName, moveLayerUp, moveLayerDown, lastLayerIndex } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
@@ -47,8 +47,10 @@ function LayerCard(props){
     }
 
     function handleKeyPress(event) {
+        event.stopPropagation();
         if (event.code === "Enter") {
             // store.RenameLayer(pairs.key, text);
+            changeLayerName(pairs.position, text);
             toggleEdit();
         }
     }
@@ -119,7 +121,7 @@ function LayerCard(props){
                     defaultValue={pairs.value.Name}
                     inputProps={{style: {fontSize: 10}}}
                     InputLabelProps={{style: {fontSize: 10}}}
-                    >{pairs.map.Name}</TextField>
+                    >{pairs.value.Name}</TextField>
                 </Grid>
 
                 <Grid item xs={1.25}>

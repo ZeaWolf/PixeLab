@@ -282,6 +282,13 @@ export default function MapScreen() {
         setRenderLayer(true);
         draw();     // redraw the layers after a layer's opacity is changed
     }
+    // change name of the layer
+    function changeLayerName(currentIndex, newName){
+        let currentLayer = layers[currentIndex];
+        currentLayer.Name = newName;
+        setRenderLayer(true);
+        draw();     // redraw the layers after a layer's opacity is changed
+    }
     
     function importTileset(event){
         try{
@@ -403,6 +410,7 @@ export default function MapScreen() {
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
                             toggleLayerOpacity= {toggleLayerOpacity}
+                            changeLayerName = {changeLayerName}
                             currentLayer = {currentLayer}
                             lastLayerIndex = {layers.length-1}
                             pairs={{position: index, value: element}}
