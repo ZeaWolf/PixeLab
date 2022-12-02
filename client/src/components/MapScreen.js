@@ -16,6 +16,11 @@ import api from '../api'
 import PublishErrorModal from './PublishErrorModal'
 import PublishModal from './PublishModal'
 import ShareModal from './ShareModal'
+import EditOffIcon from '@mui/icons-material/EditOff';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
@@ -486,6 +491,13 @@ export default function MapScreen() {
                         <Button onClick={onShare}>Share</Button>
                     </div>
                     <div className="card">
+                        <div className="Editbar">
+                        <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
+                        <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton>
+                        <IconButton><EditOffIcon></EditOffIcon></IconButton>
+                        <IconButton><UndoIcon></UndoIcon></IconButton>
+                        <IconButton><RedoIcon></RedoIcon></IconButton>
+                        </div>
                         <div className="card_center-column">
                             <canvas 
                             ref={canvas} 
