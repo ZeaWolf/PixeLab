@@ -75,7 +75,7 @@ updateTileset = async(req, res) => {
             // Check share list
 
             for (let i = 0; i < body.SharedList; i++) {
-                User.find({OwnerEmail: body.SharedList[i]}, (err, sharedUser) => {
+                User.findOne({OwnerEmail: body.SharedList[i]}, (err, sharedUser) => {
                     if(err){
                         return res.status(400).json({ success: false, error: err})
                     }

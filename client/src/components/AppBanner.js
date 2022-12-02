@@ -32,6 +32,9 @@ export default function AppBanner() {
         if(store.currentTileset){
             await store.leaveTilesetPage(store.currentTileset._id);
         }
+        if(store.currentMap){
+            await store.leaveMapPage(store.currentMap._id);
+        }
         auth.logoutUser(store);
     }
 

@@ -8,12 +8,13 @@ const MapSchema = new Schema(
         OwnerEmail:     {type: String, required: true},
         Name:           {type: String, required: true},
         Type:           {type: String, required: true},
-        ShareList:      {type: [String], required: true},
+        SharedList:     {type: [String], required: true},
         Source:         {type: String, required: false},    // used for download/export
         Height:         {type: Number, required: true},
         Width:          {type: Number, required: true},
         Layers:         {type: [{type: Map, of: String}], required: true},
-        Tileset:        {type: String, required: false}
+        Tileset:        {type: String, required: false},
+        IsEditing:      {type: Boolean, required: true},
     },
     {timestamps: true}
 );
