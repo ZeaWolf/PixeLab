@@ -851,14 +851,48 @@ function GlobalStoreContextProvider(props) {
         history.push("/map/");
     }
 
-    store.filterController = async function (resourceList) {
+    store.filterController = async function (checkList) {
         try{
-            await api.getResourceLists();
-            storeReducer({
-                type: GlobalStoreActionType.LOAD_RESOURCES,
-                payload: resourceList,
-            })
-        
+            const response = await api.getResourceLists();
+            if(response.data.success){
+                let pairsArray = response.data.idInfoPairs;
+                console.log(checkList[0]);
+                console.log(checkList[1]);
+                console.log(checkList[2]);
+                if(checkList[0] === true){
+                    for(let i = 0; i <pairsArray.length; i++){
+                        if(pairsArray[i].Type !== "map"){
+                            pairsArray.splice(i,1);
+                            i--;
+                        }
+                    }
+                }
+
+                if(checkList[1] === true){
+                    for(let i = 0; i <pairsArray.length; i++){
+                        if(pairsArray[i].Type !== "tileset"){
+                            pairsArray.splice(i,1);
+                            i--;
+                        }
+                    }
+                }
+    
+                if(checkList[2] === true){
+                    for(let i = 0; i <pairsArray.length; i++){
+                        if(!auth.user.collectionList.includes(pairsArray[i]._id)){
+                            pairsArray.splice(i,1);
+                            i--;
+                        }
+                    }
+                }
+
+                console.log(pairsArray);
+
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_RESOURCES,
+                    payload: pairsArray,
+                })
+            }
         }catch(err){
             console.log("error msg: "+err);
         }
