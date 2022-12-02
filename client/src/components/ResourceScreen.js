@@ -66,7 +66,7 @@ export default function ResourceScreen(){
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
         await store.handleDownload(loadingListID);
-        if(store.currentResource.Type == "tileset"){
+        if(store.currentResource.Type == "tileset" || store.currentResource.Type == "map"){
             const link = document.createElement('a');
             link.download = `${store.currentResource.Name}.png`;
             link.href = store.currentResource.Source;

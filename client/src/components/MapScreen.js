@@ -12,10 +12,15 @@ import LayerCard from './LayerCard';
 import List from '@mui/material/List'
 import AddIcon from '@mui/icons-material/Add';
 import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
+import api from '../api'
+import PublishErrorModal from './PublishErrorModal'
+import PublishModal from './PublishModal'
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+    const [hasSource, setHasSource] = useState(false);
+    const [isPublish, setIsPublish] = useState(false);
 
     // below 4 are reference to the html object.
     const tilesetSelection = useRef(null);
@@ -300,8 +305,34 @@ export default function MapScreen() {
         
     }
 
-    const  handlePublishMap= async (event) => {
-        await store.publishMap(store.currentMap._id, " ");
+    // const  handlePublishMap= async (event) => {
+    //     await store.publishMap(store.currentMap._id, " ");
+    // }
+
+    const setHasSourceFunction = (bools) => {
+        setHasSource(bools);
+    }
+    const setNotPublishFunction = () => {
+        setIsPublish(false);
+    }
+    const setPublishDescriptionFunction = (text) => {
+        store.publishMap(store.currentMap._id, text);
+        setIsPublish(false);
+    }
+
+    const handlePublishMap = async event => {
+        if(store.currentMap){
+            let response = await api.getMapById(store.currentMap._id);
+            if(response.data.success){
+                let mapSource = response.data.map.Source;
+                if(mapSource !== ""){
+                    setIsPublish(true);
+                }
+                else{
+                    setHasSourceFunction(true);
+                }
+            }
+        }
     }
 
     let layerList = "";
@@ -363,6 +394,15 @@ export default function MapScreen() {
     let mapPage = 
         <div className='full-screen'>
             <NavigationBar/>
+            <PublishErrorModal
+                hasSource = {hasSource}
+                setHasSourceFunction = {setHasSourceFunction}
+            />
+            <PublishModal
+                isPublish = {isPublish}
+                setNotPublishFunction = {setNotPublishFunction}
+                setPublishDescriptionFunction = {setPublishDescriptionFunction}
+            />
             <div className='right-screen'>
                 <div className="map">
                     <div className="mapbanner">
