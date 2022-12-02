@@ -37,6 +37,7 @@ export const GlobalStoreActionType = {
     DELETING_A_MAP: "DELETING_A_MAP",
     LOAD_HOMESCREEN: "LOAD_HOMESCREEN",
     LOAD_LAYERS: "LOAD_LAYERS",
+    PUBLISH_MAP: "PUBLISH_MAP"
 
 }
 
@@ -190,6 +191,18 @@ function GlobalStoreContextProvider(props) {
                     mapList: store.mapList,
                 })
             }
+            case GlobalStoreActionType.PUBLISH_MAP: {
+                return setStore({
+                    tilesetList: store.tilesetList,
+                    currentTileset: store.currentTileset,
+                    currentMap: store.currentMap,
+                    TilesetIdForDelete: store.TilesetIdForDelete,
+                    MapIdForDelete: store.MapIdForDelete,
+                    resourceList: store.resourceList,
+                    currentResource: store.currentResource,
+                    mapList: store.mapList,
+                })
+            }
             case GlobalStoreActionType.LOAD_MAPS: {
                 return setStore({
                     tilesetList: store.tilesetList,
@@ -321,18 +334,24 @@ function GlobalStoreContextProvider(props) {
             if(response.data.success){
                 let map = response.data.map;
                 map.Name = name;
+                // map.Height = 90;
                 // async function updateTileset(id, tileset){
+                console.log("Rename");
+                console.log(typeof(name));
+                console.log(response.data.map._id);
+                console.log(id);
                 console.log(response);
-                response = await api.updateMap(id, map);
+
+                let response2 = await api.updateMap(map._id, map);
 
                 
-                if(response.data.sucess){
-                    console.log("updated tileset src success");
-                }
+                // if(response2.data.sucess){
+                //     console.log("updated tileset src success");
+                // }
                 store.loadMaps();
             }
         }catch(err){
-            console.log("err:"+err.message);
+            console.log("err:"+err);
         }
     };
 
@@ -547,7 +566,7 @@ function GlobalStoreContextProvider(props) {
     // this method will create a new map
     store.createMap = async function (name = "Untiled", height = 20, width = 25){
         //let newLayer = await store.createLayer("layer", height, width);
-        let layers = [{},{},{}];
+        let layers = [{"0-0":""},{"0-0":""},{"0-0":""}];
         //layers.push(newLayer);
         let payload = {
             OwnerEmail: auth.user.email,
@@ -568,7 +587,7 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.updateMapLayer = async function (id, layers){
+    store.updateMapLayer = async function (id, layers, source){
         //let newLayer = await store.createLayer("layer", height, width);
         //layers.push(newLayer);
         // let payload = {
@@ -584,7 +603,10 @@ function GlobalStoreContextProvider(props) {
         let response = await api.getMapById(id);
             if(response.data.success){
                 let map = response.data.map;
+                console.log(map);
+                console.log(source);
                 map.Layers = layers;
+                map.Source = source;
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
                 if(response.data.sucess){
@@ -651,6 +673,43 @@ function GlobalStoreContextProvider(props) {
         }
         else {
             console.log("API FAILED TO get a tileset");
+        }
+    }
+
+    store.publishMap = async function(id, text){
+        const response = await api.getMapById(id);
+        console.log(auth.user);
+        if (response.data.success) {
+            let map = response.data.map;
+            let payload = {
+                Type:           "map",
+                Name:           map.Name,
+                Author:         auth.user.userName,
+                Image:          map.Source,
+                Source:         map.Source,
+                Like:           0,
+                Downloads:      0,
+                Comments:       [],
+                PublishTime:    Date.now(),
+                Description:    text,
+            };
+            const responseResource = await api.createResource(payload);
+            if (responseResource.data.success) {
+                let resource = responseResource.data.resource;
+                storeReducer({
+                    type: GlobalStoreActionType.PUBLISH_MAP,
+                    payload: resource
+                });
+                // history.push("/community");
+                // store.loadTilesets();
+            }
+            else {
+                console.log("API FAILED TO publish a Map");
+            }
+
+        }
+        else {
+            console.log("API FAILED TO get a Map");
         }
     }
 

@@ -281,7 +281,7 @@ export default function MapScreen() {
         }
         try{
             //console.log("URL: " + typeof imgData);
-            await store.updateMapLayer(store.currentMap._id, layers);
+            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL());
         }
         catch(err){
             console.log(err);
@@ -298,6 +298,10 @@ export default function MapScreen() {
             setErase(false);
         }
         
+    }
+
+    const  handlePublishMap= async (event) => {
+        await store.publishMap(store.currentMap._id, " ");
     }
 
     let layerList = "";
@@ -367,7 +371,7 @@ export default function MapScreen() {
                         <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button>
                         <Button>Import Map</Button>
                         <Button onClick={onExport}>Export</Button>
-                        <Button>Publish</Button>
+                        <Button onClick={handlePublishMap} >Publish</Button>
                         <Button>Share</Button>
                     </div>
                     <div className="card">

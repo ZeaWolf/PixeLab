@@ -115,7 +115,7 @@ updateMap = async(req, res) => {
 
 
         Map.findOne({ _id: req.params.id}, (err, map) => {
-            console.log("map found: " + JSON.stringify(map));
+            // console.log("map found: " + JSON.stringify(map));
             if(err){
                 return res.status(404).json({
                     err,
@@ -143,7 +143,7 @@ updateMap = async(req, res) => {
             map.markModified('Layers');
             // console.log("layers: " + map.Layers);
 
-            console.log("correct information: " + map._id);
+            console.log(map._id);
             map
                 .save()
                 .then(() => {
