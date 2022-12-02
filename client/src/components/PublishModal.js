@@ -70,12 +70,11 @@ function PublishModal(props){
                             variant="contained"
                             onClick={handlePublish}
                         >
-                            confirm
+                            Confirm
                         </Button>
 
                         <Button
                             variant="contained"
-                            href = "/tileset-editor/"
                             onClick={handleNotPublish}
                         >
                             Cancel

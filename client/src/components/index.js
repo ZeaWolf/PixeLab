@@ -18,6 +18,7 @@ import GuestModal from './GuestModal'
 import DeleteModal from './DeleteModal'
 import PublishModal from './PublishModal'
 import PublishErrorModal from './PublishErrorModal'
+import ShareModal from './ShareModal'
 
 export{
     AppBanner,
@@ -40,4 +41,5 @@ export{
     DeleteModal,
     PublishModal,
     PublishErrorModal,
+    ShareModal,
 }

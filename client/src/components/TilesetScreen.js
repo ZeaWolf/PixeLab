@@ -11,6 +11,7 @@ import NavigationBar from "./NavigationBar"
 import AuthContext from '../auth'
 import PublishErrorModal from './PublishErrorModal'
 import PublishModal from './PublishModal'
+import ShareModal from './ShareModal'
 import LC from "literallycanvas";
 import "../literallycanvas.css";
 import api from '../api'
@@ -18,15 +19,29 @@ import api from '../api'
 export default function TilesetScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
-
     let imageBounds =  {x: 0, y:0, width: 384, height: 384}
     const [image, setImage] = useState("");
     const [canvas, setCanvas] = useState({});
     const [hasSource, setHasSource] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
+
+    const [isShare, setIsShare] = useState(false);
+
     const backgroundImg = new Image();
     backgroundImg.src = '8x8grid.png'
     // backgroundImg is 1600 x 1600
+
+    useEffect(() => {
+        // let url = window.location.href;
+        // let indexBeforeURL = url.lastIndexOf("/");
+        // let loadingListID = url.substring(indexBeforeURL+1);
+        // store.loadTilesetPage(loadingListID);
+        return ( ()=>{
+            store.leaveTilesetPage(store.currentTileset._id);
+         });
+    }, []);
+
+
     const setHasSourceFunction = (bools) => {
         setHasSource(bools);
     }
@@ -131,6 +146,18 @@ export default function TilesetScreen() {
         }
     }
 
+    const onShare = async () =>{
+        setIsShare(true);
+    }
+
+    const cancelShare = async () =>{
+        setIsShare(false);
+    }
+
+    const shareProject = async (id, email) =>{
+        await store.shareTileset(id, email);
+    }
+
     let tilesetPage = 
         <div className='full-screen'>
             <Typography style={{color: 'black', fontSize: 20, fontStyle: 'italic', fontWeight: "bold"}}>
@@ -167,6 +194,15 @@ export default function TilesetScreen() {
                 setNotPublishFunction = {setNotPublishFunction}
                 setPublishDescriptionFunction = {setPublishDescriptionFunction}
             />
+
+            <ShareModal 
+                isShare = {isShare} 
+                name = {store.currentTileset.Name}
+                id = {store.currentTileset._id}
+                cancelShare = {cancelShare}
+                shareProject = {shareProject}
+            />
+
             <Box className='right-screen'>
                 <Box id="tileset-screen" >
                     <Box id="tileset-toolbar">
@@ -175,7 +211,7 @@ export default function TilesetScreen() {
                         <Button onClick={onImport} component="label">Import <input type="file"hidden onChange={onImport}/></Button>
                         <Button onClick={onExport}>Export</Button>
                         <Button onClick={publishTileset}>Publish</Button>
-                        <Button>Share</Button>
+                        <Button onClick={onShare}>Share</Button>
                     </Box>
                     <Box id="drawing-box">
                         <LC.LiterallyCanvasReactComponent

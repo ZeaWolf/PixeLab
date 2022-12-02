@@ -71,6 +71,21 @@ updateTileset = async(req, res) => {
                     message: 'tileset not found!'
                 })
             }
+
+            // Check share list
+
+            for (let i = 0; i < body.SharedList; i++) {
+                User.find({OwnerEmail: body.SharedList[i]}, (err, sharedUser) => {
+                    if(err){
+                        return res.status(400).json({ success: false, error: err})
+                    }
+                    if(!sharedUser){
+                        return res
+                            .status(404)
+                            .json({success: false, error: 'Shared User not found'})
+                    }
+                }).catch(err => console.log(err))
+            }
             
             tileset.OwnerEmail = body.OwnerEmail;
             tileset.Name = body.Name;
@@ -81,6 +96,7 @@ updateTileset = async(req, res) => {
             tileset.Spacing = body.Spacing;
             tileset.Tiles = body.Tiles;
             tileset.Source = body.Source;
+            tileset.IsEditing = body.IsEditing;
 
             tileset
                 .save()
@@ -157,7 +173,11 @@ getTilesetById = async (req, res) => {
 getTilesetLists = async (req, res) => {
     try{
         const loggedInUser = await User.findOne({ _id: req.userId });
-        await Tileset.find({OwnerEmail: loggedInUser.email}, (err, tileset) => {
+        //const selfEmail = loggedInUser.email;
+        await Tileset.find({$or: [
+            {OwnerEmail: loggedInUser.email},
+            {SharedList: { $elemMatch: { $eq: loggedInUser.email}}} ]
+        }, (err, tileset) => {
             if(err){
                 return res.status(400).json({ success: false, error: err})
             }

@@ -230,20 +230,73 @@ function GlobalStoreContextProvider(props) {
                 return store;
         }
     }
-    // THIS FUNCTION WILL LOAD A SELECTED TILESET CARD FROM THE HOMEPAGE
-    store.loadTilesetPage = async function(id) {
+
+    // Share FUNTION
+    store.shareTileset = async function(id, email){
         try{
-            console.log(id);
             let response = await api.getTilesetById(id);
             if (response.data.success){
                 let tileset = response.data.data;
-                storeReducer({
-                    type: GlobalStoreActionType.LOADING_A_TILESET,
-                    payload: {ctileset: tileset}
-                })
+                console.log(tileset.SharedList)
+                // Change edit status
+                tileset.SharedList.push(email);
+                // async function updateTileset(id, tileset){
+                response = await api.updateTileset(id, tileset);
             }
-            console.log(response.data);
-            history.push("/tileset-editor");
+        }catch(err){
+            console.log("Share Error:"+err);
+        }
+    }
+
+    // THIS FUNCTION WILL LOAD A SELECTED TILESET CARD FROM THE HOMEPAGE
+    store.loadTilesetPage = async function(id) {
+        try{
+            //console.log(id);
+            let response = await api.getTilesetById(id);
+            if (response.data.success){
+                let tileset = response.data.data;
+
+                console.log(tileset.IsEditing);
+                if(tileset.IsEditing){
+                    //Show cant share modal
+                    return;
+                }
+                // Change edit status
+                tileset.IsEditing = true;
+                // async function updateTileset(id, tileset){
+                response = await api.updateTileset(id, tileset);
+                console.log(tileset.IsEditing);
+                if(response.data.success){
+                    
+                    storeReducer({
+                        type: GlobalStoreActionType.LOADING_A_TILESET,
+                        payload: {ctileset: tileset}
+                    })
+                }
+                
+                history.push("/tileset-editor/" + tileset._id);
+            }
+        }catch(err){
+            console.log("err:"+err);
+        }
+    }
+
+    store.leaveTilesetPage = async function(id){
+        try{
+            let response = await api.getTilesetById(id);
+            if (response.data.success){
+                let tileset = response.data.data;
+                // Change edit status
+                tileset.IsEditing = false;
+                // async function updateTileset(id, tileset){
+                response = await api.updateTileset(id, tileset);
+                if(response.data.success){
+                    storeReducer({
+                        type: GlobalStoreActionType.LOADING_A_TILESET,
+                        payload: {ctileset: tileset}
+                    })
+                }
+            }
         }catch(err){
             console.log("err:"+err);
         }
@@ -287,7 +340,7 @@ function GlobalStoreContextProvider(props) {
                 tileset.Source = src;
                 // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
                 // }
@@ -305,7 +358,7 @@ function GlobalStoreContextProvider(props) {
                 tileset.Name = name;
                 // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
                 store.loadTilesets();
@@ -326,7 +379,7 @@ function GlobalStoreContextProvider(props) {
                 response = await api.updateMap(id, map);
 
                 
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
                 store.loadMaps();
@@ -343,7 +396,7 @@ function GlobalStoreContextProvider(props) {
                 let layer = response.data.layer;
                 layer.Name = name;
                 response = await api.updateLayer(id, layer);
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
 
@@ -587,7 +640,7 @@ function GlobalStoreContextProvider(props) {
                 map.Layers = layers;
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
             }
@@ -604,7 +657,8 @@ function GlobalStoreContextProvider(props) {
             Rows:           0,
             Spacing:        0,
             Tiles:          [],
-            Source:         ""
+            Source:         "",
+            IsEditing:      false,
         };
         const response = await api.createTileset(payload);
         console.log(response);
@@ -728,7 +782,7 @@ function GlobalStoreContextProvider(props) {
                     }
                 }
 
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
             }
@@ -748,7 +802,7 @@ function GlobalStoreContextProvider(props) {
                 resource.Downloads ++;
                 // async function updateTileset(id, tileset){
                 response = await api.updateResource(id, resource);
-                if(response.data.sucess){
+                if(response.data.success){
                     console.log("updated tileset src success");
                 }
                 // store.loadResources();

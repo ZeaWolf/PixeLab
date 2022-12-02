@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
-import { GlobalStoreContext } from '../store'
+import { GlobalStoreContext } from '../store';
 // import EditToolbar from './EditToolbar'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ import Avatar from '@mui/material/Avatar';
 
 export default function AppBanner() {
     const { auth } = useContext(AuthContext);
-    const { store } = "store";
+    const { store } = useContext(GlobalStoreContext);;
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
 
@@ -27,8 +27,11 @@ export default function AppBanner() {
         setAnchorEl(null);
     };
 
-    const handleLogout = () => {
+    const handleLogout = async (event) => {
         handleMenuClose();
+        if(store.currentTileset){
+            await store.leaveTilesetPage(store.currentTileset._id);
+        }
         auth.logoutUser(store);
     }
 
