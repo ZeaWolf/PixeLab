@@ -44,7 +44,7 @@ export default function MapScreen() {
     let isMouseDown = false;
     const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
     let selection = [-1, -1];
-    const [erase,setErase] = useState(false);
+    let erase = false;
     const history = useHistory();
 
     useEffect(() => {
@@ -123,7 +123,10 @@ export default function MapScreen() {
             var key = clicked[0] + "-" + clicked[1];
             console.log(clicked[0]);
             console.log(clicked[1]);
-            if (mouseEvent.shiftKey) {
+            
+            // if (mouseEvent.shiftKey) {
+            // no update immed, choose reverse value
+            if(erase) {
                 delete layers[currentLayer].Layer[key];
             } else {
                 layers[currentLayer].Layer[key]=tilesetSrc;
@@ -412,9 +415,9 @@ export default function MapScreen() {
 
     function handleErase(){
         if(erase === false){
-            setErase(true);
+            erase = true;
         }else{
-            setErase(false);
+            erase = false;
         }
         
     }
@@ -571,6 +574,7 @@ export default function MapScreen() {
                         </div>
                         <div className="card_center-column">
                             <canvas 
+                            id="canvas_body"
                             ref={canvas} 
                             style={styles}  
                             width="800%" 
