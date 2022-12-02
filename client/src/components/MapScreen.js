@@ -219,11 +219,14 @@ export default function MapScreen() {
     // delete a layer
     function deleteLayer(index){
         console.log("number of layers before create: " + layers.length);
+        let arrLength = layers.length;
         layers.splice(index, 1) // remove layer at index
-        console.log("number of layers after create: " + layers.length);
-        console.log(layers);
-        setRenderLayer(true);
-        draw();     // redraw the layers after a layer is remove
+        if(arrLength - 1 === layers.length){
+            console.log("number of layers after create: " + layers.length);
+            console.log(layers);
+            setRenderLayer(true);
+            draw();     // redraw the layers after a layer is remove
+        }
     }
     // move a layer up
     function moveLayerUp(currentIndex){
@@ -231,22 +234,32 @@ export default function MapScreen() {
         if(currentIndex != 0){
             console.log("before move up: ");
             console.log(layers);
+            let arrLength = layers.length;
             let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
-            layers.splice(currentIndex-1, 0, oldPosition[0]); // move the layer to the front
-            console.log("after move up: ")
-            console.log(layers);
-            setRenderLayer(true);
-            draw();     // redraw the layers after a layer is remove
+            if(arrLength - 1 === layers.length){
+                layers.splice(currentIndex-1, 0, oldPosition[0]); // move the layer to the front
+                if(arrLength === layers.length){
+                    console.log("after move up: ")
+                    console.log(layers);
+                    setRenderLayer(true);
+                    draw();     // redraw the layers after a layer is remove
+                }
+            }
         }
     }
     // move a layer down
     function moveLayerDown(currentIndex){
         // boundary check since you can't move out of the array
         if(currentIndex+1 != layers.length){
+            let arrLength = layers.length;
             let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
-            layers.splice(currentIndex+1, 0, oldPosition[0]); // move the layer to the back
-            setRenderLayer(true);
-            draw();     // redraw the layers after a layer is remove
+            if(arrLength - 1 === layers.length){
+                layers.splice(currentIndex+1, 0, oldPosition[0]); // move the layer to the back
+                if(arrLength === layers.length){
+                    setRenderLayer(true);
+                    draw();     // redraw the layers after a layer is remove
+                }
+            }
         }
     }
     
@@ -370,6 +383,7 @@ export default function MapScreen() {
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
                             currentLayer = {currentLayer}
+                            lastLayerIndex = {layers.length-1}
                             pairs={{position: index, value: element}}
                             selected={false}
                         />
