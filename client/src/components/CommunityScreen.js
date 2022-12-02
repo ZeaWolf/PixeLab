@@ -112,7 +112,7 @@ export default function CommunityScreen() {
                     key={pair._id}
                     resourceList={pair}
                     selected={false}
-                    ImgNamePair={{img:pair.Source, name:pair.Name, id:pair._id,
+                    ImgNamePair={{img:pair.Image, name:pair.Name, id:pair._id,
                         description:pair.Description, like:pair.Like, downloads:pair.Downloads }}
                 />
             ))
