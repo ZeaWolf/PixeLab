@@ -81,10 +81,14 @@ export default function MapScreen() {
         var ctx = canvas.current.getContext("2d");
         // clear drawing from the canvas first
         ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+
+        console.log("DRAWwwwwwwwwww");
+        console.log(layers);
      
         var size_of_crop = 32;
 
         for(let i = 0; i < layers.length; i++){
+            console.log(layers[i]);
             let currentLayer = layers[i];
             if(currentLayer.Opacity === 1){   // draw if it is visible
                 let layerInform = currentLayer.Layer   // where store the actual layer key and value
@@ -114,7 +118,7 @@ export default function MapScreen() {
 
     // add tile to the layers
     function addTile(mouseEvent) {
-        if(layers.length !== 0 && tilesetSrc !== ""){
+        if(layers.length !== 0 ){
             var clicked = getCoords(mouseEvent);
             var key = clicked[0] + "-" + clicked[1];
             console.log(clicked[0]);
@@ -328,7 +332,8 @@ export default function MapScreen() {
                 console.log(typeof JSON.parse(decode));
                 console.log(typeof layers);
                 let layersArray = JSON.parse(decode)
-                layers = [];
+
+                layers.splice(0, layers.length)
                 console.log(layers);
                 for(let i = 0; i< layersArray.length; i++){
                     let currentLayerName = layersArray[i].Name;
@@ -338,7 +343,9 @@ export default function MapScreen() {
                     layers.push(newLayer);
                     setRenderLayer(true);
                 }
+                console.log("jjjjj");
                 console.log(layers);
+                
                 setRenderLayer(true);
                 draw();     // redraw the layers is changed
             })
@@ -489,7 +496,11 @@ export default function MapScreen() {
     if(renderLayer){
         console.log("re-renderLayer");
         setRenderLayer(false);
+        
+        console.log(layers);
         if(layers){  // prevent running empty
+            console.log("ohye")
+            console.log(layers);
             layerList = 
             <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
