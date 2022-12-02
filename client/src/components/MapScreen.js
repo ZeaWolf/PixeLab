@@ -16,6 +16,11 @@ import api from '../api'
 import PublishErrorModal from './PublishErrorModal'
 import PublishModal from './PublishModal'
 import ShareModal from './ShareModal'
+import EditOffIcon from '@mui/icons-material/EditOff';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import UndoIcon from '@mui/icons-material/Undo';
+import RedoIcon from '@mui/icons-material/Redo';
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
@@ -46,7 +51,7 @@ export default function MapScreen() {
         let url = window.location.href;
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
-        // store.loadMapPage(loadingListID);
+        store.loadMapPage(loadingListID);
         history.push(`/map/${loadingListID}`);
 
         return ( ()=>{
@@ -292,13 +297,14 @@ export default function MapScreen() {
         setRenderLayer(true);
         draw();     // redraw the layers after a layer's opacity is changed
     }
-    
+    // import Tileset
     function importTileset(event){
         try{
             const reader = new FileReader();
             reader.addEventListener("load", ()=> {
                 var importImage = "";
                 importImage = reader.result;
+                console.log(importImage);
                 imageRef.current.src = importImage;
             })
             if(event.target.files && event.target.files[0]){
@@ -308,8 +314,46 @@ export default function MapScreen() {
             console.log(err);
         }
     }
+    // import Map json file
+    function importMap(event){
+        try{
+            const reader = new FileReader();
+            reader.addEventListener("load", ()=> {
+                let importedMap = "";
+                importedMap = reader.result;
+                let output = importedMap.slice('data:application/json;base64,'.length);
+                console.log(importedMap);
+                var b = Buffer.from(output, 'base64')
+                let decode = b.toString();
+                console.log(layers);
+                console.log("haha");
+                console.log(JSON.parse(decode));
+                console.log(typeof JSON.parse(decode));
+                console.log(typeof layers);
+                let layersArray = JSON.parse(decode)
+                layers = [];
+                console.log(layers);
+                for(let i = 0; i< layersArray.length; i++){
+                    let currentLayerName = layersArray[i].Name;
+                    let currentLayerOpacity = layersArray[i].Opacity;
+                    let currentLayerLayer = layersArray[i].Layer;
+                    let newLayer = {Name: currentLayerName, Opacity: currentLayerOpacity, Layer:currentLayerLayer};
+                    layers.push(newLayer);
+                    setRenderLayer(true);
+                }
+                console.log(layers);
+                setRenderLayer(true);
+                draw();     // redraw the layers is changed
+            })
+            if(event.target.files && event.target.files[0]){
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }catch(err){
+            console.log(err);
+        }
+    }
 
-    const onExport = async (event) =>{
+    const onExportAsPNG = async (event) =>{
         event.preventDefault();
         if (!canvas || !canvas.current){
             return;
@@ -330,6 +374,20 @@ export default function MapScreen() {
         //const w = window.open("");
         //w.document.write(image.outerHTML);
         return;
+    }
+
+    const onExportAsJson = async (event) =>{
+        event.preventDefault();
+        let jsonData = layers;
+        let dataStr = JSON.stringify(jsonData);
+        let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+        let exportFileDefaultName = `${store.currentMap.Name}.json`;
+
+        let linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
     }
 
     const onSave = async (event) => {
@@ -434,11 +492,11 @@ export default function MapScreen() {
     if(renderLayer){
         console.log("re-renderLayer");
         setRenderLayer(false);
-        if(current_map){  // prevent running empty
+        if(layers){  // prevent running empty
             layerList = 
             <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
-                    current_map.map((element, index) => (
+                    layers.map((element, index) => (
                         <LayerCard
                             setLayer = {setLayer}
                             moveLayerUp = {moveLayerUp}
@@ -480,15 +538,29 @@ export default function MapScreen() {
             <div className='right-screen'>
                 <div className="map">
                     <div className="mapbanner">
-                        <Button>New</Button>
+                        {/* <Button>New</Button> */}
                         <Button onClick = {onSave}>Save</Button>
                         <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button>
-                        <Button>Import Map</Button>
-                        <Button onClick={onExport}>Export</Button>
+                        <Button onClick={importMap} component="label">Import Map<input type="file" id="jsonfileinput" hidden onChange={importMap}/></Button>
+                        <div className='dropdown'>
+                        <Button className='dropbtn'>Export
+                            <div className="dropdown-content">
+                                <a href="#" onClick = {onExportAsPNG} >Export as PNG</a>
+                                <a href="#" onClick = {onExportAsJson} >Export as Json</a>
+                            </div>
+                        </Button>
+                        </div>
                         <Button onClick={handlePublishMap} >Publish</Button>
                         <Button onClick={onShare}>Share</Button>
                     </div>
                     <div className="card">
+                        <div className="Editbar">
+                        <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
+                        <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton>
+                        <IconButton><EditOffIcon></EditOffIcon></IconButton>
+                        <IconButton><UndoIcon></UndoIcon></IconButton>
+                        <IconButton><RedoIcon></RedoIcon></IconButton>
+                        </div>
                         <div className="card_center-column">
                             <canvas 
                             id="canvas_body"
