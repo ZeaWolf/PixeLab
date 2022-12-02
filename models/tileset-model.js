@@ -14,7 +14,7 @@ const TilesetSchema = new Schema(
         Spacing:        {type: Number, required: true},
         Tiles:          {type: [Tile], required: true},
         Source:         {type: String, required: false},     // used for download/export
-        IsEditing:      {type: Boolean, required: true}
+        IsEditing:      {type: String, required: true}
     },
     {timestamps: true},
 );

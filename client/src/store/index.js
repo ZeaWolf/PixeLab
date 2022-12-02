@@ -270,12 +270,12 @@ function GlobalStoreContextProvider(props) {
                 let tileset = response.data.data;
 
                 console.log(tileset.IsEditing);
-                if(tileset.IsEditing){
+                if(tileset.IsEditing != "None" && tileset.IsEditing != auth.user.email){
                     //Show cant share modal
                     return;
                 }
                 // Change edit status
-                tileset.IsEditing = true;
+                tileset.IsEditing = auth.user.email;
                 // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
                 console.log(tileset.IsEditing);
@@ -300,7 +300,7 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success){
                 let tileset = response.data.data;
                 // Change edit status
-                tileset.IsEditing = false;
+                tileset.IsEditing = "None";
                 // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
                 if(response.data.success){
@@ -680,7 +680,7 @@ function GlobalStoreContextProvider(props) {
             Spacing:        0,
             Tiles:          [],
             Source:         "",
-            IsEditing:      false,
+            IsEditing:      "None",
         };
         const response = await api.createTileset(payload);
         console.log(response);
