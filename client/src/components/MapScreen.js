@@ -557,7 +557,7 @@ export default function MapScreen() {
                         <div className="Editbar">
                         <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
                         <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton>
-                        <IconButton><EditOffIcon></EditOffIcon></IconButton>
+                        <IconButton><EditOffIcon onClick={handleErase}></EditOffIcon></IconButton>
                         <IconButton><UndoIcon></UndoIcon></IconButton>
                         <IconButton><RedoIcon></RedoIcon></IconButton>
                         </div>
@@ -580,7 +580,6 @@ export default function MapScreen() {
 
                                 <label style={{color: "black"}}>Layer: </label>
                                 <IconButton><AddIcon onClick={createLayer}/></IconButton>
-                                <IconButton><AutoFixNormalIcon onClick={handleErase}/></IconButton>
                                 <div className="layers">
                                     {
                                         layerList
