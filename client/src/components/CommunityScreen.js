@@ -22,9 +22,9 @@ export default function CommunityScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [check,setCheck] = useState([false,false,false]);
-    const [mapFilter,setMapFilter] = useState([]);
-    const [tilesetFilter,setTilesetFilter] = useState([]);
-    const [collectionFilter,setCollectionFilter] = useState([]);
+    // const [mapFilter,setMapFilter] = useState([]);
+    // const [tilesetFilter,setTilesetFilter] = useState([]);
+    // const [collectionFilter,setCollectionFilter] = useState([]);
     const [sortShow,setSortShow] = useState("Sort By Lastest");
     const [searchFilter,setSearchFilter] = useState(false);
 
@@ -36,78 +36,34 @@ export default function CommunityScreen() {
         event.preventDefault();
         setCheck([event.target.checked,check[1],check[2]]);
         console.log(filter);
-        handleFilterController(0);
+        if(check[0] === true){
+            store.filterController([false,check[1],check[2]]);
+        }else{
+            store.filterController([true,check[1],check[2]]);
+        }
+        
     }
 
     function handleTileset(event, filter){
         event.preventDefault();
         setCheck([check[0],event.target.checked,check[2]]);
         console.log(filter);
-        handleFilterController(1);
+        if(check[1] === true){
+            store.filterController([check[0],false,check[2]]);
+        }else{
+            store.filterController([check[0],true,check[2]]);
+        }
     }
 
     function handleCollection(event, filter){
         event.preventDefault();
         setCheck([check[0],check[1],event.target.checked]);
         console.log(filter);
-        handleFilterController(2);
-    }
-
-    function handleFilterController(checkFilter){
-        let resources = store.resourceList;
-        let map = mapFilter;
-        let tileset = tilesetFilter;
-        let collection = collectionFilter;
-       
-        if(checkFilter === 0 && check[0] === false){
-            for(let i = 0; i < resources.length; i++){
-                if(resources[i].Type !== "map"){
-                    map.push(resources[i]);
-                    resources.splice(i, 1); 
-                    i--;
-                }
-            }
-        }else if(checkFilter === 0 && check[0] === true){
-            for(let i = 0; i < map.length; i++){
-                resources.push(map[i]);  
-            }
-            map = [];
+        if(check[2] === true){
+            store.filterController([check[0],check[1],false]);
+        }else{
+            store.filterController([check[0],check[1],true]);
         }
-
-        if(checkFilter === 1  && check[1] === false){
-            for(let i = 0; i < resources.length; i++){
-                if(resources[i].Type !== "tileset"){
-                    tileset.push(resources[i]);
-                    resources.splice(i, 1); 
-                    i--;
-                }
-            }
-        }else if(checkFilter === 1  && check[1] === true){
-            for(let i = 0; i < tileset.length; i++){
-                resources.push(tileset[i]);  
-            }
-            tileset = [];
-        }
-
-        if(checkFilter === 2  && check[2] === false){
-            for(let i = 0; i < resources.length; i++){
-                if(!auth.user.collectionList.includes(resources[i]._id)){
-                    collection.push(resources[i]);
-                    resources.splice(i, 1); 
-                    i--;
-                }
-            }
-        }else if(checkFilter === 2  && check[2] === true){
-            for(let i = 0; i < collection.length; i++){
-                resources.push(collection[i]);  
-            }
-            collection = [];
-        }
-
-        setMapFilter(map);
-        setTilesetFilter(tileset);
-        setCollectionFilter(collection);
-        store.filterController(resources);
     }
 
     function handleLastest(event,sort){
