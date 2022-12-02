@@ -566,8 +566,8 @@ export default function MapScreen() {
                     </div>
                     <div className="card">
                         <div className="Editbar">
-                        <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
-                        <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton>
+                        {/* <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
+                        <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton> */}
                         <IconButton><EditOffIcon onClick={handleErase}></EditOffIcon></IconButton>
                         <IconButton><UndoIcon></UndoIcon></IconButton>
                         <IconButton><RedoIcon></RedoIcon></IconButton>
