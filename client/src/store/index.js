@@ -278,7 +278,7 @@ function GlobalStoreContextProvider(props) {
                 tileset.IsEditing = auth.user.email;
                 // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
-                console.log(tileset.IsEditing);
+
                 if(response.data.success){
                     
                     storeReducer({
@@ -303,15 +303,23 @@ function GlobalStoreContextProvider(props) {
                 tileset.IsEditing = "None";
                 // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
-                if(response.data.success){
-                    storeReducer({
-                        type: GlobalStoreActionType.LOADING_A_TILESET,
-                        payload: {ctileset: tileset}
-                    })
-                }
             }
         }catch(err){
             console.log("err:"+err);
+        }
+    }
+
+    store.shareMap = async function(id, email){
+        try{
+            let response = await api.getMapById(id);
+            if (response.data.success){
+                let map = response.data.map;
+                // Change edit status
+                map.SharedList.push(email);
+                response = await api.updateMap(id, map);
+            }
+        }catch(err){
+            console.log("Share Error:"+err);
         }
     }
 
@@ -320,15 +328,37 @@ function GlobalStoreContextProvider(props) {
             let response = await api.getMapById(id);
             if (response.data.success){
                 let map = response.data.map;
-                console.log(map);
-                storeReducer({
-                    type: GlobalStoreActionType.LOADING_A_MAP,
-                    payload: {cmap: map}
-                })
+                if(map.IsEditing){
+                    //Show cant share modal
+                    return;
+                }
+                map.IsEditing = true;
+                response = await api.updateMap(id, map);
+
+                if(response.data.success){
+                    storeReducer({
+                        type: GlobalStoreActionType.LOADING_A_MAP,
+                        payload: {cmap: map}
+                    })
+                }
+                history.push("/map/"+map._id);
             }
-            history.push("/map");
         }catch(err){
             console.log("err:"+err);
+        }
+    }
+
+    store.leaveMapPage = async function(id){
+        try{
+            let response = await api.getMapById(id);
+            if (response.data.success){
+                let map = response.data.map;
+                // Change edit status
+                map.IsEditing = false;
+                response = await api.updateMap(id, map);
+            }
+        }catch(err){
+            console.log("leave err:"+err);
         }
     }
 
@@ -619,18 +649,19 @@ function GlobalStoreContextProvider(props) {
     // this method will create a new map
     store.createMap = async function (name = "Untiled", height = 20, width = 25){
         //let newLayer = await store.createLayer("layer", height, width);
-        let layers = [{"0-0":""},{"0-0":""},{"0-0":""}];
+        let layers = [];
         //layers.push(newLayer);
         let payload = {
             OwnerEmail: auth.user.email,
             Name: name,
             Type: "map",
-            ShareList: [],
+            SharedList: [],
             Source: "",
             Height: height,
             Width: width,
             Layers: layers,
             Tileset: "",
+            IsEditing: false,
         }
         const response = await api.createMap(payload);
         if (response.data.success) {

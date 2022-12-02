@@ -1,7 +1,7 @@
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box';
 import React, { useContext, useEffect, useState,useRef } from 'react'
-import { Typography, IconButton } from '@mui/material';
+import { Typography, IconButton, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 
 function LayerCard(props){
     // setLayer will set the current layer to this layer's index
-    const { pairs, setLayer, currentLayer, deleteLayer, moveLayerUp, moveLayerDown } = props;
+    const { pairs, setLayer, currentLayer, deleteLayer, toggleLayerOpacity, changeLayerName, moveLayerUp, moveLayerDown, lastLayerIndex } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
@@ -31,8 +31,9 @@ function LayerCard(props){
         deleteLayer(pairs.position);
     }
 
-    async function handleToggleVisibility(){
-         
+    async function handleToggleVisibility(event){
+        event.stopPropagation();
+        toggleLayerOpacity(pairs.position);
     }
 
     function handleToggleEdit(event) {
@@ -46,8 +47,10 @@ function LayerCard(props){
     }
 
     function handleKeyPress(event) {
+        event.stopPropagation();
         if (event.code === "Enter") {
             // store.RenameLayer(pairs.key, text);
+            changeLayerName(pairs.position, text);
             toggleEdit();
         }
     }
@@ -67,14 +70,21 @@ function LayerCard(props){
    }
 
     let visibilityButton =
-        <IconButton><VisibilityIcon/></IconButton>
+        <IconButton onClick={handleToggleVisibility}><VisibilityIcon/></IconButton>
+
+    if(pairs.value.Opacity === 0){
+        visibilityButton = <IconButton onClick={handleToggleVisibility}><VisibilityOffIcon/></IconButton>
+    }
+    else{
+        <IconButton onClick={handleToggleVisibility}><VisibilityIcon/></IconButton>
+    }
 
     let LayerList = 
         <ListItem onClick={setCurrentLayer}>
             <Grid container spacing={1} style={{borderColor: pairs.position === currentLayer ? 'blue' : '#fdffdc',borderStyle:"solid"}}>
 
                 <Grid item xs={4.75}>
-                    <Typography style={{color:'rgb(35, 35, 35)'}}>Layer</Typography>
+                    <Typography style={{color:'rgb(35, 35, 35)'}}>{pairs.value.Name}</Typography>
                 </Grid>
 
                 <Grid item xs={1.25}>
@@ -82,11 +92,11 @@ function LayerCard(props){
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="downward"><ArrowDownwardIcon onClick={handleArrowDownward}/></IconButton>
+                    <IconButton aria-label="downward" disabled={pairs.position===lastLayerIndex}><ArrowDownwardIcon onClick={handleArrowDownward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="upward"><ArrowUpwardIcon onClick={handleArrowUpward}/></IconButton>
+                    <IconButton aria-label="upward" disabled={pairs.position===0}><ArrowUpwardIcon onClick={handleArrowUpward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>
@@ -108,10 +118,10 @@ function LayerCard(props){
                 <Grid item xs={4.75} >
                     <TextField
                     onKeyPress={handleKeyPress} onChange={handleUpdateText}
-                    defaultValue={pairs.map.Name}
+                    defaultValue={pairs.value.Name}
                     inputProps={{style: {fontSize: 10}}}
                     InputLabelProps={{style: {fontSize: 10}}}
-                    >{pairs.map.Name}</TextField>
+                    >{pairs.value.Name}</TextField>
                 </Grid>
 
                 <Grid item xs={1.25}>

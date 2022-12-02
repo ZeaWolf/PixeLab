@@ -34,7 +34,7 @@ const App = () => {
                         <Route path="/community/" exact component={CommunityScreen} />
                         <Route path="/tileset-editor/:id" exact component={TilesetScreen} />
                         <Route path="/resource/:id" exact component={ResourceScreen} />
-                        <Route path="/map/" exact component={MapScreen} />
+                        <Route path="/map/:id" exact component={MapScreen} />
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
                     </Switch>

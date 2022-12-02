@@ -2,61 +2,6 @@ const Map = require('../models/map-model');
 const Layer = require('../models/layer-model');
 const User = require('../models/user-model');
 
-// // update the editing change in the map editor
-// updateMapLayer = async(req, res) => {
-//     try{
-//         const body = req.body;
-//         console.log("updateMap: " + JSON.stringify(body));
-//         if(!body){
-//             return res.status(400).json({
-//                 success: false,
-//                 error: 'You must provide a body to update'
-//             })
-//         }
-//         // find the map based on _id
-//         Map.findOne({ _id: req.params.id}, (err, map) => {
-//             console.log("map found: " + JSON.stringify(map));
-//             if(err){
-//                 return res.status(404).json({
-//                     err,
-//                     message: 'Map not found!'
-//                 })
-//             }
-//             if(!map){
-//                 return res.status(404).json({
-//                     err,
-//                     message: 'Map not found!'
-//                 })
-//             }
-            
-
-//             map.Layers = body.Layers;
-
-//             map
-//                 .save()
-//                 .then(() => {
-//                     console.log("SUCESS!!!");
-//                     return res.status(200).json({
-//                         success: true,
-//                         id: map._id,
-//                         message: 'Map updated!',
-//                     })
-//                 })
-//                 .catch(error => {
-//                     console.log("FAILURE: " + JSON.stringify(error));
-//                     return res.status(404).json({
-//                         error,
-//                         message: "Map not updated"
-//                     })
-//                 })
-//         })
-//     }catch(err){
-//         console.error(err);
-//         res.status(500).send();
-//     }
-// }
-
-
 // create a new map in the server
 createMap = async(req, res) => {
     try{
@@ -128,18 +73,33 @@ updateMap = async(req, res) => {
                     message: 'Map not found!'
                 })
             }
-            console.log("map name: " + map.Name);
-            console.log("body name: " + body.Name);
-            let name = "asd";
+            
+            for (let i = 0; i < body.SharedList; i++) {
+                User.findOne({OwnerEmail: body.SharedList[i]}, (err, sharedUser) => {
+                    if(err){
+                        return res.status(400).json({ success: false, error: err})
+                    }
+                    if(!sharedUser){
+                        return res
+                            .status(404)
+                            .json({success: false, error: 'Shared User not found'})
+                    }
+                }).catch(err => console.log(err))
+            }
+
+
             map.OwnerEmail = body.OwnerEmail;
             map.Name = body.Name;
             map.Type = body.Type;
-            map.ShareList = body.ShareList;
+            map.SharedList = body.SharedList;
             map.Source = body.Source;
             map.Height = body.Height;
             map.Width = body.Width;
             map.Layers = body.Layers;
             map.Tileset = body.Tileset;
+            map.IsEditing = body.IsEditing;
+
+
             map.markModified('Layers');
             // console.log("layers: " + map.Layers);
 
@@ -220,7 +180,10 @@ getMapById = async (req, res) => {
 getMapLists = async (req, res) => {
     try{
         const loggedInUser = await User.findOne({ _id: req.userId });
-        await Map.find({OwnerEmail: loggedInUser.email}, (err, map) => {
+        await Map.find({$or: [
+            {OwnerEmail: loggedInUser.email},
+            {SharedList: { $elemMatch: { $eq: loggedInUser.email}}} ]
+        }, (err, map) => {
             if(err){
                 return res.status(400).json({ success: false, error: err})
             }

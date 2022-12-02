@@ -15,12 +15,14 @@ import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 import api from '../api'
 import PublishErrorModal from './PublishErrorModal'
 import PublishModal from './PublishModal'
+import ShareModal from './ShareModal'
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [hasSource, setHasSource] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
+    const [isShare, setIsShare] = useState(false);
 
     // below 4 are reference to the html object.
     const tilesetSelection = useRef(null);
@@ -41,7 +43,15 @@ export default function MapScreen() {
     const history = useHistory();
 
     useEffect(() => {
-        history.push('/map')
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
+        // store.loadMapPage(loadingListID);
+        history.push(`/map/${loadingListID}`);
+
+        return ( ()=>{
+            store.leaveMapPage(store.currentMap._id);
+         });
     }, []);
 
     if(store.currentMap){
@@ -68,29 +78,33 @@ export default function MapScreen() {
         ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
      
         var size_of_crop = 32;
-        
-        layers.forEach((layer) => {
-            Object.keys(layer).forEach((key) => {
-                //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
-                var positionX = Number(key.split("-")[0]);
-                var positionY = Number(key.split("-")[1]);
-                //   var [tilesheetX, tilesheetY] = layer[key];
-                var layerTileSrc = layer[key];
-                const img = new Image();
-                img.src = layerTileSrc;
-                ctx.drawImage(
-                    img,
-                    0 * 32,
-                    0 * 32,
-                    size_of_crop,
-                    size_of_crop,
-                    positionX * 32,
-                    positionY * 32,
-                    size_of_crop,
-                    size_of_crop
-                );
-           });
-        });
+
+        for(let i = 0; i < layers.length; i++){
+            let currentLayer = layers[i];
+            if(currentLayer.Opacity === 1){   // draw if it is visible
+                let layerInform = currentLayer.Layer   // where store the actual layer key and value
+                Object.keys(layerInform).forEach((key) => {
+                    // //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
+                    var positionX = Number(key.split("-")[0]);
+                    var positionY = Number(key.split("-")[1]);
+                    //   Image is the key's value
+                    var layerTileSrc = layerInform[key];
+                    const img = new Image();
+                    img.src = layerTileSrc;
+                    ctx.drawImage(
+                        img,
+                        0 * 32,
+                        0 * 32,
+                        size_of_crop,
+                        size_of_crop,
+                        positionX * 32,
+                        positionY * 32,
+                        size_of_crop,
+                        size_of_crop
+                    );
+                });
+            }
+        }
      }
 
     // add tile to the layers
@@ -100,13 +114,12 @@ export default function MapScreen() {
             var key = clicked[0] + "-" + clicked[1];
             console.log(clicked[0]);
             console.log(clicked[1]);
-        
             if (mouseEvent.shiftKey) {
-            delete layers[currentLayer][key];
+                delete layers[currentLayer].Layer[key];
             } else {
-                layers[currentLayer][key]=tilesetSrc;
+                layers[currentLayer].Layer[key]=tilesetSrc;
             }
-            console.log(layers);
+            console.log(layers[currentLayer].Layer);
             console.log("currentlayer:-------------------------------"+currentLayer);
         }
         draw();
@@ -202,7 +215,9 @@ export default function MapScreen() {
     // create a new layer
     function createLayer(event){
         console.log("number of layers before create: " + layers.length);
-        layers.push({});
+        // layers.push({});
+        let newLayer = {Name: "Untitled", Opacity: 1, Layer:{}};
+        layers.push(newLayer);
         console.log("number of layers after create: " + layers.length);
         console.log(layers);
         setRenderLayer(true);
@@ -210,11 +225,14 @@ export default function MapScreen() {
     // delete a layer
     function deleteLayer(index){
         console.log("number of layers before create: " + layers.length);
+        let arrLength = layers.length;
         layers.splice(index, 1) // remove layer at index
-        console.log("number of layers after create: " + layers.length);
-        console.log(layers);
-        setRenderLayer(true);
-        draw();     // redraw the layers after a layer is remove
+        if(arrLength - 1 === layers.length){
+            console.log("number of layers after create: " + layers.length);
+            console.log(layers);
+            setRenderLayer(true);
+            draw();     // redraw the layers after a layer is remove
+        }
     }
     // move a layer up
     function moveLayerUp(currentIndex){
@@ -222,23 +240,54 @@ export default function MapScreen() {
         if(currentIndex != 0){
             console.log("before move up: ");
             console.log(layers);
+            let arrLength = layers.length;
             let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
-            layers.splice(currentIndex-1, 0, oldPosition[0]); // move the layer to the front
-            console.log("after move up: ")
-            console.log(layers);
-            setRenderLayer(true);
-            draw();     // redraw the layers after a layer is remove
+            if(arrLength - 1 === layers.length){
+                layers.splice(currentIndex-1, 0, oldPosition[0]); // move the layer to the front
+                if(arrLength === layers.length){
+                    console.log("after move up: ")
+                    console.log(layers);
+                    setRenderLayer(true);
+                    draw();     // redraw the layers after a layer is remove
+                }
+            }
         }
     }
     // move a layer down
     function moveLayerDown(currentIndex){
         // boundary check since you can't move out of the array
         if(currentIndex+1 != layers.length){
+            let arrLength = layers.length;
             let oldPosition = layers.splice(currentIndex, 1); // return array of remove layer
-            layers.splice(currentIndex+1, 0, oldPosition[0]); // move the layer to the back
-            setRenderLayer(true);
-            draw();     // redraw the layers after a layer is remove
+            if(arrLength - 1 === layers.length){
+                layers.splice(currentIndex+1, 0, oldPosition[0]); // move the layer to the back
+                if(arrLength === layers.length){
+                    setRenderLayer(true);
+                    draw();     // redraw the layers after a layer is remove
+                }
+            }
         }
+    }
+    // set layer opacity
+    function toggleLayerOpacity(currentIndex){
+        let currentLayer = layers[currentIndex];
+        let currentLayerOpacity = currentLayer.Opacity;
+        if(currentLayerOpacity === 1){
+            currentLayer.Opacity = 0;
+        }
+        else{
+            currentLayer.Opacity = 1;
+        }
+        console.log(currentLayer.Opacity);
+        setRenderLayer(true);
+        draw();     // redraw the layers after a layer's opacity is changed
+    }
+    // change name of the layer
+    function changeLayerName(currentIndex, newName){
+        let currentLayer = layers[currentIndex];
+        currentLayer.Name = newName;
+        setRenderLayer(true);
+        draw();     // redraw the layers after a layer's opacity is changed
     }
     
     function importTileset(event){
@@ -335,6 +384,18 @@ export default function MapScreen() {
         }
     }
 
+    const onShare = async () =>{
+        setIsShare(true);
+    }
+
+    const cancelShare = async () =>{
+        setIsShare(false);
+    }
+
+    const shareProject = async (id, email) =>{
+        await store.shareMap(id, email);
+    }
+
     let layerList = "";
     let current_map;
     if(layers.length != 0){
@@ -348,7 +409,10 @@ export default function MapScreen() {
                             moveLayerUp = {moveLayerUp}
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
+                            toggleLayerOpacity= {toggleLayerOpacity}
+                            changeLayerName = {changeLayerName}
                             currentLayer = {currentLayer}
+                            lastLayerIndex = {layers.length-1}
                             pairs={{position: index, value: element}}
                             selected={false}
                         />
@@ -403,6 +467,13 @@ export default function MapScreen() {
                 setNotPublishFunction = {setNotPublishFunction}
                 setPublishDescriptionFunction = {setPublishDescriptionFunction}
             />
+            <ShareModal 
+                isShare = {isShare} 
+                name = {store.currentMap.Name}
+                id = {store.currentMap._id}
+                cancelShare = {cancelShare}
+                shareProject = {shareProject}
+            />
             <div className='right-screen'>
                 <div className="map">
                     <div className="mapbanner">
@@ -412,7 +483,7 @@ export default function MapScreen() {
                         <Button>Import Map</Button>
                         <Button onClick={onExport}>Export</Button>
                         <Button onClick={handlePublishMap} >Publish</Button>
-                        <Button>Share</Button>
+                        <Button onClick={onShare}>Share</Button>
                     </div>
                     <div className="card">
                         <div className="card_center-column">
