@@ -24,7 +24,7 @@ export default function HomeTilesetCard(props) {
 
   const handleDeleteTileset = async event => {
     store.MarkDeleteTileset(ImgNamePair.tilesetID);
-    console.log("shugui是gay")
+
   }
 
   function handleToggleEdit(event) {
