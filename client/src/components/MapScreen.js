@@ -15,12 +15,14 @@ import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
 import api from '../api'
 import PublishErrorModal from './PublishErrorModal'
 import PublishModal from './PublishModal'
+import ShareModal from './ShareModal'
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [hasSource, setHasSource] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
+    const [isShare, setIsShare] = useState(false);
 
     // below 4 are reference to the html object.
     const tilesetSelection = useRef(null);
@@ -41,7 +43,14 @@ export default function MapScreen() {
     const history = useHistory();
 
     useEffect(() => {
-        history.push('/map')
+        // let url = window.location.href;
+        // let indexBeforeURL = url.lastIndexOf("/");
+        // let loadingListID = url.substring(indexBeforeURL+1);
+        // store.loadMapPage(loadingListID);
+
+        return ( ()=>{
+            store.leaveMapPage(store.currentMap._id);
+         });
     }, []);
 
     if(store.currentMap){
@@ -348,6 +357,18 @@ export default function MapScreen() {
         }
     }
 
+    const onShare = async () =>{
+        setIsShare(true);
+    }
+
+    const cancelShare = async () =>{
+        setIsShare(false);
+    }
+
+    const shareProject = async (id, email) =>{
+        await store.shareMap(id, email);
+    }
+
     let layerList = "";
     let current_map;
     if(layers.length != 0){
@@ -417,6 +438,13 @@ export default function MapScreen() {
                 setNotPublishFunction = {setNotPublishFunction}
                 setPublishDescriptionFunction = {setPublishDescriptionFunction}
             />
+            <ShareModal 
+                isShare = {isShare} 
+                name = {store.currentMap.Name}
+                id = {store.currentMap._id}
+                cancelShare = {cancelShare}
+                shareProject = {shareProject}
+            />
             <div className='right-screen'>
                 <div className="map">
                     <div className="mapbanner">
@@ -426,7 +454,7 @@ export default function MapScreen() {
                         <Button>Import Map</Button>
                         <Button onClick={onExport}>Export</Button>
                         <Button onClick={handlePublishMap} >Publish</Button>
-                        <Button>Share</Button>
+                        <Button onClick={onShare}>Share</Button>
                     </div>
                     <div className="card">
                         <div className="card_center-column">

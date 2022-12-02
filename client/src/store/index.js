@@ -269,16 +269,14 @@ function GlobalStoreContextProvider(props) {
             if (response.data.success){
                 let tileset = response.data.data;
 
-                console.log(tileset.IsEditing);
                 if(tileset.IsEditing){
                     //Show cant share modal
                     return;
                 }
                 // Change edit status
                 tileset.IsEditing = true;
-                // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
-                console.log(tileset.IsEditing);
+
                 if(response.data.success){
                     
                     storeReducer({
@@ -301,17 +299,24 @@ function GlobalStoreContextProvider(props) {
                 let tileset = response.data.data;
                 // Change edit status
                 tileset.IsEditing = false;
-                // async function updateTileset(id, tileset){
                 response = await api.updateTileset(id, tileset);
-                if(response.data.success){
-                    storeReducer({
-                        type: GlobalStoreActionType.LOADING_A_TILESET,
-                        payload: {ctileset: tileset}
-                    })
-                }
             }
         }catch(err){
             console.log("err:"+err);
+        }
+    }
+
+    store.shareMap = async function(id, email){
+        try{
+            let response = await api.getMapById(id);
+            if (response.data.success){
+                let map = response.data.map;
+                // Change edit status
+                map.SharedList.push(email);
+                response = await api.updateMap(id, map);
+            }
+        }catch(err){
+            console.log("Share Error:"+err);
         }
     }
 
@@ -320,15 +325,37 @@ function GlobalStoreContextProvider(props) {
             let response = await api.getMapById(id);
             if (response.data.success){
                 let map = response.data.map;
-                console.log(map);
-                storeReducer({
-                    type: GlobalStoreActionType.LOADING_A_MAP,
-                    payload: {cmap: map}
-                })
+                if(map.IsEditing){
+                    //Show cant share modal
+                    return;
+                }
+                map.IsEditing = true;
+                response = await api.updateMap(id, map);
+
+                if(response.data.success){
+                    storeReducer({
+                        type: GlobalStoreActionType.LOADING_A_MAP,
+                        payload: {cmap: map}
+                    })
+                }
+                history.push("/map/"+map._id);
             }
-            history.push("/map");
         }catch(err){
             console.log("err:"+err);
+        }
+    }
+
+    store.leaveMapPage = async function(id){
+        try{
+            let response = await api.getMapById(id);
+            if (response.data.success){
+                let map = response.data.map;
+                // Change edit status
+                map.IsEditing = false;
+                response = await api.updateMap(id, map);
+            }
+        }catch(err){
+            console.log("leave err:"+err);
         }
     }
 
@@ -625,12 +652,13 @@ function GlobalStoreContextProvider(props) {
             OwnerEmail: auth.user.email,
             Name: name,
             Type: "map",
-            ShareList: [],
+            SharedList: [],
             Source: "",
             Height: height,
             Width: width,
             Layers: layers,
             Tileset: "",
+            IsEditing: false,
         }
         const response = await api.createMap(payload);
         if (response.data.success) {
