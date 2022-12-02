@@ -32,10 +32,10 @@ export default function TilesetScreen() {
     // backgroundImg is 1600 x 1600
 
     useEffect(() => {
-        // let url = window.location.href;
-        // let indexBeforeURL = url.lastIndexOf("/");
-        // let loadingListID = url.substring(indexBeforeURL+1);
-        // store.loadTilesetPage(loadingListID);
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
+        store.loadTilesetPage(loadingListID);
         return ( ()=>{
             store.leaveTilesetPage(store.currentTileset._id);
          });

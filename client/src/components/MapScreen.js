@@ -46,7 +46,7 @@ export default function MapScreen() {
         let url = window.location.href;
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
-        // store.loadMapPage(loadingListID);
+        store.loadMapPage(loadingListID);
         history.push(`/map/${loadingListID}`);
 
         return ( ()=>{
