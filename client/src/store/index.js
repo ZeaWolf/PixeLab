@@ -646,7 +646,7 @@ function GlobalStoreContextProvider(props) {
     // this method will create a new map
     store.createMap = async function (name = "Untiled", height = 20, width = 25){
         //let newLayer = await store.createLayer("layer", height, width);
-        let layers = [{"0-0":""},{"0-0":""},{"0-0":""}];
+        let layers = [];
         //layers.push(newLayer);
         let payload = {
             OwnerEmail: auth.user.email,

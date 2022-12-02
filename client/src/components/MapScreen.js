@@ -43,10 +43,11 @@ export default function MapScreen() {
     const history = useHistory();
 
     useEffect(() => {
-        // let url = window.location.href;
-        // let indexBeforeURL = url.lastIndexOf("/");
-        // let loadingListID = url.substring(indexBeforeURL+1);
+        let url = window.location.href;
+        let indexBeforeURL = url.lastIndexOf("/");
+        let loadingListID = url.substring(indexBeforeURL+1);
         // store.loadMapPage(loadingListID);
+        history.push(`/map/${loadingListID}`);
 
         return ( ()=>{
             store.leaveMapPage(store.currentMap._id);
@@ -77,29 +78,33 @@ export default function MapScreen() {
         ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
      
         var size_of_crop = 32;
-        
-        layers.forEach((layer) => {
-            Object.keys(layer).forEach((key) => {
-                //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
-                var positionX = Number(key.split("-")[0]);
-                var positionY = Number(key.split("-")[1]);
-                //   var [tilesheetX, tilesheetY] = layer[key];
-                var layerTileSrc = layer[key];
-                const img = new Image();
-                img.src = layerTileSrc;
-                ctx.drawImage(
-                    img,
-                    0 * 32,
-                    0 * 32,
-                    size_of_crop,
-                    size_of_crop,
-                    positionX * 32,
-                    positionY * 32,
-                    size_of_crop,
-                    size_of_crop
-                );
-           });
-        });
+
+        for(let i = 0; i < layers.length; i++){
+            let currentLayer = layers[i];
+            if(currentLayer.Opacity === 1){   // draw if it is visible
+                let layerInform = currentLayer.Layer   // where store the actual layer key and value
+                Object.keys(layerInform).forEach((key) => {
+                    // //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
+                    var positionX = Number(key.split("-")[0]);
+                    var positionY = Number(key.split("-")[1]);
+                    //   Image is the key's value
+                    var layerTileSrc = layerInform[key];
+                    const img = new Image();
+                    img.src = layerTileSrc;
+                    ctx.drawImage(
+                        img,
+                        0 * 32,
+                        0 * 32,
+                        size_of_crop,
+                        size_of_crop,
+                        positionX * 32,
+                        positionY * 32,
+                        size_of_crop,
+                        size_of_crop
+                    );
+                });
+            }
+        }
      }
 
     // add tile to the layers
@@ -109,13 +114,12 @@ export default function MapScreen() {
             var key = clicked[0] + "-" + clicked[1];
             console.log(clicked[0]);
             console.log(clicked[1]);
-        
             if (mouseEvent.shiftKey) {
-            delete layers[currentLayer][key];
+                delete layers[currentLayer].Layer[key];
             } else {
-                layers[currentLayer][key]=tilesetSrc;
+                layers[currentLayer].Layer[key]=tilesetSrc;
             }
-            console.log(layers);
+            console.log(layers[currentLayer].Layer);
             console.log("currentlayer:-------------------------------"+currentLayer);
         }
         draw();
@@ -211,7 +215,9 @@ export default function MapScreen() {
     // create a new layer
     function createLayer(event){
         console.log("number of layers before create: " + layers.length);
-        layers.push({});
+        // layers.push({});
+        let newLayer = {Name: "Untitled", Opacity: 1, Layer:{}};
+        layers.push(newLayer);
         console.log("number of layers after create: " + layers.length);
         console.log(layers);
         setRenderLayer(true);
@@ -261,6 +267,20 @@ export default function MapScreen() {
                 }
             }
         }
+    }
+    // set layer opacity
+    function toggleLayerOpacity(currentIndex){
+        let currentLayer = layers[currentIndex];
+        let currentLayerOpacity = currentLayer.Opacity;
+        if(currentLayerOpacity === 1){
+            currentLayer.Opacity = 0;
+        }
+        else{
+            currentLayer.Opacity = 1;
+        }
+        console.log(currentLayer.Opacity);
+        setRenderLayer(true);
+        draw();     // redraw the layers after a layer's opacity is changed
     }
     
     function importTileset(event){
@@ -382,6 +402,7 @@ export default function MapScreen() {
                             moveLayerUp = {moveLayerUp}
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
+                            toggleLayerOpacity= {toggleLayerOpacity}
                             currentLayer = {currentLayer}
                             lastLayerIndex = {layers.length-1}
                             pairs={{position: index, value: element}}

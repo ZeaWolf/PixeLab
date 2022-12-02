@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 
 function LayerCard(props){
     // setLayer will set the current layer to this layer's index
-    const { pairs, setLayer, currentLayer, deleteLayer, moveLayerUp, moveLayerDown, lastLayerIndex } = props;
+    const { pairs, setLayer, currentLayer, deleteLayer, toggleLayerOpacity, moveLayerUp, moveLayerDown, lastLayerIndex } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
@@ -31,8 +31,9 @@ function LayerCard(props){
         deleteLayer(pairs.position);
     }
 
-    async function handleToggleVisibility(){
-         
+    async function handleToggleVisibility(event){
+        event.stopPropagation();
+        toggleLayerOpacity(pairs.position);
     }
 
     function handleToggleEdit(event) {
@@ -67,14 +68,21 @@ function LayerCard(props){
    }
 
     let visibilityButton =
-        <IconButton disabled={true}><VisibilityIcon/></IconButton>
+        <IconButton onClick={handleToggleVisibility}><VisibilityIcon/></IconButton>
+
+    if(pairs.value.Opacity === 0){
+        visibilityButton = <IconButton onClick={handleToggleVisibility}><VisibilityOffIcon/></IconButton>
+    }
+    else{
+        <IconButton onClick={handleToggleVisibility}><VisibilityIcon/></IconButton>
+    }
 
     let LayerList = 
         <ListItem onClick={setCurrentLayer}>
             <Grid container spacing={1} style={{borderColor: pairs.position === currentLayer ? 'blue' : '#fdffdc',borderStyle:"solid"}}>
 
                 <Grid item xs={4.75}>
-                    <Typography style={{color:'rgb(35, 35, 35)'}}>Layer</Typography>
+                    <Typography style={{color:'rgb(35, 35, 35)'}}>{pairs.value.Name}</Typography>
                 </Grid>
 
                 <Grid item xs={1.25}>
@@ -108,7 +116,7 @@ function LayerCard(props){
                 <Grid item xs={4.75} >
                     <TextField
                     onKeyPress={handleKeyPress} onChange={handleUpdateText}
-                    defaultValue={pairs.map.Name}
+                    defaultValue={pairs.value.Name}
                     inputProps={{style: {fontSize: 10}}}
                     InputLabelProps={{style: {fontSize: 10}}}
                     >{pairs.map.Name}</TextField>
