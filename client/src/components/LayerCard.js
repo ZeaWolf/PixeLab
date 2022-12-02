@@ -1,7 +1,7 @@
 import ListItem from '@mui/material/ListItem'
 import Box from '@mui/material/Box';
 import React, { useContext, useEffect, useState,useRef } from 'react'
-import { Typography, IconButton } from '@mui/material';
+import { Typography, IconButton, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -15,7 +15,7 @@ import TextField from '@mui/material/TextField';
 
 function LayerCard(props){
     // setLayer will set the current layer to this layer's index
-    const { pairs, setLayer, currentLayer, deleteLayer, moveLayerUp, moveLayerDown } = props;
+    const { pairs, setLayer, currentLayer, deleteLayer, moveLayerUp, moveLayerDown, lastLayerIndex } = props;
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
@@ -67,7 +67,7 @@ function LayerCard(props){
    }
 
     let visibilityButton =
-        <IconButton><VisibilityIcon/></IconButton>
+        <IconButton disabled={true}><VisibilityIcon/></IconButton>
 
     let LayerList = 
         <ListItem onClick={setCurrentLayer}>
@@ -82,11 +82,11 @@ function LayerCard(props){
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="downward"><ArrowDownwardIcon onClick={handleArrowDownward}/></IconButton>
+                    <IconButton aria-label="downward" disabled={pairs.position===lastLayerIndex}><ArrowDownwardIcon onClick={handleArrowDownward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>
-                    <IconButton aria-label="upward"><ArrowUpwardIcon onClick={handleArrowUpward}/></IconButton>
+                    <IconButton aria-label="upward" disabled={pairs.position===0}><ArrowUpwardIcon onClick={handleArrowUpward}/></IconButton>
                 </Grid>
 
                 <Grid item xs={1.25}>

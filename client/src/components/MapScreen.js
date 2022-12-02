@@ -349,6 +349,7 @@ export default function MapScreen() {
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
                             currentLayer = {currentLayer}
+                            lastLayerIndex = {layers.length-1}
                             pairs={{position: index, value: element}}
                             selected={false}
                         />
