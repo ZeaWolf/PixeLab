@@ -80,7 +80,7 @@ export default function HomeMapCard(props) {
       </CardActionArea>
     </Card>
 
-  if (editActive == true){
+  if (editActive === true){
     MapItem =
   <Card className="home-map-card" style={{background:"linear-gradient(to bottom, #64cdfa 5%, #f6f5dd)"}}>
     <CardActionArea>

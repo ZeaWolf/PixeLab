@@ -66,7 +66,7 @@ export default function ResourceScreen(){
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
         await store.handleDownload(loadingListID);
-        if(store.currentResource.Type == "tileset" || store.currentResource.Type == "map"){
+        if(store.currentResource.Type === "tileset" || store.currentResource.Type === "map"){
             const link = document.createElement('a');
             link.download = `${store.currentResource.Name}.png`;
             link.href = store.currentResource.Source;
@@ -94,7 +94,7 @@ export default function ResourceScreen(){
         let url = window.location.href;
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
-        if (auth.user.likeList.includes(loadingListID)==false){
+        if (auth.user.likeList.includes(loadingListID)===false){
             await store.likeResource(loadingListID, "+");
             await auth.updateUserLikelist(loadingListID);
             await store.setCurrentResource(loadingListID);
@@ -117,7 +117,7 @@ export default function ResourceScreen(){
         <Typography> {likeNumber} </Typography>
     </Button>
 
-    if(auth.user && store.currentResource && auth.user.likeList.includes(store.currentResource._id)==true){
+    if(auth.user && store.currentResource && auth.user.likeList.includes(store.currentResource._id)===true){
         likeButton = 
         <Button onClick={handleLike}>
             <ThumbUpIcon/>
@@ -141,7 +141,7 @@ export default function ResourceScreen(){
     <Button onClick={handleCollection}>
         <StarBorderIcon/>
     </Button>
-    if(auth.user && store.currentResource && auth.user.collectionList.includes(store.currentResource._id)==true){
+    if(auth.user && store.currentResource && auth.user.collectionList.includes(store.currentResource._id)===true){
         starButton = 
         <Button onClick={handleCollection}>
             <StarIcon/>

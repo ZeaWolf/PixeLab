@@ -8,18 +8,20 @@ import jsTPS_Transaction from "../common/jsTPS.js"
     @author McKilla Gorilla
  */
 export default class Draw_Transaction extends jsTPS_Transaction {
-    constructor(initStore, initOldIndex, initNewIndex) {
+    constructor(initMap, layerIndex, layerKey, layerOldValue, LayerNewValue) {
         super();
-        this.store = initStore;
-        this.oldItemIndex = initOldIndex;
-        this.newItemIndex = initNewIndex;
+        this.map = initMap;
+        this.layerIndex = layerIndex;
+        this.layerKey = layerKey;
+        this.layerOldValue = layerOldValue;
+        this.LayerNewValue = LayerNewValue;
     }
 
     doTransaction() {
-        this.store.moveItem(this.oldItemIndex, this.newItemIndex);
+        this.map.drawTile(this.oldItemIndex, this.newItemIndex);
     }
     
     undoTransaction() {
-        this.store.moveItem(this.newItemIndex, this.oldItemIndex);
+        this.map.drawTile(this.newItemIndex, this.oldItemIndex);
     }
 }

@@ -75,7 +75,7 @@ export default function HomeTilesetCard(props) {
       </CardActionArea>
     </Card>
 
-  if (editActive == true){
+  if (editActive === true){
     TilesetItem =
   <Card className="home-tileset-card" style={{background:"linear-gradient(to bottom, #64cdfa 5%, #f6f5dd)"}}>
     <CardActionArea>

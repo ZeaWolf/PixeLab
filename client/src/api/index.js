@@ -1,8 +1,8 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 const api = axios.create({
-    // baseURL: "http://localhost:4000/api",
-    baseURL: 'https://sbucsepixelab.herokuapp.com/api',
+    baseURL: "http://localhost:4000/api",
+    // baseURL: 'https://sbucsepixelab.herokuapp.com/api',
 })
 
 // User part
@@ -49,8 +49,8 @@ export const getTilesetLists = () => api.get(`/tilesets`)
 
 //tile part
 export const createTile = (payload) => api.post('/tile',payload)
-export const getTileById = (id) => api.get('/tile/${id}')
-export const updateTile = (id, payload) => api.put('/tile/${id}',payload)
+export const getTileById = (id) => api.get(`/tile/${id}`)
+export const updateTile = (id, payload) => api.put(`/tile/${id}`,payload)
 
 const apis = {
     getLoggedIn,

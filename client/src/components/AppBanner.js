@@ -103,6 +103,13 @@ export default function AppBanner() {
         }
         return <AccountCircleOutlinedIcon />;
     }
+    let PixeLabLink = '/';
+    if(auth.user){
+        PixeLabLink = '/home'
+    }
+    else{
+        PixeLabLink = '/';
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -115,7 +122,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block', flexGrow: 1 } }}                        
                     >
-                        <Link style={{ textDecoration: 'none', color: '#e7cb75'}} to='/'>PixeLab</Link>
+                        <Link style={{ textDecoration: 'none', color: '#e7cb75'}} to={PixeLabLink}>PixeLab</Link>
                     </Typography>
                     {/* <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box> */}
                     {/* <Box sx={{ flexGrow: 1 }}></Box> */}

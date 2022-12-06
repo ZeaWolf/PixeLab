@@ -98,23 +98,30 @@ export default function MapScreen() {
                     var positionY = Number(key.split("-")[1]);
                     //   Image is the key's value
                     var layerTileSrc = layerInform[key];
-                    const img = new Image();
-                    img.src = layerTileSrc;
-                    ctx.drawImage(
-                        img,
-                        0 * 32,
-                        0 * 32,
-                        size_of_crop,
-                        size_of_crop,
-                        positionX * 32,
-                        positionY * 32,
-                        size_of_crop,
-                        size_of_crop
-                    );
+                    if(layerTileSrc !== ""){ // if value === "" then not draw it
+                        const img = new Image();
+                        img.src = layerTileSrc;
+                        ctx.drawImage(
+                            img,
+                            0 * 32,
+                            0 * 32,
+                            size_of_crop,
+                            size_of_crop,
+                            positionX * 32,
+                            positionY * 32,
+                            size_of_crop,
+                            size_of_crop
+                        );
+                    }
                 });
             }
         }
-     }
+    }
+
+    // drawTile function
+    function drawTile(currentLayerIndex, key, oldValue, newValue){
+        layers[currentLayerIndex].Layer[key] = newValue;
+    }
 
     // add tile to the layers
     function addTile(mouseEvent) {
@@ -127,9 +134,20 @@ export default function MapScreen() {
             // if (mouseEvent.shiftKey) {
             // no update immed, choose reverse value
             if(erase) {
-                delete layers[currentLayer].Layer[key];
+                // delete layers[currentLayer].Layer[key];
+                let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
+                if(oldValue){ // has oldValue
+                    drawTile(currentLayer, key, oldValue, ""); // set newValue to ""
+                }
             } else {
-                layers[currentLayer].Layer[key]=tilesetSrc;
+                // layers[currentLayer].Layer[key]=tilesetSrc;
+                let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
+                if(oldValue){ // has oldValue
+                    drawTile(currentLayer, key, oldValue, tilesetSrc); // set newValue to tilesetSrc (selectedTiled)
+                }
+                else{
+                    drawTile(currentLayer, key, "", tilesetSrc); // oldValue was undefine, set it to ""
+                }
             }
             console.log(layers[currentLayer].Layer);
             console.log("currentlayer:-------------------------------"+currentLayer);
