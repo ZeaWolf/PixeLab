@@ -138,24 +138,6 @@ export default function MapScreen() {
         clearRedoTransactions();
     }
 
-    // check has undo
-    let hasUndo = false;
-    if(undoStack.length !== 0){
-        hasUndo = true;
-    }
-    else{
-        hasUndo = false;
-    }
-
-    // check has redo
-    let hasRedo = false;
-    if(redoStack.length !== 0){
-        hasRedo = true;
-    }
-    else{
-        hasRedo = false;
-    }
-
     // addDrawTileTransaction function -> add a undo stack then perform the redo
     function addDrawTileTransaction(currentLayerIndex, key, oldValue, newValue){
         // empty the redoStack
@@ -682,8 +664,8 @@ export default function MapScreen() {
                         {/* <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
                         <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton> */}
                         <IconButton><EditOffIcon onClick={handleErase}></EditOffIcon></IconButton>
-                        <IconButton><UndoIcon disabled={!hasUndo} onClick={handleUndo}></UndoIcon></IconButton>
-                        <IconButton><RedoIcon disabled={!hasRedo} onClick={handleRedo}></RedoIcon></IconButton>
+                        <IconButton><UndoIcon onClick={handleUndo}></UndoIcon></IconButton>
+                        <IconButton><RedoIcon onClick={handleRedo}></RedoIcon></IconButton>
                         </div>
                         <div className="card_center-column">
                             <canvas 
