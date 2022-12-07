@@ -18,10 +18,10 @@ export default class Draw_Transaction extends jsTPS_Transaction {
     }
 
     doTransaction() {
-        this.map.drawTile(this.oldItemIndex, this.newItemIndex);
+        this.map.drawTile(this.layerIndex, this.layerKey, this.layerOldValue, this.LayerNewValue);
     }
     
     undoTransaction() {
-        this.map.drawTile(this.newItemIndex, this.oldItemIndex);
+        this.map.drawTile(this.layerIndex, this.layerKey, this.LayerNewValue, this.layerOldValue);
     }
 }

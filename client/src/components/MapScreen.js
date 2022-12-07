@@ -38,6 +38,10 @@ export default function MapScreen() {
     // check if there is a default image
     const [defaultImage, setDefaultImage] = useState(false);
 
+    // undo - redo stack
+    let undoStack = [];
+    let redoStack = [];
+
     // const [layers, setLayers] = useState(store.currentMap.Layers);
     let layers = [];
     let tilesetSrc = "";     // store the selected tile source type
@@ -118,9 +122,89 @@ export default function MapScreen() {
         }
     }
 
+    // clear undo Transactions
+    function clearUndoTransactions(){
+        undoStack.splice(0, undoStack.length);
+    }
+
+    // clear redo Transactions
+    function clearRedoTransactions(){
+        redoStack.splice(0,redoStack.length);
+    }
+
+    // clear all Transactions
+    function clearAllTransactions(){
+        clearUndoTransactions();
+        clearRedoTransactions();
+    }
+
+    // check has undo
+    let hasUndo = false;
+    if(undoStack.length !== 0){
+        hasUndo = true;
+    }
+    else{
+        hasUndo = false;
+    }
+
+    // check has redo
+    let hasRedo = false;
+    if(redoStack.length !== 0){
+        hasRedo = true;
+    }
+    else{
+        hasRedo = false;
+    }
+
+    // addDrawTileTransaction function -> add a undo stack then perform the redo
+    function addDrawTileTransaction(currentLayerIndex, key, oldValue, newValue){
+        // empty the redoStack
+        clearRedoTransactions();
+        // draw the tile
+        drawTile(currentLayerIndex, key, oldValue, newValue);
+        let newStackElement = {"Type": "drawTile", "CurrentLayerIndex": currentLayerIndex, "Key": key, "OldValue": oldValue, "NewValue": newValue}
+        undoStack.push(newStackElement);
+    }
+
+    // undo function
+    function handleUndo(){
+        if(undoStack.length !== 0){
+            let newStackElement = undoStack.pop();
+            console.log(newStackElement["Type"]);
+            // if it is drawTile type
+            if(newStackElement["Type"] === "drawTile"){
+                let currentLayerIndex = newStackElement["CurrentLayerIndex"];
+                let currentLayerKey = newStackElement["Key"];
+                let currentLayerOldValue = newStackElement["OldValue"];
+                let currentLayerNewValue = newStackElement["NewValue"];
+                drawTile(currentLayerIndex, currentLayerKey, currentLayerNewValue, currentLayerOldValue);
+            }
+            // push it to the redo stack
+            redoStack.push(newStackElement);
+        }
+    }
+    // redo function
+    function handleRedo(){
+        if(redoStack.length !== 0){
+            let newStackElement = redoStack.pop();
+            // if it is drawTile type
+            if(newStackElement["Type"] === "drawTile"){
+                let currentLayerIndex = newStackElement["CurrentLayerIndex"];
+                let currentLayerKey = newStackElement["Key"];
+                let currentLayerOldValue = newStackElement["OldValue"];
+                let currentLayerNewValue = newStackElement["NewValue"];
+                drawTile(currentLayerIndex, currentLayerKey, currentLayerOldValue, currentLayerNewValue);
+            }
+            // push it to the undo stack
+            undoStack.push(newStackElement);
+        }
+    }
+
+
     // drawTile function
     function drawTile(currentLayerIndex, key, oldValue, newValue){
         layers[currentLayerIndex].Layer[key] = newValue;
+        draw();
     }
 
     // add tile to the layers
@@ -136,23 +220,30 @@ export default function MapScreen() {
             if(erase) {
                 // delete layers[currentLayer].Layer[key];
                 let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
-                if(oldValue){ // has oldValue
-                    drawTile(currentLayer, key, oldValue, ""); // set newValue to ""
+                if(oldValue && oldValue !== ""){ // has oldValue means will not erase an empty tile
+                    // drawTile(currentLayer, key, oldValue, ""); // set newValue to ""
+                    addDrawTileTransaction(currentLayer, key, oldValue, "");
                 }
             } else {
                 // layers[currentLayer].Layer[key]=tilesetSrc;
                 let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
+                if(oldValue === tilesetSrc){
+                    console.log("duplicated tilesetSrc detected!!!")
+                    return;
+                }
                 if(oldValue){ // has oldValue
-                    drawTile(currentLayer, key, oldValue, tilesetSrc); // set newValue to tilesetSrc (selectedTiled)
+                    console.log("Not duplicated")
+                    // drawTile(currentLayer, key, oldValue, tilesetSrc); // set newValue to tilesetSrc (selectedTiled)
+                    addDrawTileTransaction(currentLayer, key, oldValue, tilesetSrc);
                 }
                 else{
-                    drawTile(currentLayer, key, "", tilesetSrc); // oldValue was undefine, set it to ""
+                    // drawTile(currentLayer, key, "", tilesetSrc); // oldValue was undefine, set it to ""
+                    addDrawTileTransaction(currentLayer, key, "", tilesetSrc);
                 }
             }
-            console.log(layers[currentLayer].Layer);
-            console.log("currentlayer:-------------------------------"+currentLayer);
+            // console.log(layers[currentLayer].Layer);
+            console.log("currentlayer:-------------------------------"+currentLayer+", key: " + key);
         }
-        draw();
     }
     // canvas mouse down
     function handleCanvasMouseDown(event){
@@ -250,6 +341,7 @@ export default function MapScreen() {
         layers.push(newLayer);
         console.log("number of layers after create: " + layers.length);
         console.log(layers);
+        clearAllTransactions();
         setRenderLayer(true);
     }
     // delete a layer
@@ -260,6 +352,7 @@ export default function MapScreen() {
         if(arrLength - 1 === layers.length){
             console.log("number of layers after create: " + layers.length);
             console.log(layers);
+            clearAllTransactions();
             setRenderLayer(true);
             draw();     // redraw the layers after a layer is remove
         }
@@ -277,6 +370,7 @@ export default function MapScreen() {
                 if(arrLength === layers.length){
                     console.log("after move up: ")
                     console.log(layers);
+                    clearAllTransactions();
                     setRenderLayer(true);
                     draw();     // redraw the layers after a layer is remove
                 }
@@ -292,6 +386,7 @@ export default function MapScreen() {
             if(arrLength - 1 === layers.length){
                 layers.splice(currentIndex+1, 0, oldPosition[0]); // move the layer to the back
                 if(arrLength === layers.length){
+                    clearAllTransactions();
                     setRenderLayer(true);
                     draw();     // redraw the layers after a layer is remove
                 }
@@ -587,8 +682,8 @@ export default function MapScreen() {
                         {/* <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
                         <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton> */}
                         <IconButton><EditOffIcon onClick={handleErase}></EditOffIcon></IconButton>
-                        <IconButton><UndoIcon></UndoIcon></IconButton>
-                        <IconButton><RedoIcon></RedoIcon></IconButton>
+                        <IconButton><UndoIcon disabled={!hasUndo} onClick={handleUndo}></UndoIcon></IconButton>
+                        <IconButton><RedoIcon disabled={!hasRedo} onClick={handleRedo}></RedoIcon></IconButton>
                         </div>
                         <div className="card_center-column">
                             <canvas 
