@@ -428,9 +428,9 @@ function GlobalStoreContextProvider(props) {
                 let response2 = await api.updateMap(map._id, map);
 
                 
-                // if(response2.data.sucess){
-                //     console.log("updated tileset src success");
-                // }
+                if(response2.data.sucess){
+                    console.log("updated tileset src success");
+                }
                 store.loadMaps();
             }
         }catch(err){
@@ -438,34 +438,34 @@ function GlobalStoreContextProvider(props) {
         }
     };
 
-    store.RenameLayer = async function (id,name){
-        try{
-            let response = await api.getLayerById(id);
-            if(response.data.success){
-                let layer = response.data.layer;
-                layer.Name = name;
-                response = await api.updateLayer(id, layer);
-                if(response.data.success){
-                    console.log("updated tileset src success");
-                }
+    // store.RenameLayer = async function (id,name){
+    //     try{
+    //         let response = await api.getLayerById(id);
+    //         if(response.data.success){
+    //             let layer = response.data.layer;
+    //             layer.Name = name;
+    //             response = await api.updateLayer(id, layer);
+    //             if(response.data.success){
+    //                 console.log("updated tileset src success");
+    //             }
 
-                let layers = store.currentMap.Layers;
+    //             let layers = store.currentMap.Layers;
 
-                for( var i = 0; i < layers.length; i++){ 
-                    if ( layers[i]._id === id) { 
-                        layers[i].Name = name; 
-                    }
-                }
-                let map = store.currentMap;
-                map.Layers = layers;
-                store.currentMap.Layers = layers;
-                const responseMap = await api.updateMap(map._id, map);
-                store.loadLayers();
-            }
-        }catch(err){
-            console.log("err:"+err);
-        }
-    };
+    //             for( var i = 0; i < layers.length; i++){ 
+    //                 if ( layers[i]._id === id) { 
+    //                     layers[i].Name = name; 
+    //                 }
+    //             }
+    //             let map = store.currentMap;
+    //             map.Layers = layers;
+    //             store.currentMap.Layers = layers;
+    //             const responseMap = await api.updateMap(map._id, map);
+    //             store.loadLayers();
+    //         }
+    //     }catch(err){
+    //         console.log("err:"+err);
+    //     }
+    // };
 
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
@@ -656,6 +656,7 @@ function GlobalStoreContextProvider(props) {
             Name: name,
             SharedList: [],
             IsEditing: "None",
+            Previewed: "None",
             ////
             compressionlevel: -1,
             height: height,
@@ -683,25 +684,13 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.updateMapLayer = async function (id, layers, source){
-        //let newLayer = await store.createLayer("layer", height, width);
-        //layers.push(newLayer);
-        // let payload = {
-        //     //OwnerEmail: auth.user.email,
-        //     Layers: layers,
-        // }
-        // const response = await api.updateMapLayer(id, payload);
-        // if (response.data.success) {
-        //     console.log(response.data.map);
-        // }
-
-        ///
         let response = await api.getMapById(id);
             if(response.data.success){
                 let map = response.data.map;
                 console.log(map);
                 console.log(source);
-                map.Layers = layers;
-                map.Source = source;
+                map.layers = layers;            // updated map layers
+                map.Previewed = source;         // updated map's preview image
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
                 if(response.data.success){

@@ -68,7 +68,7 @@ export default function HomeScreen() {
                     key={pair._id}
                     mapList={pair}
                     selected={false}
-                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, mapID:pair._id, src:pair.Source}}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, mapID:pair._id, src:pair.Previewed}}
                 />
             ))
         }

@@ -9,6 +9,7 @@ const MapSchema = new Schema(
         Name:               {type: String, required: true},    
         SharedList:         {type: [String], required: true},
         IsEditing:          {type: String, required: true},
+        Previewed:          {type: String, required: true},
 
         // new
         compressionlevel:   {type: Number, required: true}, // -1
