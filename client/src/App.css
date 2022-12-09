@@ -256,9 +256,7 @@
   background: #f4f8f9;
 } */
 
-.tileset-container {
-  position: absolute;
-}
+
 .tileset-container_selection {
   position:absolute;
   outline: 3px solid cyan;
@@ -446,6 +444,58 @@ Chengzhi Dong
   height: 95%;
   width: 100%;
 }
+
+
+/*chengzhi map*/
+#map-right{
+  position: relative;
+  top: 1%;
+  left: 5%;
+  height: 95%;
+  width: 20%;
+}
+
+#layer-box{
+  position: relative;
+  top: 0%;
+  left: 0%;
+  height: 30%;
+  width: 100%;
+}
+#tileset-box{
+  position: relative;
+  top: 5%;
+  left: 0%;
+  height: 60%;
+  width:100%;
+}
+
+#layers{
+  position:relative;
+  height: 90%;
+  width: 99%;
+  background-color: #fdffdc;
+  border-radius: 10px;
+  border: 2px solid #8AC007;
+}
+
+#tileset-tabs{
+  position:relative;
+  /* height: 11%;
+  width: 100%;
+  background-color: black;
+  border-radius: 10px;
+  border: 2px solid #8AC007; */
+}
+#tileset-container {
+  position: relative;
+  top: 5%;
+  height: 90%;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
 /*
 Chengzhi Dong
 */

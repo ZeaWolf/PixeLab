@@ -21,6 +21,8 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
@@ -28,6 +30,10 @@ export default function MapScreen() {
     const [hasSource, setHasSource] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
     const [isShare, setIsShare] = useState(false);
+
+    //chengzhi tileset tab//
+    const [tabvalue, setTabvalue] = useState(0);
+    //chengzhi tileset tab//
 
     // below 4 are reference to the html object.
     const tilesetSelection = useRef(null);
@@ -620,8 +626,33 @@ export default function MapScreen() {
             layerList = "";
         }
     }
-    
 
+
+    //chengzhi tileset
+    let tilesetList = ["https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"]
+    const handleTabChange = (event, newValue) => {
+        setTabvalue(newValue);
+    };
+    let tilesetTab = "";
+    if(tilesetList.length !== 0){
+        tilesetTab = <Tabs
+                        value={tabvalue}
+                        onChange={handleTabChange}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                    >
+                        {
+                            tilesetList.map((element, index) => (
+                                <Tab
+                                    label={`tileset${index}`}
+                                />
+                            ))
+                        }
+                    </Tabs>
+    } 
+    //chengzhi tileset
+    
+    
     let mapPage = 
         <div className='full-screen'>
             <NavigationBar/>
@@ -681,31 +712,49 @@ export default function MapScreen() {
                             >
                             </canvas>
                         </div>
-                        <div className="card_body">
-                            <div className="card_body_2">
-
+                        <Box id="map-right">
+                            <Box id="layer-box">
                                 <label style={{color: "black"}}>Layer: </label>
                                 <IconButton><AddIcon onClick={createLayer}/></IconButton>
-                                <div className="layers">
+                                <Box id="layers">
                                     {
                                         layerList
                                     }
-                                </div>
-                                <aside>
-                                    <label style={{color: "black"}}>Tileset: </label>
-                                    <div className="tileset-container" 
-                                        ref={tilesetContainer} 
-                                        onMouseDown={handleTilesetContainerMouseDown}
-                                        >
+                                </Box>
+                            </Box>
+                            <Box id="tileset-box">
+                             
+                                <label style={{color: "black"}}>Tileset: </label>
+                                <Box id="tileset-tabs">
+                                {tilesetTab}
+                                </Box>
+                                <Box id="tileset-container" 
+                                    ref={tilesetContainer} 
+                                    onMouseDown={handleTilesetContainerMouseDown}
+                                    >
                                         <img id="tileset-source" 
-                                        crossorigin="anonymous" 
-                                        ref={imageRef}
-                                        onLoad={handleImageOnLoad}/>
+                                                    src = {tilesetList[tabvalue]}/>
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
-                                    </div>
-                                </aside>
-                            </div>
-                        </div>
+
+                                        {/* <Tabs 
+                                            value = {tab}
+                                            variant="scrollable"
+                                            scrollButtons="auto"
+                                            >
+
+                                                <Tab label="Item One" {...<img src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"/>}/>
+                                                <Tab label="Item Two">
+                                                    <img src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"/>
+                                                </Tab>
+                                                {/* <img id="tileset-source" 
+                                                    crossorigin="anonymous" 
+                                                    ref={imageRef}
+                                                    onLoad={handleImageOnLoad}/>
+                                                    <div className="tileset-container_selection" ref={tilesetSelection}></div>
+                                        </Tabs> */}
+                                </Box>
+                            </Box>
+                        </Box>
                     </div>
                 </div>
             </div>
