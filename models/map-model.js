@@ -13,7 +13,7 @@ const MapSchema = new Schema(
         // new
         compressionlevel:   {type: Number, required: true}, // -1
         height:             {type: Number, required: true}, // number of tiles
-        infinte:            {type: Boolean, required: true}, // false
+        infinite:            {type: Boolean, required: true}, // false
         layers:             {type: [{
                                 data:   {type: [Number]},
                                 height: {type: Number},    // number of tiles, same as map height
@@ -51,7 +51,7 @@ const MapSchema = new Schema(
         version:            {type: String, required: true}, // "1.0"
         width:              {type: Number, required: true}, // number of tiles
 
-        
+
 
         // OwnerEmail:     {type: String, required: true},
         // Name:           {type: String, required: true},

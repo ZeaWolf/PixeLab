@@ -9,13 +9,12 @@ createMap = async(req, res) => {
         if(!body){
             return res.status(400).json({
                 success: false,
-                error: 'You must provide correct format for map',
+                error: 'You must provide correct format for map.',
             });
         }
 
         // create a Map based on the request's body
         const map = new Map(body);
-        console.log("creating map: " + JSON.stringify(map));
         
         // if creation of the Map not success
         if(!map){
@@ -29,14 +28,13 @@ createMap = async(req, res) => {
             return res.status(201).json({
                 success: true,
                 map: map,
-                message: 'map success created'
+                message: 'Map success created.'
             })
-
         })
         .catch(error => {
             return res.status(400).json({
                 error,
-                message: 'map is not created'
+                message: 'Map is not created.'
             })
         })
     }catch(err){
@@ -49,15 +47,13 @@ createMap = async(req, res) => {
 updateMap = async(req, res) => {
     try{
         const body = req.body;
-        // console.log("updateMap: " + JSON.stringify(body));
+        
         if(!body){
             return res.status(400).json({
                 success: false,
-                error: 'You must provide a body to update'
+                error: 'You must provide a body to update.'
             })
         }
-        // find the map based on _id
-
 
         Map.findOne({ _id: req.params.id}, (err, map) => {
             // console.log("map found: " + JSON.stringify(map));
@@ -87,19 +83,42 @@ updateMap = async(req, res) => {
                 }).catch(err => console.log(err))
             }
 
+//////////////////////////////////////////////
+            OwnerEmail = body.OwnerEmail;
+            Name =  body.Name;
+            SharedList =  body.SharedList;
+            IsEditing =  body.IsEditing;
 
-            map.OwnerEmail = body.OwnerEmail;
-            map.Name = body.Name;
-            map.Type = body.Type;
-            map.SharedList = body.SharedList;
-            map.Source = body.Source;
-            map.Height = body.Height;
-            map.Width = body.Width;
-            map.Layers = body.Layers;
-            map.Tileset = body.Tileset;
-            map.IsEditing = body.IsEditing;
+            // new
+            compressionlevel =  body.compressionlevel;
+            height =  body.height;
+            infinite =  body.infinite;
+            layers =  body.layers;
+            nextlayerid =  body.nextlayerid;
+            nextobjectid =  body.nextobjectid;
+            orientation =  body.orientation;
+            renderorder =  body.renderorder;
+            tiledversion =  body.tiledversion;
+            tileheight =  body.tileheight;
+            tileset =  body.tileset;
+            tilewidth =  body.tilewidth;
+            type =  body.type;
+            version =  body.version;
+            width =  body.width;
 
+///////////////////////////////////////
+            // map.OwnerEmail = body.OwnerEmail;
+            // map.Name = body.Name;
+            // map.Type = body.Type;
+            // map.SharedList = body.SharedList;
+            // map.Source = body.Source;
+            // map.Height = body.Height;
+            // map.Width = body.Width;
+            // map.Layers = body.Layers;
+            // map.Tileset = body.Tileset;
+            // map.IsEditing = body.IsEditing;
 
+//////////////////////////////////////////////////
             map.markModified('Layers');
             // console.log("layers: " + map.Layers);
 
@@ -136,7 +155,7 @@ deleteMap = async (req, res) => {
             if (err) {
                 return res.status(404).json({
                     err,
-                    message: 'map not found!',
+                    message: 'Map not found!',
                 })
             }
             if(!map){
@@ -198,18 +217,30 @@ getMapLists = async (req, res) => {
                 for(let key in map){
                     let list = map[key];
                     let pair = {
-
+/////////////////////////////////////////////////
                         _id: list._id,
                         OwnerEmail: list.OwnerEmail,
                         Name: list.Name,
-                        Type: list.Type,
-                        SharedList: list.SharedList,
-                        Source: list.Source,
-                        Height: list.Height,
-                        Width: list.Width,
-                        Layers: list.Layers,
-                        Tileset: list.Tileset
+                        SharedList:  list.SharedList,
+                        IsEditing:  list.IsEditing,
 
+                        // new
+                        compressionlevel:  list.compressionlevel,
+                        height:  list.height,
+                        infinite:  list.infinite,
+                        layers:  list.layers,
+                        nextlayerid:  list.nextlayerid,
+                        nextobjectid:  list.nextobjectid,
+                        orientation:  list.orientation,
+                        renderorder:  list.renderorder,
+                        tiledversion:  list.tiledversion,
+                        tileheight:  list.tileheight,
+                        tileset:  list.tileset,
+                        tilewidth:  list.tilewidth,
+                        type:  list.type,
+                        version:  list.version,
+                        width:  list.width,
+/////////////////////////////////////////////////////////
                     };
                     pairs.push(pair);
                 }
@@ -225,7 +256,7 @@ getMapLists = async (req, res) => {
 
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
 // create a new layer in the server
 createLayer = (req, res) => {
     try{

@@ -64,7 +64,7 @@ export default function MapScreen() {
     }, []);
 
     if(store.currentMap){
-        layers = store.currentMap.Layers;
+        layers = store.currentMap.layers;
     }
 
     const styles = {

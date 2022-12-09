@@ -654,14 +654,25 @@ function GlobalStoreContextProvider(props) {
         let payload = {
             OwnerEmail: auth.user.email,
             Name: name,
-            Type: "map",
             SharedList: [],
-            Source: "",
-            Height: height,
-            Width: width,
-            Layers: layers,
-            Tileset: "",
             IsEditing: "None",
+            ////
+            compressionlevel: -1,
+            height: height,
+            infinite: false,
+            layers: [],
+            nextlayerid: 1,
+            nextobjectid: 1,
+            orientation:  "orthogonal",
+            renderorder:  "right-down",
+            tiledversion:  "1.0.0",
+            tileheight:  32,
+            tileset:  [],
+            tilewidth:  32,
+            type: "map",
+            version:  "1.0",
+            width: width,
+            ////
         }
         const response = await api.createMap(payload);
         if (response.data.success) {
