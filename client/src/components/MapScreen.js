@@ -263,6 +263,7 @@ export default function MapScreen() {
 
         // save the selected tile source which is the dataURL string
         // create canvas then the tile information to the tilesetSrc
+        console.log("coordinates: " + selection);
         let canvas2 = document.createElement('canvas');
         canvas2.width = 32; // 
         canvas2.height = 32; //
@@ -402,12 +403,14 @@ export default function MapScreen() {
     }
     // import Tileset
     function importTileset(event){
+        console.log("import orz")
         try{
             const reader = new FileReader();
             reader.addEventListener("load", ()=> {
                 var importImage = "";
                 importImage = reader.result;
-                console.log(importImage);
+                // console.log(importImage);
+                console.log("hi fi called once?")
                 imageRef.current.src = importImage;
             })
             if(event.target.files && event.target.files[0]){
@@ -502,7 +505,7 @@ export default function MapScreen() {
         }
         try{
             //console.log("URL: " + typeof imgData);
-            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL());
+            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL(), tilesets);
         }
         catch(err){
             console.log(err);

@@ -683,14 +683,13 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.updateMapLayer = async function (id, layers, source){
+    store.updateMapLayer = async function (id, layers, source, tilesets){
         let response = await api.getMapById(id);
             if(response.data.success){
                 let map = response.data.map;
-                console.log(map);
-                console.log(source);
                 map.layers = layers;            // updated map layers
                 map.Previewed = source;         // updated map's preview image
+                map.tileset = tilesets;         // updated map's tileset array
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
                 if(response.data.success){
