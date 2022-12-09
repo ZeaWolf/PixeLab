@@ -41,16 +41,15 @@ export default function MapScreen() {
     const tilesetContainer = useRef(null);
     const imageRef = useRef(null);  
     const [currentLayer, setCurrentLayer] = useState(0);
-    // check if there is a default image
-    const [defaultImage, setDefaultImage] = useState(false);
 
     // undo - redo stack
     let undoStack = [];
     let redoStack = [];
 
     // const [layers, setLayers] = useState(store.currentMap.Layers);
-    let layers = [];
-    let tilesetSrc = "";     // store the selected tile source type
+    let layers = [];   // store the information of layers
+    let tilesets = [];  // store the information of tilesets
+    let tilesetSrc = 0;     // store the selected tile source type
     let isMouseDown = false;
     const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
     let selection = [-1, -1];
@@ -70,7 +69,9 @@ export default function MapScreen() {
     }, []);
 
     if(store.currentMap){
-        layers = store.currentMap.layers;
+        // initializing the layers editor and tileset editor
+        layers = store.currentMap.layers; // loading layers
+        tilesets = store.currentMap.tileset; // loading tilesets
     }
 
     const styles = {
@@ -97,35 +98,36 @@ export default function MapScreen() {
      
         var size_of_crop = 32;
 
-        for(let i = 0; i < layers.length; i++){
-            console.log(layers[i]);
-            let currentLayer = layers[i];
-            if(currentLayer.Opacity === 1){   // draw if it is visible
-                let layerInform = currentLayer.Layer   // where store the actual layer key and value
-                Object.keys(layerInform).forEach((key) => {
-                    // //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
-                    var positionX = Number(key.split("-")[0]);
-                    var positionY = Number(key.split("-")[1]);
-                    //   Image is the key's value
-                    var layerTileSrc = layerInform[key];
-                    if(layerTileSrc !== ""){ // if value === "" then not draw it
-                        const img = new Image();
-                        img.src = layerTileSrc;
-                        ctx.drawImage(
-                            img,
-                            0 * 32,
-                            0 * 32,
-                            size_of_crop,
-                            size_of_crop,
-                            positionX * 32,
-                            positionY * 32,
-                            size_of_crop,
-                            size_of_crop
-                        );
-                    }
-                });
-            }
-        }
+        // implement later
+        // for(let i = 0; i < layers.length; i++){
+        //     console.log(layers[i]);
+        //     let currentLayer = layers[i];
+        //     if(currentLayer.Opacity === 1){   // draw if it is visible
+        //         let layerInform = currentLayer.Layer   // where store the actual layer key and value
+        //         Object.keys(layerInform).forEach((key) => {
+        //             // //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
+        //             var positionX = Number(key.split("-")[0]);
+        //             var positionY = Number(key.split("-")[1]);
+        //             //   Image is the key's value
+        //             var layerTileSrc = layerInform[key];
+        //             if(layerTileSrc !== ""){ // if value === "" then not draw it
+        //                 const img = new Image();
+        //                 img.src = layerTileSrc;
+        //                 ctx.drawImage(
+        //                     img,
+        //                     0 * 32,
+        //                     0 * 32,
+        //                     size_of_crop,
+        //                     size_of_crop,
+        //                     positionX * 32,
+        //                     positionY * 32,
+        //                     size_of_crop,
+        //                     size_of_crop
+        //                 );
+        //             }
+        //         });
+        //     }
+        // }
     }
 
     // clear undo Transactions
@@ -267,6 +269,7 @@ export default function MapScreen() {
 
         // save the selected tile source which is the dataURL string
         // create canvas then the tile information to the tilesetSrc
+        console.log("coordinates: " + selection);
         let canvas2 = document.createElement('canvas');
         canvas2.width = 32; // 
         canvas2.height = 32; //
@@ -292,25 +295,9 @@ export default function MapScreen() {
 
     if(imageRef.current && tilesetSelection && canvas && tilesetContainer && store.currentMap){
         console.log("being called");
-        // var layers = [
-        //     //Bottom
-        //     {
-        //        //Structure is "x-y": ["tileset_x", "tileset_y"]
-        //        //EXAMPLE: "1-1": [3, 4],
-        //     },
-        //     //Middle
-        //     {},
-        //     //Top
-        //     {}
-        //  ];
 
         imageRef.current.onload = function() {
             draw();
-        }
-
-        if(!defaultImage){
-            imageRef.current.src = "https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"
-            setDefaultImage(true);
         }
     }
 
@@ -323,22 +310,30 @@ export default function MapScreen() {
 
     // create a new layer
     function createLayer(event){
-        console.log("number of layers before create: " + layers.length);
-        // layers.push({});
-        let newLayer = {Name: "Untitled", Opacity: 1, Layer:{}};
+        // layer height based on map height
+        let mapHeight = store.currentMap.height;
+        // layer width based on map width
+        let mapWidth = store.currentMap.width;
+        // dataArray is array of layer data represent in integers.
+        let dataArray = [];
+        // create data array based on the map's width and height.
+        for(let i = 0; i < (mapHeight * mapWidth); i++){
+            dataArray.push(0);
+        }
+        // id of new layer starting from 1 then increment by 1 as new layer created
+        let layerID = layers.length + 1;
+        let newLayer = {data: dataArray, height: mapHeight, id: layerID, name: `Untitled ${layerID}`, opacity: 1, type: "tilelayer", visible: true, width: mapWidth, x: 0, y: 0};
         layers.push(newLayer);
-        console.log("number of layers after create: " + layers.length);
-        console.log(layers);
         clearAllTransactions();
         setRenderLayer(true);
     }
     // delete a layer
     function deleteLayer(index){
-        console.log("number of layers before create: " + layers.length);
+        console.log("number of layers before delete: " + layers.length);
         let arrLength = layers.length;
         layers.splice(index, 1) // remove layer at index
         if(arrLength - 1 === layers.length){
-            console.log("number of layers after create: " + layers.length);
+            console.log("number of layers after delete: " + layers.length);
             console.log(layers);
             clearAllTransactions();
             setRenderLayer(true);
@@ -381,35 +376,47 @@ export default function MapScreen() {
             }
         }
     }
-    // set layer opacity
-    function toggleLayerOpacity(currentIndex){
+    // set layer opacity     *** old function
+    // function toggleLayerOpacity(currentIndex){
+    //     let currentLayer = layers[currentIndex];
+    //     let currentLayerOpacity = currentLayer.Opacity;
+    //     if(currentLayerOpacity === 1){
+    //         currentLayer.Opacity = 0;
+    //     }
+    //     else{
+    //         currentLayer.Opacity = 1;
+    //     }
+    //     console.log(currentLayer.Opacity);
+    //     setRenderLayer(true);
+    //     draw();     // redraw the layers after a layer's opacity is changed
+    // }
+    // set layer visible
+    function toggleLayerVisible(currentIndex){
         let currentLayer = layers[currentIndex];
-        let currentLayerOpacity = currentLayer.Opacity;
-        if(currentLayerOpacity === 1){
-            currentLayer.Opacity = 0;
-        }
-        else{
-            currentLayer.Opacity = 1;
-        }
-        console.log(currentLayer.Opacity);
+        let currentLayerVisible = currentLayer.visible;
+        currentLayer.visible = !currentLayer.visible;  // change false -> true || true -> false
+        console.log(currentLayer.visible);
         setRenderLayer(true);
         draw();     // redraw the layers after a layer's opacity is changed
     }
+
     // change name of the layer
     function changeLayerName(currentIndex, newName){
         let currentLayer = layers[currentIndex];
-        currentLayer.Name = newName;
+        currentLayer.name = newName;
         setRenderLayer(true);
-        draw();     // redraw the layers after a layer's opacity is changed
+        draw();     // redraw the layers after a layer's name is changed
     }
     // import Tileset
     function importTileset(event){
+        console.log("import orz")
         try{
             const reader = new FileReader();
             reader.addEventListener("load", ()=> {
                 var importImage = "";
                 importImage = reader.result;
-                console.log(importImage);
+                // console.log(importImage);
+                console.log("hi fi called once?")
                 imageRef.current.src = importImage;
             })
             if(event.target.files && event.target.files[0]){
@@ -504,15 +511,12 @@ export default function MapScreen() {
         }
         try{
             //console.log("URL: " + typeof imgData);
-            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL());
+            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL(), tilesets);
         }
         catch(err){
             console.log(err);
         }
     }
-    // function handleCreateLayer(){
-    //     store.updateLayer();
-    // }
 
     function handleErase(){
         if(erase === false){
@@ -578,7 +582,7 @@ export default function MapScreen() {
                             moveLayerUp = {moveLayerUp}
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
-                            toggleLayerOpacity= {toggleLayerOpacity}
+                            toggleLayerVisible = {toggleLayerVisible}
                             changeLayerName = {changeLayerName}
                             currentLayer = {currentLayer}
                             lastLayerIndex = {layers.length-1}
@@ -614,7 +618,10 @@ export default function MapScreen() {
                             moveLayerUp = {moveLayerUp}
                             moveLayerDown = {moveLayerDown}
                             deleteLayer = {deleteLayer}
+                            toggleLayerVisible = {toggleLayerVisible}
+                            changeLayerName = {changeLayerName}
                             currentLayer = {currentLayer}
+                            lastLayerIndex = {layers.length-1}
                             pairs={{position: index, value: element}}
                             selected={false}
                         />

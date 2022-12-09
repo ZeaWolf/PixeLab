@@ -54,8 +54,8 @@ export default function HomeMapCard(props) {
   }
 
   let mapImg = "/defaultpic.png"
-  let mapSrc = ImgNamePair.src
-  if (mapSrc !== ""){
+  let mapSrc = ImgNamePair.src;
+  if (mapSrc !== "None"){
     mapImg = mapSrc;
   }
 

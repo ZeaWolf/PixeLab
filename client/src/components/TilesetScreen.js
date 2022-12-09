@@ -92,6 +92,7 @@ export default function TilesetScreen() {
 
     const onImport = async (event) =>{
         const reader = new FileReader();
+        console.log("QAQ");
         reader.addEventListener("load", ()=> {
             var importImage = "";
             importImage = reader.result;

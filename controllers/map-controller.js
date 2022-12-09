@@ -84,27 +84,28 @@ updateMap = async(req, res) => {
             }
 
 //////////////////////////////////////////////
-            OwnerEmail = body.OwnerEmail;
-            Name =  body.Name;
-            SharedList =  body.SharedList;
-            IsEditing =  body.IsEditing;
+            map.OwnerEmail = body.OwnerEmail;
+            map.Name =  body.Name;
+            map.SharedList =  body.SharedList;
+            map.IsEditing =  body.IsEditing;
+            map.Previewed = body.Previewed;
 
             // new
-            compressionlevel =  body.compressionlevel;
-            height =  body.height;
-            infinite =  body.infinite;
-            layers =  body.layers;
-            nextlayerid =  body.nextlayerid;
-            nextobjectid =  body.nextobjectid;
-            orientation =  body.orientation;
-            renderorder =  body.renderorder;
-            tiledversion =  body.tiledversion;
-            tileheight =  body.tileheight;
-            tileset =  body.tileset;
-            tilewidth =  body.tilewidth;
-            type =  body.type;
-            version =  body.version;
-            width =  body.width;
+            map.compressionlevel =  body.compressionlevel;
+            map.height =  body.height;
+            map.infinite =  body.infinite;
+            map.layers =  body.layers;
+            map.nextlayerid =  body.nextlayerid;
+            map.nextobjectid =  body.nextobjectid;
+            map.orientation =  body.orientation;
+            map.renderorder =  body.renderorder;
+            map.tiledversion =  body.tiledversion;
+            map.tileheight =  body.tileheight;
+            map.tileset =  body.tileset;
+            map.tilewidth =  body.tilewidth;
+            map.type =  body.type;
+            map.version =  body.version;
+            map.width =  body.width;
 
 ///////////////////////////////////////
             // map.OwnerEmail = body.OwnerEmail;
@@ -119,8 +120,9 @@ updateMap = async(req, res) => {
             // map.IsEditing = body.IsEditing;
 
 //////////////////////////////////////////////////
-            map.markModified('Layers');
-            // console.log("layers: " + map.Layers);
+            // map.markModified('layers');
+            // map.markModified('tileset');
+            // console.log(map);
 
             console.log(map._id);
             map
@@ -223,6 +225,7 @@ getMapLists = async (req, res) => {
                         Name: list.Name,
                         SharedList:  list.SharedList,
                         IsEditing:  list.IsEditing,
+                        Previewed: list.Previewed,
 
                         // new
                         compressionlevel:  list.compressionlevel,
