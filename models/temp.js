@@ -10,6 +10,7 @@ const MapSchema = new Schema(
         SharedList:         {type: [String], required: true},
         IsEditing:          {type: String, required: true},
 
+
         // new
         compressionlevel:   {type: Number, required: true}, // -1
         height:             {type: Number, required: true}, // number of tiles
@@ -51,18 +52,16 @@ const MapSchema = new Schema(
         version:            {type: String, required: true}, // "1.0"
         width:              {type: Number, required: true}, // number of tiles
 
-        
 
-        // OwnerEmail:     {type: String, required: true},
         // Name:           {type: String, required: true},
         // Type:           {type: String, required: true},
         // SharedList:     {type: [String], required: true},
         // Source:         {type: String, required: false},    // used for download/export
         // Height:         {type: Number, required: true},
         // Width:          {type: Number, required: true},
-        // // old layers
-        // // Layers:         {type: [{type: Map, of: String}], required: true},
-        // // new layers
+        // old layers
+        // Layers:         {type: [{type: Map, of: String}], required: true},
+        // new layers
         // Layers:         {type: [ {Name: {type: String}, Opacity: {type: Number}, Layer: {type: Map, of: String} } ], required: true},
         // Tileset:        {type: String, required: false},
         // IsEditing:      {type: String, required: true},
