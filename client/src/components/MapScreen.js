@@ -121,6 +121,11 @@ export default function MapScreen() {
                     let thisgid = layerInform[j];
                     // since it is empyt, don't draw
                     if(thisgid === 0){
+                        layerX++;
+                        if(layerX === mapWidth){
+                            layerX = 0;
+                            layerY++;
+                        }
                         continue;
                     }
                     for(let k = 0; k < tilesets.length; k++){
@@ -139,6 +144,7 @@ export default function MapScreen() {
                             tempImg.src = currentTilesetToDraw.source;
                             // tempImg.onload = function(){
                                 console.log("----------------------->");
+                                console.log("Current Layer: " + i);
                                 console.log("this k: " + k);
                                 console.log("imgX: " + imgX);
                                 console.log("imgY: " + imgY);
@@ -815,6 +821,7 @@ export default function MapScreen() {
         console.log("new tabvalue: " + newValue);
         // using new value to set the current image source
         imageRef.current.src = tilesets[newValue].source;
+        draw();
     };
     function saidHello(){
         console.log("Hello my tab");
