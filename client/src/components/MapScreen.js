@@ -757,7 +757,7 @@ export default function MapScreen() {
     if(layers.length != 0){
         current_map = layers;
         layerList = 
-            <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
+            <List style={{ overflowY: 'scroll', maxHeight:180,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
                     current_map.map((element, index) => (
                         <LayerCard
@@ -825,7 +825,7 @@ export default function MapScreen() {
         console.log("new tabvalue: " + newValue);
         // using new value to set the current image source
         imageRef.current.src = tilesets[newValue].source;
-        draw();
+        // draw();
     };
     function saidHello(){
         console.log("Hello my tab");
@@ -912,7 +912,7 @@ export default function MapScreen() {
                         <div className="Editbar">
                         {/* <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
                         <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton> */}
-                        <IconButton><EditOffIcon onClick={handleErase}></EditOffIcon></IconButton>
+                        <IconButton><EditOffIcon style={{borderColor: 'blue',borderStyle:"solid"}} onClick={handleErase}></EditOffIcon></IconButton>
                         <IconButton><UndoIcon onClick={handleUndo}></UndoIcon></IconButton>
                         <IconButton><RedoIcon onClick={handleRedo}></RedoIcon></IconButton>
                         </div>
