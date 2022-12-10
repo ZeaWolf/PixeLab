@@ -30,7 +30,7 @@ export default function MapScreen() {
     const [hasSource, setHasSource] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
     const [isShare, setIsShare] = useState(false);
-
+    const [erase,seterase] = useState(false);
     //chengzhi tileset tab//
     const [tabvalue, setTabvalue] = useState(0);    // use to store the index of current tileset in array
     //chengzhi tileset tab//
@@ -58,7 +58,7 @@ export default function MapScreen() {
     const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
     const [renderTileset, setRenderTileset] = useState(true);  // if true, the tileset will re-render
     let selection = [0, 0];
-    let erase = false;
+    // let erase = false;
     const history = useHistory();
 
     useEffect(() => {
@@ -741,12 +741,7 @@ export default function MapScreen() {
     }
 
     function handleErase(){
-        if(erase === false){
-            erase = true;
-        }else{
-            erase = false;
-        }
-        
+        seterase(!erase)
     }
 
     // const  handlePublishMap= async (event) => {
@@ -796,7 +791,7 @@ export default function MapScreen() {
     if(layers.length != 0){
         current_map = layers;
         layerList = 
-            <List style={{ overflowY: 'scroll', maxHeight:100,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
+            <List style={{ overflowY: 'scroll', maxHeight:180,minHeight:100,minWidth:300,maxWidth:300, padding: 0}}>
                 {
                     current_map.map((element, index) => (
                         <LayerCard
@@ -864,7 +859,7 @@ export default function MapScreen() {
         console.log("new tabvalue: " + newValue);
         // using new value to set the current image source
         imageRef.current.src = tilesets[newValue].source;
-        draw();
+        // draw();
     };
     function saidHello(){
         console.log("Hello my tab");
@@ -952,9 +947,9 @@ export default function MapScreen() {
                         <div className="Editbar">
                         {/* <IconButton><ArrowOutwardIcon></ArrowOutwardIcon></IconButton>
                         <IconButton><ModeEditOutlineIcon></ModeEditOutlineIcon></IconButton> */}
-                        <IconButton><EditOffIcon onClick={handleErase}></EditOffIcon></IconButton>
-                        <IconButton><UndoIcon onClick={handleUndo}></UndoIcon></IconButton>
-                        <IconButton><RedoIcon onClick={handleRedo}></RedoIcon></IconButton>
+                        <IconButton onClick={handleErase}><EditOffIcon style={{borderColor: erase===true ? 'blue' : 'white',borderStyle: "solid"}}></EditOffIcon></IconButton>
+                        <IconButton onClick={handleUndo}><UndoIcon></UndoIcon></IconButton>
+                        <IconButton onClick={handleRedo}><RedoIcon></RedoIcon></IconButton>
                         </div>
                         <div className="card_center-column">
                             <canvas 
@@ -973,7 +968,7 @@ export default function MapScreen() {
                         <Box id="map-right">
                             <Box id="layer-box">
                                 <label style={{color: "black"}}>Layer: </label>
-                                <IconButton><AddIcon onClick={createLayer}/></IconButton>
+                                <IconButton onClick={createLayer}><AddIcon/></IconButton>
                                 <Box id="layers">
                                     {
                                         layerList
