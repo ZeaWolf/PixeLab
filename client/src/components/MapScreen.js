@@ -295,6 +295,12 @@ export default function MapScreen() {
                 let oldValue = layers[currentLayer].data[layerIndex];
                 console.log("layerIndex: " + layerIndex);
                 console.log(oldValue);
+                if(oldValue === 0){
+                    return; // can't erase an empty
+                }
+                else{
+                    addDrawTileTransaction(currentLayer, layerIndex, oldValue, 0);
+                }
             } else {
                 // layers[currentLayer].Layer[key]=tilesetSrc;
                 // let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
@@ -832,21 +838,22 @@ export default function MapScreen() {
     }
     let tilesetTab = "";
     if(tilesets.length !== 0){
-        tilesetTab = <Tabs
-                        value={tabvalue}
-                        onChange={handleTabChange}
-                        variant="scrollable"
-                        scrollButtons="auto"
-                    >
-                        {
-                            tilesets.map((element, index) => (
-                                <Tab
-                                    onClick = {saidHello}
-                                    label={`tileset${index}`}
-                                />
-                            ))
-                        }
-                    </Tabs>
+        tilesetTab = 
+            <Tabs
+                value={tabvalue}
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="auto"
+            >
+                {
+                    tilesets.map((element, index) => (
+                        <Tab
+                            onClick = {saidHello}
+                            label={`tileset${index}`}
+                        />
+                    ))
+                }
+            </Tabs>
     } 
     if(renderTileset){
         setRenderTileset(false);
@@ -895,7 +902,7 @@ export default function MapScreen() {
                     <div className="mapbanner">
                         {/* <Button>New</Button> */}
                         <Button onClick = {onSave}>Save</Button>
-                        <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button>
+                        {/* <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button> */}
                         <Button onClick={importMap} component="label">Import Map<input type="file" id="jsonfileinput" hidden onChange={importMap}/></Button>
                         <div className='dropdown'>
                         <Button className='dropbtn'>Export
@@ -943,6 +950,8 @@ export default function MapScreen() {
                             <Box id="tileset-box">
                              
                                 <label style={{color: "black"}}>Tileset: </label>
+                                {/* <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button> */}
+                                <IconButton onClick={importTileset} component="label"><AddIcon/> <input type="file"hidden onChange={importTileset}/></IconButton>
                                 <Box id="tileset-tabs">
                                 {tilesetTab}
                                 </Box>
@@ -957,23 +966,6 @@ export default function MapScreen() {
                                         // src = {tilesets[tabvalue]}
                                         />
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
-
-                                        {/* <Tabs 
-                                            value = {tab}
-                                            variant="scrollable"
-                                            scrollButtons="auto"
-                                            >
-
-                                                <Tab label="Item One" {...<img src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"/>}/>
-                                                <Tab label="Item Two">
-                                                    <img src="https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"/>
-                                                </Tab>
-                                                {/* <img id="tileset-source" 
-                                                    crossorigin="anonymous" 
-                                                    ref={imageRef}
-                                                    onLoad={handleImageOnLoad}/>
-                                                    <div className="tileset-container_selection" ref={tilesetSelection}></div>
-                                        </Tabs> */}
                                 </Box>
                             </Box>
                         </Box>
