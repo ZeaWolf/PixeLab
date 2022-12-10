@@ -41,6 +41,7 @@ export default function MapScreen() {
     const tilesetContainer = useRef(null);
     const imageRef = useRef(null);  
     const [currentLayer, setCurrentLayer] = useState(0);
+    const [tilesetLoad, setTilesetLoad] = useState(false);
 
     // undo - redo stack
     let undoStack = [];
@@ -399,6 +400,13 @@ export default function MapScreen() {
 
     if(imageRef.current && tilesetSelection && canvas && tilesetContainer && store.currentMap){
         console.log("being called");
+
+        if(!tilesetLoad){
+            setTilesetLoad(true);
+            if(tilesets.length !== 0){
+                imageRef.current.src = tilesets[0].source;
+            }
+        }
 
         imageRef.current.onload = function() {
             draw();
