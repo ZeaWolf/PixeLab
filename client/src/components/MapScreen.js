@@ -77,10 +77,11 @@ export default function MapScreen() {
         // initializing the layers editor and tileset editor
         layers = store.currentMap.layers; // loading layers
         tilesets = store.currentMap.tileset; // loading tilesets
-        // for(let i = 0; i < tilesets.length; i++){
-        //     let newImg = new Image();
-        //     newImg.src
-        // }
+        // copy the image of tileset
+        for(let i = 0; i < tilesets.length; i++){
+            tilesetsImageObject[i] = new Image();
+            tilesetsImageObject[i].src = tilesets[i].source;
+        }
     }
 
     const styles = {
@@ -140,8 +141,8 @@ export default function MapScreen() {
                             let gidPostion = thisgid - firstgid;
                             let imgX = gidPostion % tilesetColumns;  // tileset x position
                             let imgY = Math.floor(gidPostion / tilesetColumns);  // tileset y position
-                            let tempImg = new Image();
-                            tempImg.src = currentTilesetToDraw.source;
+                            // let tempImg = new Image();
+                            // tempImg.src = currentTilesetToDraw.source;
                             // tempImg.onload = function(){
                                 console.log("----------------------->");
                                 console.log("Current Layer: " + i);
@@ -152,7 +153,7 @@ export default function MapScreen() {
                                 console.log("layerY: " + layerY);
                             
                                 ctx.drawImage(
-                                    tempImg,
+                                    tilesetsImageObject[k],
                                     imgX * 32,
                                     imgY * 32,
                                     size_of_crop,
@@ -579,6 +580,9 @@ export default function MapScreen() {
                         tilewidth: 32, // change 32 to store.currentMap.tilewidth
                         source: importImage
                     }
+                    // add tileset to the image array
+                    tilesetsImageObject[tilesetsImageObject.length] = new Image();
+                    tilesetsImageObject[tilesetsImageObject.length - 1].src = importImage;
                     tilesets.push(newTileset);
                     console.log("hi fi called once?");
                     console.log(tabvalue);
