@@ -49,6 +49,7 @@ export default function MapScreen() {
     // const [layers, setLayers] = useState(store.currentMap.Layers);
     let layers = [];   // store the information of layers
     let tilesets = [];  // store the information of tilesets
+    let tilesetsImageObject = []; // store the image Object with its source that is corresponding to the tilesets
     let tilesetCurrentGID = 0;
 
     let tilesetSrc = 0;     // store the selected tile source type
@@ -75,6 +76,10 @@ export default function MapScreen() {
         // initializing the layers editor and tileset editor
         layers = store.currentMap.layers; // loading layers
         tilesets = store.currentMap.tileset; // loading tilesets
+        // for(let i = 0; i < tilesets.length; i++){
+        //     let newImg = new Image();
+        //     newImg.src
+        // }
     }
 
     const styles = {
@@ -520,6 +525,16 @@ export default function MapScreen() {
                 var newImg = new Image();
                 newImg.src = importImage;
                 newImg.onload = function(){   // after the image is load, execute the following lines
+                    // check if the tileset was imported
+                    for(let i = 0; i < tilesets.length; i++){
+                        let currentTileset = tilesets[i];
+                        if(currentTileset.source === newImg.src){
+                            return;
+                        }
+                    }
+                    if(tilesets.length === 0){
+                        imageRef.current.src = importImage;
+                    }
                     let imgHeight = newImg.height;  // image height
                     let imgWidth = newImg.width;    // image width
                     console.log("printing imported tileset information")
@@ -566,8 +581,6 @@ export default function MapScreen() {
                 // tileheight: {type: Number}, // 32
                 // tilewidth:  {type: Number}, // 32
                 // source:     {type: String}, // image src
-
-                imageRef.current.src = importImage;
             })
             if(event.target.files && event.target.files[0]){
                 reader.readAsDataURL(event.target.files[0]);
