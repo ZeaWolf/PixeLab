@@ -33,7 +33,7 @@ const MapSchema = new Schema(
         renderorder:        {type: String, required: true}, // "right-down"
         tiledversion:       {type: String, required: true}, // "1.0.0"
         tileheight:         {type: Number, required: true}, // 32
-        tileset:            {type: [{
+        tilesets:            {type: [{
                                 columns:    {type: Number}, // num of col in tileset
                                 firstgid:   {type: Number}, // ID corresponding to the first tile in the set
                                 image:      {type: String}, // image name.png

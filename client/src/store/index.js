@@ -668,7 +668,7 @@ function GlobalStoreContextProvider(props) {
             renderorder:  "right-down",
             tiledversion:  "1.0.0",
             tileheight:  32,
-            tileset:  [],
+            tilesets:  [],
             tilewidth:  32,
             type: "map",
             version:  "1.0",
@@ -683,13 +683,14 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
-    store.updateMapLayer = async function (id, layers, source, tilesets){
+    store.updateMapLayer = async function (id, layers, source, tilesets, nextlayerid){
         let response = await api.getMapById(id);
             if(response.data.success){
                 let map = response.data.map;
                 map.layers = layers;            // updated map layers
                 map.Previewed = source;         // updated map's preview image
-                map.tileset = tilesets;         // updated map's tileset array
+                map.tilesets = tilesets;         // updated map's tileset array
+                map.nextlayerid = nextlayerid;
                 // async function updateTileset(id, tileset){
                 response = await api.updateMap(id, map);
                 if(response.data.success){

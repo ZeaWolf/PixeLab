@@ -76,7 +76,7 @@ export default function MapScreen() {
     if(store.currentMap){
         // initializing the layers editor and tileset editor
         layers = store.currentMap.layers; // loading layers
-        tilesets = store.currentMap.tileset; // loading tilesets
+        tilesets = store.currentMap.tilesets; // loading tilesets
         // copy the image of tileset
         for(let i = 0; i < tilesets.length; i++){
             tilesetsImageObject[i] = new Image();
@@ -696,7 +696,7 @@ export default function MapScreen() {
                     linkElement.setAttribute('href', dataUri);
                     linkElement.setAttribute('download', exportFileDefaultName);
                     linkElement.click();
-                    let tilesetsArrayExport = map.tileset;
+                    let tilesetsArrayExport = map.tilesets;
                     for(let i = 0; i < tilesetsArrayExport.length; i++){
                         // // Get name
                         let link = document.createElement('a');
@@ -733,7 +733,7 @@ export default function MapScreen() {
         }
         try{
             //console.log("URL: " + typeof imgData);
-            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL(), tilesets);
+            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL(), tilesets, layers.length+1);
         }
         catch(err){
             console.log(err);
