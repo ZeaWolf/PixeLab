@@ -32,7 +32,7 @@ export default function MapScreen() {
     const [isShare, setIsShare] = useState(false);
 
     //chengzhi tileset tab//
-    const [tabvalue, setTabvalue] = useState(0);
+    const [tabvalue, setTabvalue] = useState(0);    // use to store the index of current tileset in array
     //chengzhi tileset tab//
 
     // below 4 are reference to the html object.
@@ -49,10 +49,13 @@ export default function MapScreen() {
     // const [layers, setLayers] = useState(store.currentMap.Layers);
     let layers = [];   // store the information of layers
     let tilesets = [];  // store the information of tilesets
+    let tilesetCurrentGID = 0;
+
     let tilesetSrc = 0;     // store the selected tile source type
     let isMouseDown = false;
     const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
-    let selection = [-1, -1];
+    const [renderTileset, setRenderTileset] = useState(true);  // if true, the tileset will re-render
+    let selection = [0, 0];
     let erase = false;
     const history = useHistory();
 
@@ -193,7 +196,7 @@ export default function MapScreen() {
 
     // drawTile function
     function drawTile(currentLayerIndex, key, oldValue, newValue){
-        layers[currentLayerIndex].Layer[key] = newValue;
+        layers[currentLayerIndex].data[key] = newValue;
         draw();
     }
 
@@ -202,33 +205,47 @@ export default function MapScreen() {
         if(layers.length !== 0 ){
             var clicked = getCoords(mouseEvent);
             var key = clicked[0] + "-" + clicked[1];
+            console.log("x /n y:");
             console.log(clicked[0]);
             console.log(clicked[1]);
-            
-            // if (mouseEvent.shiftKey) {
-            // no update immed, choose reverse value
+            console.log("tabvalue: " + tabvalue);
             if(erase) {
                 // delete layers[currentLayer].Layer[key];
-                let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
-                if(oldValue && oldValue !== ""){ // has oldValue means will not erase an empty tile
-                    // drawTile(currentLayer, key, oldValue, ""); // set newValue to ""
-                    addDrawTileTransaction(currentLayer, key, oldValue, "");
-                }
+                // let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
+                // if(oldValue && oldValue !== ""){ // has oldValue means will not erase an empty tile
+                //     // drawTile(currentLayer, key, oldValue, ""); // set newValue to ""
+                //     addDrawTileTransaction(currentLayer, key, oldValue, "");
+                // }
+                let layerIndex = clicked[0] + (clicked[1] * store.currentMap.width);  // clicked[0] is the x;  clicked[1] is the y; store.currentMap.width is the number of tile in a row.
+                let oldValue = layers[currentLayer].data[layerIndex];
+                console.log("layerIndex: " + layerIndex);
+                console.log(oldValue);
             } else {
                 // layers[currentLayer].Layer[key]=tilesetSrc;
-                let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
-                if(oldValue === tilesetSrc){
-                    console.log("duplicated tilesetSrc detected!!!")
+                // let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
+                // if(oldValue === tilesetSrc){
+                //     console.log("duplicated tilesetSrc detected!!!")
+                //     return;
+                // }
+                // if(oldValue){ // has oldValue
+                //     console.log("Not duplicated")
+                //     // drawTile(currentLayer, key, oldValue, tilesetSrc); // set newValue to tilesetSrc (selectedTiled)
+                //     addDrawTileTransaction(currentLayer, key, oldValue, tilesetSrc);
+                // }
+                // else{
+                //     // drawTile(currentLayer, key, "", tilesetSrc); // oldValue was undefine, set it to ""
+                //     addDrawTileTransaction(currentLayer, key, "", tilesetSrc);
+                // }
+                let layerIndex = clicked[0] + (clicked[1] * store.currentMap.width);  // clicked[0] is the x;  clicked[1] is the y; store.currentMap.width is the number of tile in a row.
+                let oldValue = layers[currentLayer].data[layerIndex];
+                console.log("layerIndex: " + layerIndex);
+                console.log(oldValue);
+                if(oldValue === tilesetCurrentGID || tilesetCurrentGID === 0){  // duplicated value or the GID is 0
+                    console.log("duplicated tilesetSrc detected!!!");
                     return;
-                }
-                if(oldValue){ // has oldValue
-                    console.log("Not duplicated")
-                    // drawTile(currentLayer, key, oldValue, tilesetSrc); // set newValue to tilesetSrc (selectedTiled)
-                    addDrawTileTransaction(currentLayer, key, oldValue, tilesetSrc);
-                }
-                else{
-                    // drawTile(currentLayer, key, "", tilesetSrc); // oldValue was undefine, set it to ""
-                    addDrawTileTransaction(currentLayer, key, "", tilesetSrc);
+                }else{
+                    console.log("not duplicated");
+                    addDrawTileTransaction(currentLayer, layerIndex, oldValue, tilesetCurrentGID);
                 }
             }
             // console.log(layers[currentLayer].Layer);
@@ -262,30 +279,50 @@ export default function MapScreen() {
     // tilset container mouse down
     function handleTilesetContainerMouseDown(event){
         selection = getCoords(event);
+        let x = selection[0];
+        let y = selection[1];
+        let tempImage = new Image();
+        tempImage.src = imageRef.current.src;
+        tempImage.onload = function(){
+            console.log("coordinates: " + selection);
+            let tempImageHeight = tempImage.height / 32;
+            let tempImageWidth = tempImage.width / 32;
+            console.log("image height: " + tempImageHeight);
+            console.log("image width: " + tempImageWidth);
 
-        // create the highlight box to indicated the location of tile
-        tilesetSelection.current.style.left = selection[0] * 32 + "px";
-        tilesetSelection.current.style.top = selection[1] * 32 + "px";
+            if(x < tempImageWidth && y < tempImageHeight && x >= 0 && y >= 0){
+                // create the highlight box to indicated the location of tile
+                tilesetSelection.current.style.left = selection[0] * 32 + "px";
+                tilesetSelection.current.style.top = selection[1] * 32 + "px";
 
+                // calculating the gid of selected tiled
+                let firstgid = tilesets[tabvalue].firstgid;  // first gid of the tileset
+                let tilecount = tilesets[tabvalue].tilecount;  // number of tilecounts in current tilesets
+                let columns = tilesets[tabvalue].columns; // tileset's number of columns
+                let currentGID = firstgid + (columns * y) + x;
+                tilesetCurrentGID = currentGID;    // draw based on the curentGID
+                console.log("currentGID: " + tilesetCurrentGID);
+
+            }
+        }
         // save the selected tile source which is the dataURL string
         // create canvas then the tile information to the tilesetSrc
-        console.log("coordinates: " + selection);
-        let canvas2 = document.createElement('canvas');
-        canvas2.width = 32; // 
-        canvas2.height = 32; //
-        let context = canvas2.getContext('2d');
-        context.drawImage(
-            imageRef.current,
-            selection[0] * 32,
-            selection[1] * 32,
-            32,
-            32,
-            0 * 32,
-            0 * 32,
-            32,
-            32,
-        );
-        tilesetSrc = canvas2.toDataURL();
+        // let canvas2 = document.createElement('canvas');
+        // canvas2.width = 32; // 
+        // canvas2.height = 32; //
+        // let context = canvas2.getContext('2d');
+        // context.drawImage(
+        //     imageRef.current,
+        //     selection[0] * 32,
+        //     selection[1] * 32,
+        //     32,
+        //     32,
+        //     0 * 32,
+        //     0 * 32,
+        //     32,
+        //     32,
+        // );
+        // tilesetSrc = canvas2.toDataURL();
     }
     // image on load
     function handleImageOnLoad(){
@@ -416,7 +453,58 @@ export default function MapScreen() {
                 var importImage = "";
                 importImage = reader.result;
                 // console.log(importImage);
-                console.log("hi fi called once?")
+
+                // reading information of the imported new image
+                var newImg = new Image();
+                newImg.src = importImage;
+                newImg.onload = function(){   // after the image is load, execute the following lines
+                    let imgHeight = newImg.height;  // image height
+                    let imgWidth = newImg.width;    // image width
+                    console.log("printing imported tileset information")
+                    console.log(tilesets);
+                    console.log("Image height: " + imgHeight);
+                    console.log("Image width: " + imgWidth);
+                    // getting information for the 
+                    let columns = imgWidth / 32;    // replace 32 by the store.currentMap.tilewidth if changes made in future.
+                    let firstgid = 1;
+                    if(tilesets.length !== 0){ // has previous imported tilesets
+                        firstgid = tilesets[tilesets.length-1].firstgid + tilesets[tilesets.length-1].tilecount;
+                        console.log("new first gid: " + firstgid);
+                    }
+                    let imageName = `image${tilesets.length+1}`
+                    let tilesetName = `tileset${tilesets.length+1}`
+                    let newTileset = {
+                        columns: columns, 
+                        firstgid: firstgid, 
+                        image: imageName, 
+                        imageheight: imgHeight, 
+                        imagewidth: imgWidth, 
+                        margin: 0, 
+                        name: tilesetName, 
+                        spacing: 0, 
+                        tilecount: ((imgHeight * imgWidth) / (32 * 32)), // change 32 * 32 to store.currentMap.tilewidth * store.currentMap.tileheight
+                        tileheight: 32, // change 32 to store.currentMap.tileheight
+                        tilewidth: 32, // change 32 to store.currentMap.tilewidth
+                        source: importImage
+                    }
+                    tilesets.push(newTileset);
+                    console.log("hi fi called once?");
+                    console.log(tabvalue);
+                    setRenderTileset(true);
+                }
+                // columns:    {type: Number}, // num of col in tileset
+                // firstgid:   {type: Number}, // ID corresponding to the first tile in the set
+                // image:      {type: String}, // image name.png
+                // imageheight:{type: Number}, // height of source image in pixels
+                // imagewidth: {type: Number}, // width of source image in pixels
+                // margin:     {type: Number}, // 0
+                // name:       {type: String}, // name of tileset
+                // spacing:    {type: Number}, // 0
+                // tilecount:  {type: Number}, // number of tiles in the tileset
+                // tileheight: {type: Number}, // 32
+                // tilewidth:  {type: Number}, // 32
+                // source:     {type: String}, // image src
+
                 imageRef.current.src = importImage;
             })
             if(event.target.files && event.target.files[0]){
@@ -636,12 +724,18 @@ export default function MapScreen() {
 
 
     //chengzhi tileset
-    let tilesetList = ["https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png"]
+    // let tilesetList = ["https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png","https://assets.codepen.io/21542/TileEditorSpritesheet.2x_2.png", "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"]
     const handleTabChange = (event, newValue) => {
         setTabvalue(newValue);
+        console.log("new tabvalue: " + newValue);
+        // using new value to set the current image source
+        imageRef.current.src = tilesets[newValue].source;
     };
+    function saidHello(){
+        console.log("Hello my tab");
+    }
     let tilesetTab = "";
-    if(tilesetList.length !== 0){
+    if(tilesets.length !== 0){
         tilesetTab = <Tabs
                         value={tabvalue}
                         onChange={handleTabChange}
@@ -649,14 +743,35 @@ export default function MapScreen() {
                         scrollButtons="auto"
                     >
                         {
-                            tilesetList.map((element, index) => (
+                            tilesets.map((element, index) => (
                                 <Tab
+                                    onClick = {saidHello}
                                     label={`tileset${index}`}
                                 />
                             ))
                         }
                     </Tabs>
     } 
+    if(renderTileset){
+        setRenderTileset(false);
+        tilesetTab = 
+            <Tabs
+                value={tabvalue}
+                onChange={handleTabChange}
+                variant="scrollable"
+                scrollButtons="auto"
+            >
+                {
+                    tilesets.map((element, index) => (
+                        <Tab
+                            onClick = {saidHello}
+                            label={`tileset${index}`}
+                        />
+                    ))
+                }
+            </Tabs>
+    }
+
     //chengzhi tileset
     
     
@@ -740,7 +855,11 @@ export default function MapScreen() {
                                     onMouseDown={handleTilesetContainerMouseDown}
                                     >
                                         <img id="tileset-source" 
-                                                    src = {tilesetList[tabvalue]}/>
+                                         crossorigin="anonymous" 
+                                         ref={imageRef}
+                                         onLoad={handleImageOnLoad}
+                                        // src = {tilesets[tabvalue]}
+                                        />
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
 
                                         {/* <Tabs 
