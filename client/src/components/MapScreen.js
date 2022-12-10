@@ -137,23 +137,24 @@ export default function MapScreen() {
                             let tempImg = new Image();
                             tempImg.src = currentTilesetToDraw.source;
                             // tempImg.onload = function(){
+                                console.log("----------------------->");
                                 console.log("this k: " + k);
                                 console.log("imgX: " + imgX);
                                 console.log("imgY: " + imgY);
                                 console.log("layerX: " + layerX);
                                 console.log("layerY: " + layerY);
                             
-                                // ctx.drawImage(
-                                //     tempImg,
-                                //     imgX * 32,
-                                //     imgY * 32,
-                                //     size_of_crop,
-                                //     size_of_crop,
-                                //     layerX * 32,
-                                //     layerY * 32,
-                                //     size_of_crop,
-                                //     size_of_crop
-                                // );
+                                ctx.drawImage(
+                                    tempImg,
+                                    imgX * 32,
+                                    imgY * 32,
+                                    size_of_crop,
+                                    size_of_crop,
+                                    layerX * 32,
+                                    layerY * 32,
+                                    size_of_crop,
+                                    size_of_crop
+                                );
                             // }
                         }
                     }
@@ -568,6 +569,7 @@ export default function MapScreen() {
                     console.log("hi fi called once?");
                     console.log(tabvalue);
                     setRenderTileset(true);
+                    draw();
                 }
                 // columns:    {type: Number}, // num of col in tileset
                 // firstgid:   {type: Number}, // ID corresponding to the first tile in the set
@@ -930,9 +932,9 @@ export default function MapScreen() {
                                     onMouseDown={handleTilesetContainerMouseDown}
                                     >
                                         <img id="tileset-source" 
-                                         crossorigin="anonymous" 
+                                         crossOrigin="anonymous" 
                                          ref={imageRef}
-                                         onLoad={handleImageOnLoad}
+                                        //  onLoad={handleImageOnLoad}
                                         // src = {tilesets[tabvalue]}
                                         />
                                         <div className="tileset-container_selection" ref={tilesetSelection}></div>
