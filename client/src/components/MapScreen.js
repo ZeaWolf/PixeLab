@@ -101,7 +101,68 @@ export default function MapScreen() {
      
         var size_of_crop = 32;
 
-        // implement later
+        // draw by layers
+        for(let i = 0; i < layers.length; i++){
+            let currentLayer = layers[i]; //currentLayer
+            if(currentLayer.visible){  // it is visible
+                let layerInform = currentLayer.data;  // array of the layer
+                let mapWidth = store.currentMap.width;
+                let mapHeight = store.currentMap.height;
+                let layerX = 0;
+                let layerY = 0;
+                // looping through the layer's data 
+                for(let j = 0; j < layerInform.length; j++){
+                    let thisgid = layerInform[j];
+                    // since it is empyt, don't draw
+                    if(thisgid === 0){
+                        continue;
+                    }
+                    for(let k = 0; k < tilesets.length; k++){
+                        let currentTilesetToDraw = tilesets[k];   // tileset
+                        let firstgid = currentTilesetToDraw.firstgid; // first gid
+                        let tilecounts = currentTilesetToDraw.tilecount;
+                        let tilesetColumns = currentTilesetToDraw.columns; // number of columns
+                        let lastgid = firstgid + tilecounts - 1; // last gid
+                        // check if it is the correct tileset to draw
+                        if(thisgid >= firstgid && thisgid <= lastgid){ //it is within the gid
+                            // find this gid in the tileset position (x, y)
+                            let gidPostion = thisgid - firstgid;
+                            let imgX = gidPostion % tilesetColumns;  // tileset x position
+                            let imgY = Math.floor(gidPostion / tilesetColumns);  // tileset y position
+                            let tempImg = new Image();
+                            tempImg.src = currentTilesetToDraw.source;
+                            // tempImg.onload = function(){
+                                console.log("this k: " + k);
+                                console.log("imgX: " + imgX);
+                                console.log("imgY: " + imgY);
+                                console.log("layerX: " + layerX);
+                                console.log("layerY: " + layerY);
+                            
+                                // ctx.drawImage(
+                                //     tempImg,
+                                //     imgX * 32,
+                                //     imgY * 32,
+                                //     size_of_crop,
+                                //     size_of_crop,
+                                //     layerX * 32,
+                                //     layerY * 32,
+                                //     size_of_crop,
+                                //     size_of_crop
+                                // );
+                            // }
+                        }
+                    }
+
+
+                    // keep in track of x and y coordinates of the current Layer
+                    layerX++;
+                    if(layerX === mapWidth){
+                        layerX = 0;
+                        layerY++;
+                    }
+                }
+            }
+        }
         // for(let i = 0; i < layers.length; i++){
         //     console.log(layers[i]);
         //     let currentLayer = layers[i];
@@ -290,6 +351,7 @@ export default function MapScreen() {
             console.log("image height: " + tempImageHeight);
             console.log("image width: " + tempImageWidth);
 
+            // setting the border and find the current grid tile
             if(x < tempImageWidth && y < tempImageHeight && x >= 0 && y >= 0){
                 // create the highlight box to indicated the location of tile
                 tilesetSelection.current.style.left = selection[0] * 32 + "px";
