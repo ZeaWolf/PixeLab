@@ -55,7 +55,7 @@ export default function MapScreen() {
     // let redoStack = [];
     const [redoStack, setRedoStack] = useState([]);
     let isDragging = false;
-    let dragCoordinate = [0, 0];
+    let oldCoordinate = [0, 0];
     let newCoordinate = [0, 0];
 
     // let translatePos = {
@@ -130,10 +130,8 @@ export default function MapScreen() {
     }
     function getMapCoords(e) {
         const { x, y } = e.target.getBoundingClientRect();
-        // let dragCoordinate = [0, 0];
-        // let newCoordinate = [0, 0];
-        const mouseX = e.clientX - x - (newCoordinate[0] - dragCoordinate[0]);
-        const mouseY = e.clientY - y - (newCoordinate[1] - dragCoordinate[1]);
+        const mouseX = e.clientX - x;
+        const mouseY = e.clientY - y;
         return [Math.floor(mouseX / (32*scale2)), Math.floor(mouseY / (32*scale2))];
     }
     // draw the layer
@@ -163,7 +161,7 @@ export default function MapScreen() {
         }
         // let dragCoordinate = [0, 0];
         // let newCoordinate = [0, 0];
-        ctx.translate(newCoordinate[0]-dragCoordinate[0], newCoordinate[1]-dragCoordinate[1]);
+        ctx.translate(newCoordinate[0]-oldCoordinate[0], newCoordinate[1]-oldCoordinate[1]);
         // draw by layers
         for(let i = 0; i < layers.length; i++){
             let currentLayer = layers[i]; //currentLayer
@@ -431,7 +429,7 @@ export default function MapScreen() {
             addTile(event);
         }
         else if(event.button === 0 && panMove===true){
-            dragCoordinate = getMapCoords(event);
+            oldCoordinate = getMapCoords(event);
             isDragging = true;
             // draw();
         }
@@ -453,6 +451,8 @@ export default function MapScreen() {
             addTile(event);
         }
         if(isDragging && panMove){
+            // oldCoordinate[0] = newCoordinate[0];
+            // oldCoordinate[1] = newCoordinate[1];
             newCoordinate = getMapCoords(event);
             draw();
         }
