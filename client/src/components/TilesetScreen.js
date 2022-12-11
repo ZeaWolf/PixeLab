@@ -135,6 +135,10 @@ export default function TilesetScreen() {
 
     const publishTileset = async event => {
         if(store.currentTileset){
+            if(auth.user.email !== store.currentTileset.OwnerEmail){
+                alert("you can't publish other user's work");
+                return;
+            }
             let response = await api.getTilesetById(store.currentTileset._id);
             if(response.data.success){
                 let tilesetSource = response.data.data.Source;
@@ -149,6 +153,10 @@ export default function TilesetScreen() {
     }
 
     const onShare = async () =>{
+        if(auth.user.email !== store.currentTileset.OwnerEmail){
+            alert("you can't share other user's work");
+            return;
+        }
         setIsShare(true);
     }
 

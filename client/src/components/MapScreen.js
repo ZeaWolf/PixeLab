@@ -86,7 +86,7 @@ export default function MapScreen() {
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
         store.loadMapPage(loadingListID);
-        history.push(`/map/${loadingListID}`);
+        // history.push(`/map/${loadingListID}`);
 
         return ( ()=>{
             store.leaveMapPage(store.currentMap._id);
@@ -910,6 +910,10 @@ export default function MapScreen() {
 
     const handlePublishMap = async event => {
         if(store.currentMap){
+            if(auth.user.email !== store.currentMap.OwnerEmail){
+                alert("you can't publish other user's work");
+                return;
+            }
             let response = await api.getMapById(store.currentMap._id);
             if(response.data.success){
                 let mapSource = response.data.map.Source;
@@ -924,6 +928,11 @@ export default function MapScreen() {
     }
 
     const onShare = async () =>{
+        // check if share is the owner
+        if(auth.user.email !== store.currentMap.OwnerEmail){
+            alert("you can't share other user's work");
+            return;
+        }
         setIsShare(true);
     }
 
