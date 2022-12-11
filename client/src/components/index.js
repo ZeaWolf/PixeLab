@@ -19,6 +19,7 @@ import DeleteModal from './DeleteModal'
 import PublishModal from './PublishModal'
 import PublishErrorModal from './PublishErrorModal'
 import ShareModal from './ShareModal'
+import MapSizeModal from './MapSizeModal'
 
 export{
     AppBanner,
@@ -42,4 +43,5 @@ export{
     PublishModal,
     PublishErrorModal,
     ShareModal,
+    MapSizeModal,
 }

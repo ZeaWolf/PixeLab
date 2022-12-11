@@ -16,7 +16,8 @@ import {
     TilesetScreen,
     ResourceScreen,
     ForgotPasswordScreen,
-    ResetPasswordScreen
+    ResetPasswordScreen,
+    MapSizeModal
 } from './components'
 
 // ** components no implemented
@@ -37,6 +38,7 @@ const App = () => {
                         <Route path="/map/:id" exact component={MapScreen} />
                         <Route path='/forgot-password' exact component={ForgotPasswordScreen} />
                         <Route path='/reset-password' exact component={ResetPasswordScreen} />
+                        <Route path='/test' exact component={MapSizeModal} />
                     </Switch>
                 </GlobalStoreContextProvider>
             </AuthContextProvider>

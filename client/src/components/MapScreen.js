@@ -923,8 +923,8 @@ export default function MapScreen() {
                             id="canvas_body"
                             ref={canvas} 
                             style={styles}  
-                            width="800%" 
-                            height="640%"
+                            width="800" 
+                            height="640"
                             onMouseDown={handleCanvasMouseDown}
                             onMouseUp={handleCanvasMouseUp}
                             onMouseLeave={handleCanvasMouseLeave}
