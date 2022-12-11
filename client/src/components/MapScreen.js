@@ -54,16 +54,19 @@ export default function MapScreen() {
     const [undoStack, setUndoStack] = useState([]);
     // let redoStack = [];
     const [redoStack, setRedoStack] = useState([]);
+    let isDragging = false;
+    let dragCoordinate = [0, 0];
+    let newCoordinate = [0, 0];
 
-    let translatePos = {
-        x: canvas.width/ 2,
-        y: canvas.height/ 2,
-    };
+    // let translatePos = {
+    //     x: canvas.width/ 2,
+    //     y: canvas.height/ 2,
+    // };
     
-    let startDragOffset = {
-        x: 0,
-        y: 0,
-    };
+    // let startDragOffset = {
+    //     x: 0,
+    //     y: 0,
+    // };
     let scale = 1.0;
     // let scale2 = 1.0;
     let isZoom = false;
@@ -127,8 +130,10 @@ export default function MapScreen() {
     }
     function getMapCoords(e) {
         const { x, y } = e.target.getBoundingClientRect();
-        const mouseX = e.clientX - x;
-        const mouseY = e.clientY - y;
+        // let dragCoordinate = [0, 0];
+        // let newCoordinate = [0, 0];
+        const mouseX = e.clientX - x - (newCoordinate[0] - dragCoordinate[0]);
+        const mouseY = e.clientY - y - (newCoordinate[1] - dragCoordinate[1]);
         return [Math.floor(mouseX / (32*scale2)), Math.floor(mouseY / (32*scale2))];
     }
     // draw the layer
@@ -144,11 +149,11 @@ export default function MapScreen() {
      
         var size_of_crop = 32;
 
-        console.log(translatePos.x);
-        console.log(translatePos.y);
+        // console.log(translatePos.x);
+        // console.log(translatePos.y);
 
         
-        ctx.translate(translatePos.x, translatePos.y);
+        // ctx.translate(translatePos.x, translatePos.y);
         if(isZoom===true){
             // console.log(translatePos.x);
             // console.log(translatePos.y);
@@ -156,6 +161,9 @@ export default function MapScreen() {
             ctx.scale(scale, scale);
             isZoom=false
         }
+        // let dragCoordinate = [0, 0];
+        // let newCoordinate = [0, 0];
+        ctx.translate(newCoordinate[0]-dragCoordinate[0], newCoordinate[1]-dragCoordinate[1]);
         // draw by layers
         for(let i = 0; i < layers.length; i++){
             let currentLayer = layers[i]; //currentLayer
@@ -422,37 +430,46 @@ export default function MapScreen() {
             // startDragOffset.y = event.clientY - translatePos.y;
             addTile(event);
         }
-        else{
-            startDragOffset.x = event.clientX - translatePos.x;
-            startDragOffset.y = event.clientY - translatePos.y;
-            draw();
+        else if(event.button === 0 && panMove===true){
+            dragCoordinate = getMapCoords(event);
+            isDragging = true;
+            // draw();
         }
     }
     // canvas mouse up
     function handleCanvasMouseUp(event){
         isMouseDown = false;
+        isDragging = false;
     }
     // canvas mouse leave
     function handleCanvasMouseLeave(event){
         isMouseDown = false;
+        isDragging = false;
     }
     // canvas mouse move
     function handleCanvasMouseMove(event){
         event.stopPropagation();
-        if(panMove===true){
-            console.log("Hello World")
-            console.log(event.clientX)
-            console.log(event.clientY)
-            translatePos.x = event.clientX - startDragOffset.x;
-            translatePos.y = event.clientY - startDragOffset.y;
-            console.log("Hello World")
-            console.log(translatePos)
+        if(isMouseDown && !panMove){
+            addTile(event);
         }
-        else{
-            if (isMouseDown) {
-                addTile(event);
-            }
+        if(isDragging && panMove){
+            newCoordinate = getMapCoords(event);
+            draw();
         }
+        // if(panMove===true){
+        //     console.log("Hello World")
+        //     console.log(event.clientX)
+        //     console.log(event.clientY)
+        //     translatePos.x = event.clientX - startDragOffset.x;
+        //     translatePos.y = event.clientY - startDragOffset.y;
+        //     console.log("Hello World")
+        //     console.log(translatePos)
+        // }
+        // else{
+        //     if (isMouseDown) {
+        //         addTile(event);
+        //     }
+        // }
     }
     // tilset container mouse down
     function handleTilesetContainerMouseDown(event){
