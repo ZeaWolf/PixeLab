@@ -66,6 +66,9 @@ export default function MapScreen() {
     let tilesetsImageObject = []; // store the image Object with its source that is corresponding to the tilesets
     let tilesetCurrentGID = 0;
 
+    // optimizing the run time of finding tileset to O(1) by using map
+    let tilesetMap = new Map();
+
     let tilesetSrc = 0;     // store the selected tile source type
     let isMouseDown = false;
     const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
@@ -94,6 +97,10 @@ export default function MapScreen() {
         for(let i = 0; i < tilesets.length; i++){
             tilesetsImageObject[i] = new Image();
             tilesetsImageObject[i].src = tilesets[i].source;
+            // setting tilesetMap
+            for(let m = tilesets[i].firstgid; m < tilesets[i].firstgid + tilesets[i].tilecount; m++){
+                tilesetMap.set(m.toString(), i.toString());
+            }
         }
     }
 
@@ -156,60 +163,69 @@ export default function MapScreen() {
                         }
                         continue;
                     }
-                    for(let k = 0; k < tilesets.length; k++){
-                        let currentTilesetToDraw = tilesets[k];   // tileset
-                        let firstgid = currentTilesetToDraw.firstgid; // first gid
-                        let tilecounts = currentTilesetToDraw.tilecount;
-                        let tilesetColumns = currentTilesetToDraw.columns; // number of columns
-                        let lastgid = firstgid + tilecounts - 1; // last gid
-                        // check if it is the correct tileset to draw
-                        if(thisgid >= firstgid && thisgid <= lastgid){ //it is within the gid
-                            // find this gid in the tileset position (x, y)
-                            let gidPostion = thisgid - firstgid;
-                            let imgX = gidPostion % tilesetColumns;  // tileset x position
-                            let imgY = Math.floor(gidPostion / tilesetColumns);  // tileset y position
-                            // let tempImg = new Image();
-                            // tempImg.src = currentTilesetToDraw.source;
-                            // tempImg.onload = function(){
-                                console.log("----------------------->");
-                                console.log("Current Layer: " + i);
-                                console.log("this k: " + k);
-                                console.log("imgX: " + imgX);
-                                console.log("imgY: " + imgY);
-                                console.log("scale2: " + scale2);
-                                console.log("layerX: " + layerX * 32 * scale2);
-                                console.log("layerY: " + layerY * 32 * scale2);
 
-                                // if(isZoom===true){
-                                //     ctx.drawImage(
-                                //         tilesetsImageObject[k],
-                                //         imgX * 32,
-                                //         imgY * 32,
-                                //         size_of_crop,
-                                //         size_of_crop,
-                                //         layerX * 32 * scale,
-                                //         layerY * 32 * scale,
-                                //         size_of_crop,
-                                //         size_of_crop
-                                //     );
-                                //     isZoom=false
-                                // }
-                                // else{
-                                    ctx.drawImage(
-                                        tilesetsImageObject[k],
-                                        imgX * 32,
-                                        imgY * 32,
-                                        size_of_crop,
-                                        size_of_crop,
-                                        layerX * 32,
-                                        layerY * 32,
-                                        size_of_crop,
-                                        size_of_crop,
-                                    );
-                                // }
-                            // }
-                        }
+
+                    ///----------------new mapping drawing O(1) method
+                    else{
+                        let wantedIndex = tilesetMap.get(thisgid.toString());
+                        let wantedIndexNum = Number(wantedIndex);
+                        let currentTilesetToDraw = tilesets[wantedIndexNum];   // tileset
+                        let firstgid = currentTilesetToDraw.firstgid; // first gid
+                        let tilesetColumns = currentTilesetToDraw.columns; // number of columns
+                        let gidPostion = thisgid - firstgid;
+                        let imgX = gidPostion % tilesetColumns;  // tileset x position
+                        let imgY = Math.floor(gidPostion / tilesetColumns);  // tileset y position
+                        ctx.drawImage(
+                            tilesetsImageObject[wantedIndexNum],
+                            imgX * 32,
+                            imgY * 32,
+                            size_of_crop,
+                            size_of_crop,
+                            layerX * 32,
+                            layerY * 32,
+                            size_of_crop,
+                            size_of_crop
+                        );
                     }
+
+                    // ------------old method O(k) time
+                    // for(let k = 0; k < tilesets.length; k++){
+                    //     let currentTilesetToDraw = tilesets[k];   // tileset
+                    //     let firstgid = currentTilesetToDraw.firstgid; // first gid
+                    //     let tilecounts = currentTilesetToDraw.tilecount;
+                    //     let tilesetColumns = currentTilesetToDraw.columns; // number of columns
+                    //     let lastgid = firstgid + tilecounts - 1; // last gid
+                    //     // check if it is the correct tileset to draw
+                    //     if(thisgid >= firstgid && thisgid <= lastgid){ //it is within the gid
+                    //         // find this gid in the tileset position (x, y)
+                    //         let gidPostion = thisgid - firstgid;
+                    //         let imgX = gidPostion % tilesetColumns;  // tileset x position
+                    //         let imgY = Math.floor(gidPostion / tilesetColumns);  // tileset y position
+                    //         // let tempImg = new Image();
+                    //         // tempImg.src = currentTilesetToDraw.source;
+                    //         // tempImg.onload = function(){
+                    //             console.log("----------------------->");
+                    //             console.log("Current Layer: " + i);
+                    //             console.log("this k: " + k);
+                    //             console.log("imgX: " + imgX);
+                    //             console.log("imgY: " + imgY);
+                    //             console.log("layerX: " + layerX);
+                    //             console.log("layerY: " + layerY);
+                            
+                    //             ctx.drawImage(
+                    //                 tilesetsImageObject[k],
+                    //                 imgX * 32,
+                    //                 imgY * 32,
+                    //                 size_of_crop,
+                    //                 size_of_crop,
+                    //                 layerX * 32,
+                    //                 layerY * 32,
+                    //                 size_of_crop,
+                    //                 size_of_crop
+                    //             );
+                    //         // }
+                    //     }
+                    // }
 
 
                     // keep in track of x and y coordinates of the current Layer
@@ -638,6 +654,13 @@ export default function MapScreen() {
                     tilesetsImageObject[tilesetsImageObject.length] = new Image();
                     tilesetsImageObject[tilesetsImageObject.length - 1].src = importImage;
                     tilesets.push(newTileset);
+
+                    // setting tilesetMap
+                    let values = tilesets.length - 1;
+                    for(let i = firstgid; i < firstgid + ((imgHeight * imgWidth) / (32 * 32)); i++){
+                        tilesetMap.set(i.toString(), values.toString());
+                    }
+
                     console.log("hi fi called once?");
                     console.log(tabvalue);
                     setRenderTileset(true);
@@ -670,32 +693,87 @@ export default function MapScreen() {
             reader.addEventListener("load", ()=> {
                 let importedMap = "";
                 importedMap = reader.result;
+                // remove prefix
                 let output = importedMap.slice('data:application/json;base64,'.length);
-                console.log(importedMap);
+                // decoding
                 var b = Buffer.from(output, 'base64')
                 let decode = b.toString();
-                console.log(layers);
-                console.log("haha");
-                console.log(JSON.parse(decode));
-                console.log(typeof JSON.parse(decode));
-                console.log(typeof layers);
-                let layersArray = JSON.parse(decode)
+                // parsing the decode json
+                let layersArray = JSON.parse(decode);
 
-                layers.splice(0, layers.length)
-                console.log(layers);
-                for(let i = 0; i< layersArray.length; i++){
-                    let currentLayerName = layersArray[i].Name;
-                    let currentLayerOpacity = layersArray[i].Opacity;
-                    let currentLayerLayer = layersArray[i].Layer;
-                    let newLayer = {Name: currentLayerName, Opacity: currentLayerOpacity, Layer:currentLayerLayer};
-                    layers.push(newLayer);
-                    setRenderLayer(true);
+                console.log(layersArray);
+
+
+
+
+                // find the imported layers
+                let importedLayers = layersArray.layers;
+                console.log(importedLayers);
+                // empty old array
+                layers.splice(0, layers.length);
+                // insert layer
+                for(let i = 0; i < importedLayers.length; i++){
+                    // remove _id field
+                    delete importedLayers[i]._id;
+                    console.log(importedLayers[i]);
+                    layers.push(importedLayers[i]);
                 }
-                console.log("jjjjj");
-                console.log(layers);
-                
+
+
+
+                // find the imported tilesets
+                let importedTilesets = layersArray.tilesets;
+                console.log(importedTilesets);
+                // empty old array
+                tilesets.splice(0, tilesets.length);
+                // insert tilesets
+                for(let i = 0; i < importedTilesets.length; i++){
+                    // remove _id field
+                    delete importedTilesets[i]._id;
+                    tilesets.push(importedTilesets[i]);
+                }
+
+
+                // emtpy old map
+                tilesetMap.clear();
+                // empty old array
+                tilesetsImageObject.splice(0, tilesetsImageObject.length);
+                //
+                // copy the image of tileset
+                for(let i = 0; i < tilesets.length; i++){
+                    tilesetsImageObject[i] = new Image();
+                    tilesetsImageObject[i].src = tilesets[i].source;
+                    // setting tilesetMap
+                    for(let m = tilesets[i].firstgid; m < tilesets[i].firstgid + tilesets[i].tilecount; m++){
+                        tilesetMap.set(m.toString(), i.toString());
+                    }
+                }
+                // set current Image
+                if(tilesetsImageObject.length !== 0){
+                    imageRef.current.src = tilesetsImageObject[0].src;
+                }
+
+
+
                 setRenderLayer(true);
-                draw();     // redraw the layers is changed
+                setRenderTileset(true);
+                draw();
+
+                // layers.splice(0, layers.length)
+                // console.log(layers);
+                // for(let i = 0; i< layersArray.length; i++){
+                //     let currentLayerName = layersArray[i].Name;
+                //     let currentLayerOpacity = layersArray[i].Opacity;
+                //     let currentLayerLayer = layersArray[i].Layer;
+                //     let newLayer = {Name: currentLayerName, Opacity: currentLayerOpacity, Layer:currentLayerLayer};
+                //     layers.push(newLayer);
+                //     setRenderLayer(true);
+                // }
+                // console.log("jjjjj");
+                // console.log(layers);
+                
+                // setRenderLayer(true);
+                // draw();     // redraw the layers is changed
             })
             if(event.target.files && event.target.files[0]){
                 reader.readAsDataURL(event.target.files[0]);
