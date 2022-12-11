@@ -622,32 +622,76 @@ export default function MapScreen() {
             reader.addEventListener("load", ()=> {
                 let importedMap = "";
                 importedMap = reader.result;
+                // remove prefix
                 let output = importedMap.slice('data:application/json;base64,'.length);
-                console.log(importedMap);
+                // decoding
                 var b = Buffer.from(output, 'base64')
                 let decode = b.toString();
-                console.log(layers);
-                console.log("haha");
-                console.log(JSON.parse(decode));
-                console.log(typeof JSON.parse(decode));
-                console.log(typeof layers);
-                let layersArray = JSON.parse(decode)
+                // parsing the decode json
+                let layersArray = JSON.parse(decode);
 
-                layers.splice(0, layers.length)
-                console.log(layers);
-                for(let i = 0; i< layersArray.length; i++){
-                    let currentLayerName = layersArray[i].Name;
-                    let currentLayerOpacity = layersArray[i].Opacity;
-                    let currentLayerLayer = layersArray[i].Layer;
-                    let newLayer = {Name: currentLayerName, Opacity: currentLayerOpacity, Layer:currentLayerLayer};
-                    layers.push(newLayer);
-                    setRenderLayer(true);
+                console.log(layersArray);
+
+
+
+                // find the imported layers
+                let importedLayers = layersArray.layers;
+                console.log(importedLayers);
+                // empty old array
+                layers.splice(0, layers.length);
+                // insert layer
+                for(let i = 0; i < importedLayers.length; i++){
+                    // remove _id field
+                    delete importedLayers[i]._id;
+                    console.log(importedLayers[i]);
+                    layers.push(importedLayers[i]);
                 }
-                console.log("jjjjj");
-                console.log(layers);
-                
+
+
+
+                // find the imported tilesets
+                let importedTilesets = layersArray.tilesets;
+                console.log(importedTilesets);
+                // empty old array
+                tilesets.splice(0, tilesets.length);
+                // insert tilesets
+                for(let i = 0; i < importedTilesets.length; i++){
+                    // remove _id field
+                    delete importedTilesets[i]._id;
+                    tilesets.push(importedTilesets[i]);
+                }
+
+                // empty old array
+                tilesetsImageObject.splice(0, tilesetsImageObject.length);
+                //
+                for(let i = 0; i < tilesets.length; i++){
+                    tilesetsImageObject[i] = new Image();
+                    tilesetsImageObject[i].src = tilesets[i].source;
+                }
+                // set current Image
+                if(tilesetsImageObject.length !== 0){
+                    imageRef.current.src = tilesetsImageObject[0].src;
+                }
+
                 setRenderLayer(true);
-                draw();     // redraw the layers is changed
+                setRenderTileset(true);
+                draw();
+
+                // layers.splice(0, layers.length)
+                // console.log(layers);
+                // for(let i = 0; i< layersArray.length; i++){
+                //     let currentLayerName = layersArray[i].Name;
+                //     let currentLayerOpacity = layersArray[i].Opacity;
+                //     let currentLayerLayer = layersArray[i].Layer;
+                //     let newLayer = {Name: currentLayerName, Opacity: currentLayerOpacity, Layer:currentLayerLayer};
+                //     layers.push(newLayer);
+                //     setRenderLayer(true);
+                // }
+                // console.log("jjjjj");
+                // console.log(layers);
+                
+                // setRenderLayer(true);
+                // draw();     // redraw the layers is changed
             })
             if(event.target.files && event.target.files[0]){
                 reader.readAsDataURL(event.target.files[0]);
