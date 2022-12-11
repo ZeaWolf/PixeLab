@@ -22,7 +22,12 @@ const ResourceSchema = new Schema(
         Downloads:      {type: Number, required: true},
         Comments:       {type: [[String]], required: true},
         PublishTime:    {type: Date, required: true, default: Date.now()},
-        Description:    {type: String, required: true}
+        Description:    {type: String, required: true},
+        MapTilesetArray: {type: [{
+            name: {type: String},
+            source: {type: String},
+        }], required: false},
+        JsonStringFile: {type: String, required: false},
     },
     {timestamps: true}
 );

@@ -66,11 +66,32 @@ export default function ResourceScreen(){
         let indexBeforeURL = url.lastIndexOf("/");
         let loadingListID = url.substring(indexBeforeURL+1);
         await store.handleDownload(loadingListID);
-        if(store.currentResource.Type === "tileset" || store.currentResource.Type === "map"){
+        if(store.currentResource.Type === "tileset"){
             const link = document.createElement('a');
             link.download = `${store.currentResource.Name}.png`;
             link.href = store.currentResource.Source;
             link.click();
+        }
+        if(store.currentResource.Type === "map"){
+            console.log("resource map type")
+            // download json file first
+            let dataUri = store.currentResource.JsonStringFile;
+            let exportFileDefaultName = `${store.currentResource.Name}.json`;
+            let linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            // download the tilesets through looping
+            let tilesetArry = store.currentResource.MapTilesetArray;
+            console.log(store.currentResource.MapTilesetArray);
+            console.log(tilesetArry.length);
+            for(let i = 0; i < tilesetArry.length; i++){
+                console.log("clicked" + i);
+                let link = document.createElement('a');
+                link.download = tilesetArry[i].name; // name of the image
+                link.href = tilesetArry[i].source;
+                link.click();
+            }
         }
         await store.setCurrentResource(loadingListID);
     }

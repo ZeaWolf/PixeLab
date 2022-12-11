@@ -766,17 +766,32 @@ function GlobalStoreContextProvider(props) {
         console.log(auth.user);
         if (response.data.success) {
             let map = response.data.map;
+            // make map object into json file string
+            let dataStr = JSON.stringify(map);
+            let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+            // store the tileset images and its information
+            let mapTilesets = [];
+            for(let i = 0; i < map.tilesets.length; i++){
+                let tileName = map.tilesets[i].image;
+                let tileSource = map.tilesets[i].source;
+                let tilePush = {name: tileName, source: tileSource}
+                mapTilesets.push(tilePush);
+            }
+
             let payload = {
                 Type:           "map",
                 Name:           map.Name,
                 Author:         auth.user.userName,
-                Image:          map.Source,
-                Source:         map.Source,
+                Image:          map.Previewed,
+                Source:         map.Previewed,
                 Like:           0,
                 Downloads:      0,
                 Comments:       [],
                 PublishTime:    Date.now(),
                 Description:    text,
+                JsonStringFile: dataUri,
+                MapTilesetArray: mapTilesets
             };
             const responseResource = await api.createResource(payload);
             if (responseResource.data.success) {
