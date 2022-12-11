@@ -47,8 +47,10 @@ export default function MapScreen() {
     const [tilesetLoad, setTilesetLoad] = useState(false);
 
     // undo - redo stack
-    let undoStack = [];
-    let redoStack = [];
+    // let undoStack = [];
+    const [undoStack, setUndoStack] = useState([]);
+    // let redoStack = [];
+    const [redoStack, setRedoStack] = useState([]);
 
     let translatePos = {
         x: canvas.width / 2,
@@ -344,6 +346,11 @@ export default function MapScreen() {
             console.log(clicked[0]);
             console.log(clicked[1]);
             console.log("tabvalue: " + tabvalue);
+
+            // this check if the selected tile area is out of boundary
+            if(clicked[0] >= store.currentMap.width || clicked[1] >= store.currentMap.height){
+                return;
+            }
             if(erase) {
                 // delete layers[currentLayer].Layer[key];
                 // let oldValue = layers[currentLayer].Layer[key]; // find what was on this key
@@ -395,14 +402,14 @@ export default function MapScreen() {
     }
     // canvas mouse down
     function handleCanvasMouseDown(event){
+        console.log(event.button);
         console.log("QAQ onClick");
-        if(layers){
-            console.log(layers);
+        if(event.button === 0){
+            isMouseDown = true;
+            // startDragOffset.x = event.clientX - translatePos.x;
+            // startDragOffset.y = event.clientY - translatePos.y;
+            addTile(event);
         }
-        isMouseDown = true;
-        // startDragOffset.x = event.clientX - translatePos.x;
-        // startDragOffset.y = event.clientY - translatePos.y;
-        addTile(event);
     }
     // canvas mouse up
     function handleCanvasMouseUp(event){
