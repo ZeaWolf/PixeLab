@@ -101,7 +101,7 @@ updateMap = async(req, res) => {
             map.renderorder =  body.renderorder;
             map.tiledversion =  body.tiledversion;
             map.tileheight =  body.tileheight;
-            map.tileset =  body.tileset;
+            map.tilesets =  body.tilesets;
             map.tilewidth =  body.tilewidth;
             map.type =  body.type;
             map.version =  body.version;
@@ -238,7 +238,7 @@ getMapLists = async (req, res) => {
                         renderorder:  list.renderorder,
                         tiledversion:  list.tiledversion,
                         tileheight:  list.tileheight,
-                        tileset:  list.tileset,
+                        tilesets:  list.tilesets,
                         tilewidth:  list.tilewidth,
                         type:  list.type,
                         version:  list.version,

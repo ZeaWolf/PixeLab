@@ -76,7 +76,7 @@ export default function MapScreen() {
     if(store.currentMap){
         // initializing the layers editor and tileset editor
         layers = store.currentMap.layers; // loading layers
-        tilesets = store.currentMap.tileset; // loading tilesets
+        tilesets = store.currentMap.tilesets; // loading tilesets
         // copy the image of tileset
         for(let i = 0; i < tilesets.length; i++){
             tilesetsImageObject[i] = new Image();
@@ -570,7 +570,7 @@ export default function MapScreen() {
                         firstgid = tilesets[tilesets.length-1].firstgid + tilesets[tilesets.length-1].tilecount;
                         console.log("new first gid: " + firstgid);
                     }
-                    let imageName = `image${tilesets.length+1}`
+                    let imageName = `image${tilesets.length+1}.png`
                     let tilesetName = `tileset${tilesets.length+1}`
                     let newTileset = {
                         columns: columns, 
@@ -682,16 +682,49 @@ export default function MapScreen() {
 
     const onExportAsJson = async (event) =>{
         event.preventDefault();
-        let jsonData = layers;
-        let dataStr = JSON.stringify(jsonData);
-        let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        if(store.currentMap){
+            let response = await api.getMapById(store.currentMap._id);
+                if(response.data.success){
+                    let map = response.data.map;
+                    console.log(map);
+                    console.log("pri")
+                    let dataStr = JSON.stringify(map);
+                    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    let exportFileDefaultName = `${store.currentMap.Name}.json`;
+                    let linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                    let tilesetsArrayExport = map.tilesets;
+                    for(let i = 0; i < tilesetsArrayExport.length; i++){
+                        // // Get name
+                        let link = document.createElement('a');
+                        link.download = tilesetsArrayExport[i].image; // name of the image
+                        link.href = tilesetsArrayExport[i].source;
+                        link.click();
+                        // link.href = 
+                        // if(store.currentMap){
+                        //     link.download = `${store.currentMap.Name}.png`;
+                        // }
+                        // else{
+                        //     link.download = `guestUntitled.png`;
+                        // }
+                        // link.href = canvas.current.toDataURL();
+                    }
+                }
+        }
 
-        let exportFileDefaultName = `${store.currentMap.Name}.json`;
+        // let jsonData = layers;
+        // let dataStr = JSON.stringify(jsonData);
+        // let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-        let linkElement = document.createElement('a');
-        linkElement.setAttribute('href', dataUri);
-        linkElement.setAttribute('download', exportFileDefaultName);
-        linkElement.click();
+        // let exportFileDefaultName = `${store.currentMap.Name}.json`;
+
+        // let linkElement = document.createElement('a');
+        // linkElement.setAttribute('href', dataUri);
+        // linkElement.setAttribute('download', exportFileDefaultName);
+        // linkElement.click();
     }
 
     const onSave = async (event) => {
@@ -700,7 +733,7 @@ export default function MapScreen() {
         }
         try{
             //console.log("URL: " + typeof imgData);
-            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL(), tilesets);
+            await store.updateMapLayer(store.currentMap._id, layers, canvas.current.toDataURL(), tilesets, layers.length+1);
         }
         catch(err){
             console.log(err);

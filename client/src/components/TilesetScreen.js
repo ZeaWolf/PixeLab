@@ -208,7 +208,7 @@ export default function TilesetScreen() {
             <Box className='right-screen'>
                 <Box id="tileset-screen" >
                     <Box id="tileset-toolbar">
-                        <Button >New</Button>
+                        {/* <Button >New</Button> */}
                         <Button onClick={onSave}>Save</Button>
                         <Button onClick={onImport} component="label">Import <input type="file"hidden onChange={onImport}/></Button>
                         <Button onClick={onExport}>Export</Button>

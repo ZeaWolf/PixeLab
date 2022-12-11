@@ -82,6 +82,8 @@ updateResource = async(req, res) => {
             resource.Comments = body.Comments;
             resource.PublishTime = body.PublishTime;
             resource.Description = body.Description;
+            resource.MapTilesetArray = body.MapTilesetArray;
+            resource.JsonStringFile = body.JsonStringFile;
 
             resource
                 .save()
@@ -156,7 +158,7 @@ getResourceLists = async (req, res) => {
                         Downloads: list.Downloads,
                         Comments: list.Comments,
                         PublishTime: list.PublishTime,
-                        Description: list.Description
+                        Description: list.Description,
                     };
                     pairs.push(pair);
                 }
