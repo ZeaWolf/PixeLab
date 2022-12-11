@@ -496,6 +496,12 @@ Chengzhi Dong
   overflow-x: scroll;
   overflow-y: scroll;
 }
+#buttonWrapper {
+  position: absolute;
+  width: 5%;
+  top: 5%;
+  right: 30%;
+}
 
 /*
 Chengzhi Dong

@@ -23,6 +23,8 @@ import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 
 export default function MapScreen() {
     const { auth } = useContext(AuthContext);
@@ -34,6 +36,7 @@ export default function MapScreen() {
     //chengzhi tileset tab//
     const [tabvalue, setTabvalue] = useState(0);    // use to store the index of current tileset in array
     //chengzhi tileset tab//
+    const [scale2,setscale2] = useState(1);
 
     // below 4 are reference to the html object.
     const tilesetSelection = useRef(null);
@@ -46,6 +49,16 @@ export default function MapScreen() {
     // undo - redo stack
     let undoStack = [];
     let redoStack = [];
+
+    let translatePos = {
+        x: canvas.width / 2,
+        y: canvas.height / 2
+    };
+    
+    let startDragOffset = {};
+    let scale = 1.0;
+    // let scale2 = 1.0;
+    let isZoom = false;
 
     // const [layers, setLayers] = useState(store.currentMap.Layers);
     let layers = [];   // store the information of layers
@@ -97,6 +110,12 @@ export default function MapScreen() {
         const mouseY = e.clientY - y;
         return [Math.floor(mouseX / 32), Math.floor(mouseY / 32)];
     }
+    function getMapCoords(e) {
+        const { x, y } = e.target.getBoundingClientRect();
+        const mouseX = e.clientX - x;
+        const mouseY = e.clientY - y;
+        return [Math.floor(mouseX / (32*scale2)), Math.floor(mouseY / (32*scale2))];
+    }
     // draw the layer
     function draw() {  // this is the onload function to render all layer
         var ctx = canvas.current.getContext("2d");
@@ -108,6 +127,14 @@ export default function MapScreen() {
      
         var size_of_crop = 32;
 
+        // ctx.translate(translatePos.x, translatePos.y);
+        if(isZoom===true){
+            // console.log(translatePos.x);
+            // console.log(translatePos.y);
+            // ctx.translate(translatePos.x, translatePos.y);
+            ctx.scale(scale, scale);
+            isZoom=false
+        }
         // draw by layers
         for(let i = 0; i < layers.length; i++){
             let currentLayer = layers[i]; //currentLayer
@@ -149,20 +176,37 @@ export default function MapScreen() {
                                 console.log("this k: " + k);
                                 console.log("imgX: " + imgX);
                                 console.log("imgY: " + imgY);
-                                console.log("layerX: " + layerX);
-                                console.log("layerY: " + layerY);
-                            
-                                ctx.drawImage(
-                                    tilesetsImageObject[k],
-                                    imgX * 32,
-                                    imgY * 32,
-                                    size_of_crop,
-                                    size_of_crop,
-                                    layerX * 32,
-                                    layerY * 32,
-                                    size_of_crop,
-                                    size_of_crop
-                                );
+                                console.log("scale2: " + scale2);
+                                console.log("layerX: " + layerX * 32 * scale2);
+                                console.log("layerY: " + layerY * 32 * scale2);
+
+                                // if(isZoom===true){
+                                //     ctx.drawImage(
+                                //         tilesetsImageObject[k],
+                                //         imgX * 32,
+                                //         imgY * 32,
+                                //         size_of_crop,
+                                //         size_of_crop,
+                                //         layerX * 32 * scale,
+                                //         layerY * 32 * scale,
+                                //         size_of_crop,
+                                //         size_of_crop
+                                //     );
+                                //     isZoom=false
+                                // }
+                                // else{
+                                    ctx.drawImage(
+                                        tilesetsImageObject[k],
+                                        imgX * 32,
+                                        imgY * 32,
+                                        size_of_crop,
+                                        size_of_crop,
+                                        layerX * 32,
+                                        layerY * 32,
+                                        size_of_crop,
+                                        size_of_crop,
+                                    );
+                                // }
                             // }
                         }
                     }
@@ -278,7 +322,7 @@ export default function MapScreen() {
     // add tile to the layers
     function addTile(mouseEvent) {
         if(layers.length !== 0 ){
-            var clicked = getCoords(mouseEvent);
+            var clicked = getMapCoords(mouseEvent);
             var key = clicked[0] + "-" + clicked[1];
             console.log("x /n y:");
             console.log(clicked[0]);
@@ -340,6 +384,8 @@ export default function MapScreen() {
             console.log(layers);
         }
         isMouseDown = true;
+        // startDragOffset.x = event.clientX - translatePos.x;
+        // startDragOffset.y = event.clientY - translatePos.y;
         addTile(event);
     }
     // canvas mouse up
@@ -354,6 +400,8 @@ export default function MapScreen() {
     function handleCanvasMouseMove(event){
         event.stopPropagation();
         if (isMouseDown) {
+            // translatePos.x = event.clientX - startDragOffset.x;
+            // translatePos.y = event.clientY - startDragOffset.y;
             addTile(event);
         }
     }
@@ -905,7 +953,26 @@ export default function MapScreen() {
 
     //chengzhi tileset
     
+    //zoom in
+    function handleZoomIn(){
+        // setscale(scale/0.8);
+        scale=1
+        scale/=0.8
+        setscale2(scale2/0.8)
+        // scale2/=0.8
+        isZoom=true
+        draw()
+    }
     
+    function handleZoomOut(){
+        //setscale(scale*0.8);
+        scale=1
+        scale*=0.8
+        setscale2(scale2*0.8)
+        isZoom=true
+        draw()
+    }
+
     let mapPage = 
         <div className='full-screen'>
             <NavigationBar/>
@@ -950,6 +1017,8 @@ export default function MapScreen() {
                         <IconButton onClick={handleErase}><EditOffIcon style={{borderColor: erase===true ? 'blue' : 'white',borderStyle: "solid"}}></EditOffIcon></IconButton>
                         <IconButton onClick={handleUndo}><UndoIcon></UndoIcon></IconButton>
                         <IconButton onClick={handleRedo}><RedoIcon></RedoIcon></IconButton>
+                        <IconButton onClick={handleZoomIn}><ZoomInIcon/></IconButton>
+                        <IconButton onClick={handleZoomOut}><ZoomOutIcon/></IconButton>
                         </div>
                         <div className="card_center-column">
                             <canvas 
@@ -962,6 +1031,7 @@ export default function MapScreen() {
                             onMouseUp={handleCanvasMouseUp}
                             onMouseLeave={handleCanvasMouseLeave}
                             onMouseMove={handleCanvasMouseMove}
+                            backgroundColor='red'
                             >
                             </canvas>
                         </div>
