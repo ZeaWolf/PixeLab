@@ -21,6 +21,7 @@ import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
+import ControlCameraIcon from '@mui/icons-material/ControlCamera';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
@@ -32,7 +33,8 @@ export default function MapScreen() {
     const [hasSource, setHasSource] = useState(false);
     const [isPublish, setIsPublish] = useState(false);
     const [isShare, setIsShare] = useState(false);
-    const [erase,seterase] = useState(false);
+    const [erase,seterase] = useState(false);   // check if it is in erase mode
+    const [panMove, setPanMove] = useState(false);   // check if it is in pan move mode
     //chengzhi tileset tab//
     const [tabvalue, setTabvalue] = useState(0);    // use to store the index of current tileset in array
     //chengzhi tileset tab//
@@ -66,12 +68,12 @@ export default function MapScreen() {
     let layers = [];   // store the information of layers
     let tilesets = [];  // store the information of tilesets
     let tilesetsImageObject = []; // store the image Object with its source that is corresponding to the tilesets
-    let tilesetCurrentGID = 0;
+    // let tilesetCurrentGID = 0;
+    const [tilesetCurrentGID, setTilesetCurrentGID] = useState(0);
 
     // optimizing the run time of finding tileset to O(1) by using map
     let tilesetMap = new Map();
 
-    let tilesetSrc = 0;     // store the selected tile source type
     let isMouseDown = false;
     const [renderLayer, setRenderLayer] = useState(true);    // if true, the layer editor will re-render
     const [renderTileset, setRenderTileset] = useState(true);  // if true, the tileset will re-render
@@ -453,8 +455,9 @@ export default function MapScreen() {
                 let tilecount = tilesets[tabvalue].tilecount;  // number of tilecounts in current tilesets
                 let columns = tilesets[tabvalue].columns; // tileset's number of columns
                 let currentGID = firstgid + (columns * y) + x;
-                tilesetCurrentGID = currentGID;    // draw based on the curentGID
-                console.log("currentGID: " + tilesetCurrentGID);
+                setTilesetCurrentGID(currentGID);
+                // tilesetCurrentGID = currentGID;    // draw based on the curentGID
+                console.log("currentGID: " + currentGID);
 
             }
         }
@@ -874,7 +877,20 @@ export default function MapScreen() {
     }
 
     function handleErase(){
-        seterase(!erase)
+        // if it is erase move, pan move mode not working
+        // if(erase){
+        //     setPanMove(false);
+        // }
+        seterase(!erase);
+        // seterase(erase);
+    }
+
+    function handlePanMove(){
+        // if(panMove){
+        //     seterase(false);
+        // }
+        setPanMove(!panMove);
+        // setPanMove(panMove);
     }
 
     // const  handlePublishMap= async (event) => {
@@ -990,9 +1006,15 @@ export default function MapScreen() {
     const handleTabChange = (event, newValue) => {
         setTabvalue(newValue);
         console.log("new tabvalue: " + newValue);
+        // reset the tileset
+        setTilesetCurrentGID(0);
         // using new value to set the current image source
         imageRef.current.src = tilesets[newValue].source;
-        // draw();
+        // console.log(tilesetContainer.current);
+        // // removing the style icon
+        // tilesetContainer.current.style.removeProperty('left');
+        // tilesetContainer.current.style.removeProperty('top');
+        // console.log(tilesetContainer.current);
     };
     function saidHello(){
         console.log("Hello my tab");
@@ -1104,6 +1126,7 @@ export default function MapScreen() {
                         <IconButton onClick={handleRedo}><RedoIcon></RedoIcon></IconButton>
                         <IconButton onClick={handleZoomIn}><ZoomInIcon/></IconButton>
                         <IconButton onClick={handleZoomOut}><ZoomOutIcon/></IconButton>
+                        <IconButton onClick={handlePanMove}> <ControlCameraIcon style={{borderColor: panMove===true ? 'blue' : 'white',borderStyle: "solid"}}/></IconButton>
                         </div>
                         <div className="card_center-column">
                             <canvas 

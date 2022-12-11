@@ -271,6 +271,7 @@ function GlobalStoreContextProvider(props) {
 
                 console.log(tileset.IsEditing);
                 if(tileset.IsEditing !== "None" && tileset.IsEditing !== auth.user.email){
+                    alert("other user is using it")
                     //Show cant share modal
                     return;
                 }
@@ -330,6 +331,7 @@ function GlobalStoreContextProvider(props) {
                 let map = response.data.map;
                 if(map.IsEditing !== "None" && map.IsEditing !== auth.user.email){
                     //Show cant share modal
+                    alert("Other users is editing");
                     return;
                 }
                 map.IsEditing = auth.user.email;
