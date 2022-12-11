@@ -245,9 +245,12 @@
   margin-left: 5%;
 }
 .card_center-column{
+  /* position: relative; */
   margin-left: 5%;
   margin-top: 2%;
   margin-bottom: 5%;
+  /* width: 60%;
+  Height: 100%; */
   /* background-color: rgb(235, 225, 225); */
 }
 
@@ -478,7 +481,15 @@ Chengzhi Dong
   border-radius: 10px;
   border: 2px solid #8AC007;
 }
-
+#canvas_body{
+  position:relative;
+  border: 1px solid black;
+  /* box-sizing: border-box; */
+  /* height: 80%;
+  width:100%;
+  background: #fff;
+  background-color: #fdffdc; */
+}
 #tileset-tabs{
   position:relative;
   background-color: rgb(157, 255, 0);

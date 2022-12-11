@@ -47,6 +47,7 @@ export default function MapScreen() {
     const imageRef = useRef(null);  
     const [currentLayer, setCurrentLayer] = useState(0);
     const [tilesetLoad, setTilesetLoad] = useState(false);
+    // const [translatePos, setTranslatePos] = useState({canvas.width/ 2, canvas.height/ 2});
 
     // undo - redo stack
     // let undoStack = [];
@@ -55,11 +56,14 @@ export default function MapScreen() {
     const [redoStack, setRedoStack] = useState([]);
 
     let translatePos = {
-        x: canvas.width / 2,
-        y: canvas.height / 2
+        x: canvas.width/ 2,
+        y: canvas.height/ 2,
     };
     
-    let startDragOffset = {};
+    let startDragOffset = {
+        x: 0,
+        y: 0,
+    };
     let scale = 1.0;
     // let scale2 = 1.0;
     let isZoom = false;
@@ -130,15 +134,21 @@ export default function MapScreen() {
     // draw the layer
     function draw() {  // this is the onload function to render all layer
         var ctx = canvas.current.getContext("2d");
+        // ctx.globalCompositeOperation = 'destination-over'
         // clear drawing from the canvas first
         ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
-
+        // ctx.fillStyle = "grey";
+        // ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
         console.log("DRAWwwwwwwwwww");
         console.log(layers);
      
         var size_of_crop = 32;
 
-        // ctx.translate(translatePos.x, translatePos.y);
+        console.log(translatePos.x);
+        console.log(translatePos.y);
+
+        
+        ctx.translate(translatePos.x, translatePos.y);
         if(isZoom===true){
             // console.log(translatePos.x);
             // console.log(translatePos.y);
@@ -406,11 +416,16 @@ export default function MapScreen() {
     function handleCanvasMouseDown(event){
         console.log(event.button);
         console.log("QAQ onClick");
-        if(event.button === 0){
+        if(event.button === 0 && panMove===false){
             isMouseDown = true;
             // startDragOffset.x = event.clientX - translatePos.x;
             // startDragOffset.y = event.clientY - translatePos.y;
             addTile(event);
+        }
+        else{
+            startDragOffset.x = event.clientX - translatePos.x;
+            startDragOffset.y = event.clientY - translatePos.y;
+            draw();
         }
     }
     // canvas mouse up
@@ -424,10 +439,19 @@ export default function MapScreen() {
     // canvas mouse move
     function handleCanvasMouseMove(event){
         event.stopPropagation();
-        if (isMouseDown) {
-            // translatePos.x = event.clientX - startDragOffset.x;
-            // translatePos.y = event.clientY - startDragOffset.y;
-            addTile(event);
+        if(panMove===true){
+            console.log("Hello World")
+            console.log(event.clientX)
+            console.log(event.clientY)
+            translatePos.x = event.clientX - startDragOffset.x;
+            translatePos.y = event.clientY - startDragOffset.y;
+            console.log("Hello World")
+            console.log(translatePos)
+        }
+        else{
+            if (isMouseDown) {
+                addTile(event);
+            }
         }
     }
     // tilset container mouse down
@@ -1148,7 +1172,6 @@ export default function MapScreen() {
                             onMouseUp={handleCanvasMouseUp}
                             onMouseLeave={handleCanvasMouseLeave}
                             onMouseMove={handleCanvasMouseMove}
-                            backgroundColor='red'
                             >
                             </canvas>
                         </div>
