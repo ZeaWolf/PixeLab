@@ -728,86 +728,87 @@ export default function MapScreen() {
     }
     // import Map json file
     function importMap(event){
-        try{
-            const reader = new FileReader();
-            reader.addEventListener("load", ()=> {
-                let importedMap = "";
-                importedMap = reader.result;
-                // remove prefix
-                let output = importedMap.slice('data:application/json;base64,'.length);
-                // decoding
-                var b = Buffer.from(output, 'base64')
-                let decode = b.toString();
-                // parsing the decode json
-                let layersArray = JSON.parse(decode);
+        // try{
+        //     const reader = new FileReader();
+        //     reader.addEventListener("load", ()=> {
+        //         let importedMap = "";
+        //         importedMap = reader.result;
+        //         // remove prefix
+        //         let output = importedMap.slice('data:application/json;base64,'.length);
+        //         // decoding
+        //         var b = Buffer.from(output, 'base64')
+        //         let decode = b.toString();
+        //         // parsing the decode json
+        //         let layersArray = JSON.parse(decode);
                 
 
 
-                // find the imported layers
-                let importedLayers = layersArray.layers;
-                console.log(importedLayers);
-                // empty old array
-                layers.splice(0, layers.length);
-                // insert layer
-                for(let i = 0; i < importedLayers.length; i++){
-                    // remove _id field
-                    delete importedLayers[i]._id;
-                    console.log(importedLayers[i]);
-                    layers.push(importedLayers[i]);
-                }
+        //         // find the imported layers
+        //         let importedLayers = layersArray.layers;
+        //         console.log(importedLayers);
+        //         // empty old array
+        //         layers.splice(0, layers.length);
+        //         // insert layer
+        //         for(let i = 0; i < importedLayers.length; i++){
+        //             // remove _id field
+        //             delete importedLayers[i]._id;
+        //             console.log(importedLayers[i]);
+        //             layers.push(importedLayers[i]);
+        //         }
 
 
 
-                // find the imported tilesets
-                let importedTilesets = layersArray.tilesets;
-                console.log(importedTilesets);
-                // empty old array
-                tilesets.splice(0, tilesets.length);
-                // insert tilesets
-                for(let i = 0; i < importedTilesets.length; i++){
-                    // remove _id field
-                    delete importedTilesets[i]._id;
-                    tilesets.push(importedTilesets[i]);
-                }
+        //         // find the imported tilesets
+        //         let importedTilesets = layersArray.tilesets;
+        //         console.log(importedTilesets);
+        //         // empty old array
+        //         tilesets.splice(0, tilesets.length);
+        //         // insert tilesets
+        //         for(let i = 0; i < importedTilesets.length; i++){
+        //             // remove _id field
+        //             delete importedTilesets[i]._id;
+        //             tilesets.push(importedTilesets[i]);
+        //         }
 
 
-                // emtpy old map
-                tilesetMap.clear();
-                // empty old array
-                tilesetsImageObject.splice(0, tilesetsImageObject.length);
-                //
-                // copy the image of tileset
-                for(let i = 0; i < tilesets.length; i++){
-                    tilesetsImageObject[i] = new Image();
-                    tilesetsImageObject[i].src = tilesets[i].source;
-                    // setting tilesetMap
-                    for(let m = tilesets[i].firstgid; m < tilesets[i].firstgid + tilesets[i].tilecount; m++){
-                        tilesetMap.set(m.toString(), i.toString());
-                    }
-                }
-                // set current Image
-                if(tilesetsImageObject.length !== 0){
-                    imageRef.current.src = tilesetsImageObject[0].src;
-                }
+        //         // emtpy old map
+        //         tilesetMap.clear();
+        //         // empty old array
+        //         tilesetsImageObject.splice(0, tilesetsImageObject.length);
+        //         //
+        //         // copy the image of tileset
+        //         for(let i = 0; i < tilesets.length; i++){
+        //             tilesetsImageObject[i] = new Image();
+        //             tilesetsImageObject[i].src = tilesets[i].source;
+        //             // setting tilesetMap
+        //             for(let m = tilesets[i].firstgid; m < tilesets[i].firstgid + tilesets[i].tilecount; m++){
+        //                 tilesetMap.set(m.toString(), i.toString());
+        //             }
+        //         }
+        //         // set current Image
+        //         if(tilesetsImageObject.length !== 0){
+        //             imageRef.current.src = tilesetsImageObject[0].src;
+        //         }
 
-                // store.importMapJson(id, layers, source, tilesets, nextlayerid, height, width);
-                store.importMapJson(store.currentMap._id, layersArray.layers, layersArray.Previewed, layersArray.tilesets, layersArray.nextlayerid, layersArray.height, layersArray.width);
-                // lazy implementation
-                history.push('/home');
-                alert("Closed current map and reinitialized");
-                // store.loadMapPage(store.currentMap._id);
+        //         // store.importMapJson(id, layers, source, tilesets, nextlayerid, height, width);
+        //         store.importMapJson(store.currentMap._id, layersArray.layers, layersArray.Previewed, layersArray.tilesets, layersArray.nextlayerid, layersArray.height, layersArray.width);
+        //         // lazy implementation
+        //         // history.push('/home');
+        //         store.loadHomeScreen(store.currentMap._id);
+        //         alert("Closed current map and reinitialized");
+        //         // store.loadMapPage(store.currentMap._id);
 
 
-                // setRenderLayer(true);
-                // setRenderTileset(true);
-                // draw();
-            })
-            if(event.target.files && event.target.files[0]){
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        }catch(err){
-            console.log(err);
-        }
+        //         // setRenderLayer(true);
+        //         // setRenderTileset(true);
+        //         // draw();
+        //     })
+        //     if(event.target.files && event.target.files[0]){
+        //         reader.readAsDataURL(event.target.files[0]);
+        //     }
+        // }catch(err){
+        //     console.log(err);
+        // }
     }
 
     const onExportAsPNG = async (event) =>{
@@ -1203,10 +1204,8 @@ export default function MapScreen() {
             <div className='right-screen'>
                 <div className="map">
                     <div className="mapbanner">
-                        {/* <Button>New</Button> */}
                         <Button onClick = {onSave}>Save</Button>
-                        {/* <Button onClick={importTileset} component="label">Import Tileset<input type="file"hidden onChange={importTileset}/></Button> */}
-                        <Button onClick={importMap} component="label">Import Map<input type="file" id="jsonfileinput" hidden onChange={importMap}/></Button>
+                        {/* <Button onClick={importMap} component="label">Import Map<input type="file" id="jsonfileinput" hidden onChange={importMap}/></Button> */}
                         <div className='dropdown'>
                         <Button className='dropbtn'>Export
                             <div className="dropdown-content">

@@ -681,7 +681,7 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             console.log(response.data.map);
             history.push("/home");
-            store.loadMaps();
+            store.loadHomeScreen();
         }
     }
 
@@ -737,26 +737,37 @@ function GlobalStoreContextProvider(props) {
             }
     }
 
-    store.importMapJson = async function (id, layers, source, tilesets, nextlayerid, height, width){
-        let response = await api.getMapById(id);
-            if(response.data.success){
-                let map = response.data.map;
-                map.layers = layers;            // updated map layers
-                map.Previewed = source;         // updated map's preview image
-                map.tilesets = tilesets;         // updated map's tileset array
-                map.nextlayerid = nextlayerid;
-                map.height = height;
-                map.width = width;
-                // async function updateTileset(id, tileset){
-                response = await api.updateMap(id, map);
-                if(response.data.success){
-                    storeReducer({
-                        type: GlobalStoreActionType.LOADING_A_MAP,
-                        payload: {cmap: map}
-                    })
-                    console.log("updated tileset src success");
-                }
-            }
+    store.importMapJson = async function (layers, source, tilesets, nextlayerid, height, width){
+        let payload = {
+            OwnerEmail: auth.user.email,
+            Name: "Imported Map",
+            SharedList: [],
+            IsEditing: "None",
+            Previewed: source,
+            ////
+            compressionlevel: -1,
+            height: height,
+            infinite: false,
+            layers: layers,
+            nextlayerid: nextlayerid,
+            nextobjectid: 1,
+            orientation:  "orthogonal",
+            renderorder:  "right-down",
+            tiledversion:  "1.0.0",
+            tileheight:  32,
+            tilesets:  tilesets,
+            tilewidth:  32,
+            type: "map",
+            version:  "1.0",
+            width: width,
+            ////
+        }
+        let response = await api.createMap(payload);
+        if (response.data.success) {
+            console.log(response.data.map);
+            history.push("/home");
+            store.loadHomeScreen();
+        }
     }
 
 
@@ -778,7 +789,7 @@ function GlobalStoreContextProvider(props) {
         console.log(response);
         if (response.data.success) {
             history.push("/home");
-            store.loadTilesets();
+            store.loadHomeScreen();
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");

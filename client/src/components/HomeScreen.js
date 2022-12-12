@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState  } from 'react'
 import { GlobalStoreContext } from '../store'
 import { Fab, Typography, Box, Button, Stack, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import List from '@mui/material/List'
 import Grid from '@mui/material/Grid';
 import HomeMapCard from './HomeMapCard';
@@ -36,6 +37,18 @@ export default function HomeScreen() {
         'borderRadius': '12px',
     })
 
+    const AddMapButton = styled(IconButton)({
+        'position': 'relative',
+        'backgroundColor': '#008CBA',
+        'borderWidth': '5px',
+        'color': 'white',
+        'marginLeft': '20%',
+        'marginTop': '15%',
+        'height': '25%',
+        'width': '60%',
+        'borderRadius': '12px',
+    })
+
     function handleCreateNewMap() {
         setIsCreateMap(true);
         //store.createMap("Untitled", 20, 25);
@@ -46,6 +59,35 @@ export default function HomeScreen() {
 
     function handleCreateNewTileset() {
         store.createNewTileset();
+    }
+
+    function handleImportMap(event){
+        try{
+            const reader = new FileReader();
+            reader.addEventListener("load", ()=> {
+                let importedMap = "";
+                importedMap = reader.result;
+                // remove prefix
+                let output = importedMap.slice('data:application/json;base64,'.length);
+                // decoding
+                var b = Buffer.from(output, 'base64')
+                let decode = b.toString();
+                // parsing the decode json
+                let layersArray = JSON.parse(decode);
+                
+
+                // store.importMapJson(id, layers, source, tilesets, nextlayerid, height, width);
+                store.importMapJson(layersArray.layers, layersArray.Previewed, layersArray.tilesets, layersArray.nextlayerid, layersArray.height, layersArray.width);
+                // lazy implementation
+                // history.push('/home');
+
+            })
+            if(event.target.files && event.target.files[0]){
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }catch(err){
+            console.log(err);
+        }
     }
 
 
@@ -110,7 +152,9 @@ export default function HomeScreen() {
                         <Box className='home-section-card'>
                             <Grid className='home-grid' container spacing={2}>
                                 <Grid item xs={4} md={2}>
-                                    <AddButton onClick = {handleCreateNewMap}> <AddIcon sx={{ fontSize: 100 }}/> </AddButton >
+                                    <AddMapButton onClick = {handleCreateNewMap}> <AddIcon sx={{ fontSize: 50 }}/> </AddMapButton >
+                                    {/* <Button onClick={importMap} component="label">Import Map<input type="file" id="jsonfileinput" hidden onChange={importMap}/></Button> */}
+                                    <AddMapButton component="label" onClick = {handleImportMap}> <SaveAltIcon sx={{ fontSize: 50 }}/> <input type="file" id="jsonfileinput" hidden onChange={handleImportMap}/></AddMapButton >
                                 </Grid>
                                 <Grid item xs={6} md={10}>
                                     {/* <List id="home-map-list" style={{ display: 'flex', flexDirection: 'row', padding: 0}}>
