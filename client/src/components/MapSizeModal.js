@@ -38,11 +38,15 @@ function MapSizeModal(props){
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        cancelCreateMap();
         //const myArray = value.split(" ");
         const data = new FormData(event.currentTarget);
+        if(Number(data.get("Height")) <= 0 || Number(data.get("Height")) > 99 || Number(data.get("Width")) <= 0 || Number(data.get("Width")) > 99){
+            alert("Please enter number between 1 - 99");
+            return;
+        }
 
         store.createMap("Untitled", Number(data.get("Height")), Number(data.get("Width")));
+        cancelCreateMap();
     }
 
     
@@ -59,14 +63,14 @@ function MapSizeModal(props){
 
                     <TextField
                         label="Height"
-                        type="number"
+                        type="Number"
                         margin="normal"
                         name="Height"
                         fullWidth
                     />
                     <TextField
                         label="Width"
-                        type="number"
+                        type="Number"
                         margin="normal"
                         name="Width"
                         fullWidth
