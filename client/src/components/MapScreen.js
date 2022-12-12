@@ -172,6 +172,23 @@ export default function MapScreen() {
         // let dragCoordinate = [0, 0];
         // let newCoordinate = [0, 0];
         ctx.translate(newCoordinate[0]-oldCoordinate[0], newCoordinate[1]-oldCoordinate[1]);
+
+        console.log("2")
+        console.log(store.currentMap.width)
+        console.log(store.currentMap.height)
+
+        for (var x = 0; x <= store.currentMap.width*32; x += 32) {
+            ctx.moveTo(x , 0);
+            ctx.lineTo(x , store.currentMap.height*32 );
+        }
+    
+        for (var x = 0; x <= store.currentMap.height*32; x += 32) {
+            ctx.moveTo(0, x);
+            ctx.lineTo(store.currentMap.width*32, x );
+        }
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+
         // draw by layers
         for(let i = 0; i < layers.length; i++){
             let currentLayer = layers[i]; //currentLayer

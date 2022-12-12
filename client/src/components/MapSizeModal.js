@@ -59,16 +59,18 @@ function MapSizeModal(props){
 
                     <TextField
                         label="Height"
-                        type="number"
+                        type="Number"
                         margin="normal"
                         name="Height"
+                        InputProps={{ inputProps: { min: "0", max: "100"}}}
                         fullWidth
                     />
                     <TextField
                         label="Width"
-                        type="number"
+                        type="Number"
                         margin="normal"
                         name="Width"
+                        InputProps={{ inputProps: { min: "0", max: "100"}}}
                         fullWidth
                     />
                      
