@@ -975,6 +975,8 @@ export default function MapScreen() {
         //     setPanMove(false);
         // }
         seterase(!erase);
+
+        setPanMove(false);
         // seterase(erase);
     }
 
@@ -983,6 +985,7 @@ export default function MapScreen() {
         //     seterase(false);
         // }
         setPanMove(!panMove);
+        seterase(false);
         // setPanMove(panMove);
     }
 
