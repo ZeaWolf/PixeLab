@@ -172,7 +172,7 @@ export default function MapScreen() {
 
         ctx.beginPath();
         for (var x = 0; x <= store.currentMap.width*32; x += 32) {
-            ctx.setLineDash([2, 10]);
+            ctx.setLineDash([20, 5]);
             ctx.moveTo(x , 0);
             ctx.lineTo(x , store.currentMap.height*32 );
         }
@@ -507,8 +507,8 @@ export default function MapScreen() {
         tempImage.src = imageRef.current.src;
         tempImage.onload = function(){
             console.log("coordinates: " + selection);
-            let tempImageHeight = tempImage.height / 32;
-            let tempImageWidth = tempImage.width / 32;
+            let tempImageHeight = Math.floor(tempImage.height / store.currentMap.tileheight);
+            let tempImageWidth = Math.floor(tempImage.width / store.currentMap.tilewidth);
             console.log("image height: " + tempImageHeight);
             console.log("image width: " + tempImageWidth);
 
@@ -639,7 +639,6 @@ export default function MapScreen() {
     }
     // import Tileset
     function importTileset(event){
-        console.log("import orz")
         try{
             const reader = new FileReader();
             reader.addEventListener("load", ()=> {
@@ -668,7 +667,7 @@ export default function MapScreen() {
                     console.log("Image height: " + imgHeight);
                     console.log("Image width: " + imgWidth);
                     // getting information for the 
-                    let columns = imgWidth / 32;    // replace 32 by the store.currentMap.tilewidth if changes made in future.
+                    let columns = Math.floor(imgWidth / store.currentMap.tilewidth);    // replace 32 by the store.currentMap.tilewidth if changes made in future.
                     let firstgid = 1;
                     if(tilesets.length !== 0){ // has previous imported tilesets
                         firstgid = tilesets[tilesets.length-1].firstgid + tilesets[tilesets.length-1].tilecount;
@@ -685,9 +684,9 @@ export default function MapScreen() {
                         margin: 0, 
                         name: tilesetName, 
                         spacing: 0, 
-                        tilecount: ((imgHeight * imgWidth) / (32 * 32)), // change 32 * 32 to store.currentMap.tilewidth * store.currentMap.tileheight
-                        tileheight: 32, // change 32 to store.currentMap.tileheight
-                        tilewidth: 32, // change 32 to store.currentMap.tilewidth
+                        tilecount: Math.floor(((imgHeight * imgWidth) / (store.currentMap.tilewidth * store.currentMap.tileheight))), // change 32 * 32 to store.currentMap.tilewidth * store.currentMap.tileheight
+                        tileheight: store.currentMap.tileheight, // change 32 to store.currentMap.tileheight
+                        tilewidth: store.currentMap.tilewidth, // change 32 to store.currentMap.tilewidth
                         source: importImage
                     }
                     // add tileset to the image array
@@ -697,7 +696,7 @@ export default function MapScreen() {
 
                     // setting tilesetMap
                     let values = tilesets.length - 1;
-                    for(let i = firstgid; i < firstgid + ((imgHeight * imgWidth) / (32 * 32)); i++){
+                    for(let i = firstgid; i < firstgid + Math.floor(((imgHeight * imgWidth) / (store.currentMap.tilewidth * store.currentMap.tileheight))); i++){
                         tilesetMap.set(i.toString(), values.toString());
                     }
 
