@@ -151,7 +151,7 @@ export default function MapScreen() {
         var ctx = canvas.current.getContext("2d");
         // ctx.globalCompositeOperation = 'destination-over'
         // clear drawing from the canvas first
-        ctx.clearRect(0, 0, store.currentMap.width*store.currentMap.tilewidth, store.currentMap.height*store.currentMap.tileheight);
+        ctx.clearRect(-10, -10, store.currentMap.width*store.currentMap.tilewidth *10, store.currentMap.height*store.currentMap.tileheight *10);
         // ctx.fillStyle = "grey";
         // ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
      
@@ -177,6 +177,7 @@ export default function MapScreen() {
         console.log(store.currentMap.width)
         console.log(store.currentMap.height)
 
+        ctx.beginPath();
         for (var x = 0; x <= store.currentMap.width*32; x += 32) {
             ctx.moveTo(x , 0);
             ctx.lineTo(x , store.currentMap.height*32 );
@@ -188,6 +189,8 @@ export default function MapScreen() {
         }
         ctx.strokeStyle = "black";
         ctx.stroke();
+
+        ctx.closePath();
 
         // draw by layers
         for(let i = 0; i < layers.length; i++){
