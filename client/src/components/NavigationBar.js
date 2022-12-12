@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext, useEffect, useState  } from 'react'
 import AuthContext from '../auth'
 import { GlobalStoreContext } from '../store';
 
@@ -15,24 +15,34 @@ import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom'
 import TilesetScreen from './TilesetScreen';
 import { useHistory } from 'react-router-dom';
+import MapSizeInBarModal from './MapSizeInBarModal';
 
 export default function NavigationBar() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+    const[isCreateMap, setIsCreateMap] = useState(false);
 
     const history = useHistory();
-    
+
+    function handleCreateNewMap() {
+        setIsCreateMap(true);
+        //store.createMap("Untitled", 20, 25);
+    }
+    function cancelCreateMap(){
+        setIsCreateMap(false);
+    }
+
     function handleGuestModal(event,type) {
         console.log(type);
         if(auth.user!=null){
             if (type=="Tileset"){
-                history.push("/tileset-editor/");
+                store.createNewTilesetInBar()
             }
             if (type=="Home"){
                 history.push("/home/");
             }
             if (type=="Map"){
-                history.push("/map/");
+                handleCreateNewMap()
             }
         }
         else{
@@ -42,6 +52,10 @@ export default function NavigationBar() {
 
     return (
         <Box className= "navigationbar" alignItems="center" sx={{ left: '0%', flexDirection: 'column' }}>
+            <MapSizeInBarModal
+                isCreateMap = {isCreateMap}
+                cancelCreateMap = {cancelCreateMap}
+            />
             <Box alignItems="center" sx={{ display: { xs: 'none', md: 'flex', width: '100%' } }}>
                 <IconButton component={Link} to="/community" sx={{fontSize:"large", flexDirection: 'column', width:'100%'}}>
                     <GroupsIcon/>
