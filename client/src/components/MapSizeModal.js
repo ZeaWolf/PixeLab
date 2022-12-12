@@ -41,7 +41,7 @@ function MapSizeModal(props){
         //const myArray = value.split(" ");
         const data = new FormData(event.currentTarget);
         if(Number(data.get("Height")) <= 0 || Number(data.get("Height")) > 99 || Number(data.get("Width")) <= 0 || Number(data.get("Width")) > 99){
-            alert("Please enter number between 1 - 99");
+            ("Please enter number between 1 - 99");
             return;
         }
 
