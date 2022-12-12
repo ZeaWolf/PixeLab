@@ -57,6 +57,12 @@ export default function MapScreen() {
     let isDragging = false;
     let oldCoordinate = [0, 0];
     let newCoordinate = [0, 0];
+    // let totalTranslate = [0, 0];
+    let totalTranslateX = 0.0;
+    let totalTranslateY = 0.0;
+
+    const [finalTranslateX, setFinalTranslateX] = useState(0);
+    const [finalTranslateY, setFinalTranslateY] = useState(0);
 
     // let translatePos = {
     //     x: canvas.width/ 2,
@@ -132,7 +138,13 @@ export default function MapScreen() {
         const { x, y } = e.target.getBoundingClientRect();
         const mouseX = e.clientX - x;
         const mouseY = e.clientY - y;
-        return [Math.floor(mouseX / (32*scale2)), Math.floor(mouseY / (32*scale2))];
+        return [Math.floor((mouseX-finalTranslateX) / (32*scale2)), Math.floor((mouseY-finalTranslateY) / (32*scale2))];
+    }
+    function getTestCoords(e) {
+        const { x, y } = e.target.getBoundingClientRect();
+        const mouseX = e.clientX - x;
+        const mouseY = e.clientY - y;
+        return [mouseX, mouseY];
     }
     // draw the layer
     function draw() {  // this is the onload function to render all layer
@@ -142,8 +154,6 @@ export default function MapScreen() {
         ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
         // ctx.fillStyle = "grey";
         // ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
-        console.log("DRAWwwwwwwwwww");
-        console.log(layers);
      
         var size_of_crop = 32;
 
@@ -359,10 +369,19 @@ export default function MapScreen() {
     function addTile(mouseEvent) {
         if(layers.length !== 0 ){
             var clicked = getMapCoords(mouseEvent);
+            // clicked[0] -= Math.floor(totalTranslate[0] / (32*scale2));
+            // clicked[1] -= Math.floor(totalTranslate[1] / (32*scale2));
             var key = clicked[0] + "-" + clicked[1];
+
+            // console.log( Math.floor(finalTranslateX / (32*scale2)));
+            // console.log( Math.ceil(finalTranslateX / (32*scale2)));
+            // clicked[0] = clicked[0] - Math.floor(finalTranslateX / (32*scale2)) - 1;
+            // clicked[1] = clicked[1] - Math.floor(finalTranslateY / (32*scale2)) - 1;
             console.log("x /n y:");
-            console.log(clicked[0]);
-            console.log(clicked[1]);
+            console.log(finalTranslateX);
+            console.log(finalTranslateY);
+            console.log("oldCoordinate");
+            console.log(scale2);
             console.log("tabvalue: " + tabvalue);
 
             // this check if the selected tile area is out of boundary
@@ -420,8 +439,6 @@ export default function MapScreen() {
     }
     // canvas mouse down
     function handleCanvasMouseDown(event){
-        console.log(event.button);
-        console.log("QAQ onClick");
         if(event.button === 0 && panMove===false){
             isMouseDown = true;
             // startDragOffset.x = event.clientX - translatePos.x;
@@ -429,20 +446,25 @@ export default function MapScreen() {
             addTile(event);
         }
         else if(event.button === 0 && panMove===true){
-            oldCoordinate = getMapCoords(event);
+            oldCoordinate = getTestCoords(event);
+            newCoordinate = getTestCoords(event);
+            console.log("initial point: " + oldCoordinate);
             isDragging = true;
-            // draw();
         }
     }
     // canvas mouse up
     function handleCanvasMouseUp(event){
         isMouseDown = false;
         isDragging = false;
+        setFinalTranslateX(finalTranslateX + totalTranslateX);
+        setFinalTranslateY(finalTranslateY + totalTranslateY);
     }
     // canvas mouse leave
     function handleCanvasMouseLeave(event){
         isMouseDown = false;
         isDragging = false;
+        setFinalTranslateX(finalTranslateX + totalTranslateX);
+        setFinalTranslateY(finalTranslateY + totalTranslateY);
     }
     // canvas mouse move
     function handleCanvasMouseMove(event){
@@ -451,25 +473,16 @@ export default function MapScreen() {
             addTile(event);
         }
         if(isDragging && panMove){
-            // oldCoordinate[0] = newCoordinate[0];
-            // oldCoordinate[1] = newCoordinate[1];
-            newCoordinate = getMapCoords(event);
+            oldCoordinate = newCoordinate;
+            console.log("old points: " + oldCoordinate);
+            newCoordinate = getTestCoords(event);
+            console.log("new points: " + newCoordinate);
+            console.log("total translawedwewte: " + (newCoordinate[0] - oldCoordinate[0]) + ', ' + (newCoordinate[1] - oldCoordinate[1]));
+            totalTranslateX = totalTranslateX + ((newCoordinate[0] - oldCoordinate[0]) * scale2);
+            totalTranslateY = totalTranslateY + ((newCoordinate[1] - oldCoordinate[1]) * scale2);
+            console.log("total translate: " + totalTranslateX + ', ' + totalTranslateY);
             draw();
         }
-        // if(panMove===true){
-        //     console.log("Hello World")
-        //     console.log(event.clientX)
-        //     console.log(event.clientY)
-        //     translatePos.x = event.clientX - startDragOffset.x;
-        //     translatePos.y = event.clientY - startDragOffset.y;
-        //     console.log("Hello World")
-        //     console.log(translatePos)
-        // }
-        // else{
-        //     if (isMouseDown) {
-        //         addTile(event);
-        //     }
-        // }
     }
     // tilset container mouse down
     function handleTilesetContainerMouseDown(event){
