@@ -101,7 +101,7 @@ export default function HomeScreen() {
                     key={pair._id}
                     tilesetList={pair}
                     selected={false}
-                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, tilesetID:pair._id, src:pair.Source}}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, tilesetID:pair._id, src:pair.Source, owner: pair.OwnerEmail}}
                 />
             ))
         }
@@ -117,7 +117,7 @@ export default function HomeScreen() {
                     key={pair._id}
                     mapList={pair}
                     selected={false}
-                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, mapID:pair._id, src:pair.Previewed}}
+                    ImgNamePair={{img:"/defaultpic.png", name:pair.Name, mapID:pair._id, src:pair.Previewed, owner: pair.OwnerEmail}}
                 />
             ))
         }

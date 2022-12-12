@@ -12,6 +12,8 @@ import TextField from '@mui/material/TextField';
 import { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store';
 import { useHistory } from 'react-router-dom'
+import AuthContext from '../auth'
+import { getAutoHeightDuration } from '@mui/material/styles/createTransitions';
 
 // import DeleteModal from './DeleteModal';
 
@@ -22,6 +24,7 @@ export default function HomeMapCard(props) {
   const history = useHistory();
   const [editActive, setEditActive] = useState(false);
   const [text, setText] = useState("");
+  const { auth } = useContext(AuthContext);
 
   const handleOpenMap = async event => {
     await store.loadMapPage(ImgNamePair.mapID);
@@ -29,7 +32,6 @@ export default function HomeMapCard(props) {
 
   const handleDeleteMap = async event => {
     store.MarkDeleteMap(ImgNamePair.mapID);
-    console.log("shugui是gay")
   }
 
   function handleToggleEdit(event) {
@@ -59,6 +61,11 @@ export default function HomeMapCard(props) {
     mapImg = mapSrc;
   }
 
+  let deleteButton = "";
+  if(auth.user.email === ImgNamePair.owner){
+    deleteButton = <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteMap}/></IconButton>;
+  }
+
 
   let MapItem =
   <Card className="home-map-card" style={{background:"linear-gradient(to bottom, #64cdfa 5%, #f6f5dd)"}}>
@@ -74,7 +81,7 @@ export default function HomeMapCard(props) {
           <Box style={{ display: 'flex', flexDirection: 'row'}}>
           <Typography sx={{ flexGrow: 1 }}>{ImgNamePair.name}</Typography>
           <IconButton aria-label="rename"><EditIcon onClick={handleToggleEdit}/></IconButton>
-          <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteMap}/></IconButton>
+          {deleteButton}
           </Box>
         </CardContent>
       </CardActionArea>
@@ -100,7 +107,7 @@ export default function HomeMapCard(props) {
           InputLabelProps={{style: {fontSize: 10}}}
          >{ImgNamePair.name}</TextField>
         <IconButton aria-label="rename"><EditIcon onClick={handleToggleEdit}/></IconButton>
-        <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteMap}/></IconButton>
+        {deleteButton}
         </Box>
       </CardContent>
     </CardActionArea>

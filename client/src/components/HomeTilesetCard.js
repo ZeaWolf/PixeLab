@@ -8,10 +8,12 @@ import { Box, IconButton, CardActionArea } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { GlobalStoreContext } from '../store';
+import AuthContext from '../auth'
 // import { useHistory } from 'react-router-dom'
 import TextField from '@mui/material/TextField';
 export default function HomeTilesetCard(props) {
   const { ImgNamePair} = props;
+  const { auth } = useContext(AuthContext);
   const { store } = useContext(GlobalStoreContext);
   const [editActive, setEditActive] = useState(false);
   const [text, setText] = useState("");
@@ -54,6 +56,10 @@ export default function HomeTilesetCard(props) {
   if (tileSrc !== ""){
     tilesetImg = tileSrc;
   }
+  let deleteButton = "";
+  if(auth.user.email === ImgNamePair.owner){
+    deleteButton = <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteTileset}/></IconButton>;
+  }
 
   let TilesetItem =
   <Card className="home-tileset-card" style={{background:"linear-gradient(to bottom, #64cdfa 5%, #f6f5dd)"}}>
@@ -69,7 +75,7 @@ export default function HomeTilesetCard(props) {
           <Box style={{ display: 'flex', flexDirection: 'row'}}>
           <Typography sx={{ flexGrow: 1 }}>{ImgNamePair.name}</Typography>
           <IconButton aria-label="rename"><EditIcon onClick={handleToggleEdit}/></IconButton>
-          <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteTileset}/></IconButton>
+          {deleteButton}
           </Box>
         </CardContent>
       </CardActionArea>
@@ -95,7 +101,7 @@ export default function HomeTilesetCard(props) {
           InputLabelProps={{style: {fontSize: 10}}}
          >{ImgNamePair.name}</TextField>
         <IconButton aria-label="rename"><EditIcon onClick={handleToggleEdit}/></IconButton>
-        <IconButton aria-label="delete"><DeleteIcon onClick={handleDeleteTileset}/></IconButton>
+        {deleteButton}
         </Box>
       </CardContent>
     </CardActionArea>
