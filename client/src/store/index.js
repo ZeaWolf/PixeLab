@@ -685,6 +685,42 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.createMapInBar = async function (name = "Untiled", height = 20, width = 25){
+        //let newLayer = await store.createLayer("layer", height, width);
+        let layers = [];
+        //layers.push(newLayer);
+        let payload = {
+            OwnerEmail: auth.user.email,
+            Name: name,
+            SharedList: [],
+            IsEditing: "None",
+            Previewed: "None",
+            ////
+            compressionlevel: -1,
+            height: height,
+            infinite: false,
+            layers: [],
+            nextlayerid: 1,
+            nextobjectid: 1,
+            orientation:  "orthogonal",
+            renderorder:  "right-down",
+            tiledversion:  "1.0.0",
+            tileheight:  32,
+            tilesets:  [],
+            tilewidth:  32,
+            type: "map",
+            version:  "1.0",
+            width: width,
+            ////
+        }
+        const response = await api.createMap(payload);
+        if (response.data.success) {
+            // console.log(response.data.map);
+            console.log(response.data.map._id)
+            store.loadMapPage(response.data.map._id)
+        }
+    }
+
     store.updateMapLayer = async function (id, layers, source, tilesets, nextlayerid){
         let response = await api.getMapById(id);
             if(response.data.success){
@@ -720,6 +756,31 @@ function GlobalStoreContextProvider(props) {
         if (response.data.success) {
             history.push("/home");
             store.loadTilesets();
+        }
+        else {
+            console.log("API FAILED TO CREATE A NEW LIST");
+        }
+    }
+
+    store.createNewTilesetInBar = async function () {
+        let newTilesetName = "Untitled";
+        let payload = {
+            OwnerEmail:     auth.user.email,
+            Name:           newTilesetName,
+            Type:           "tileset",
+            SharedList:     [],
+            Columns:        0,
+            Rows:           0,
+            Spacing:        0,
+            Tiles:          [],
+            Source:         "",
+            IsEditing:      "None",
+        };
+        const response = await api.createTileset(payload);
+        console.log(response);
+        if (response.data.success) {
+            console.log(response.data.tileset._id)
+            store.loadTilesetPage(response.data.tileset._id)
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");

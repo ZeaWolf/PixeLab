@@ -20,6 +20,7 @@ import PublishModal from './PublishModal'
 import PublishErrorModal from './PublishErrorModal'
 import ShareModal from './ShareModal'
 import MapSizeModal from './MapSizeModal'
+import MapSizeInBarModal from './MapSizeInBarModal'
 
 export{
     AppBanner,
@@ -44,4 +45,5 @@ export{
     PublishErrorModal,
     ShareModal,
     MapSizeModal,
+    MapSizeInBarModal,
 }
