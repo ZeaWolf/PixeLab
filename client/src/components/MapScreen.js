@@ -64,20 +64,11 @@ export default function MapScreen() {
     const [finalTranslateX, setFinalTranslateX] = useState(0);
     const [finalTranslateY, setFinalTranslateY] = useState(0);
 
-    // let translatePos = {
-    //     x: canvas.width/ 2,
-    //     y: canvas.height/ 2,
-    // };
     
-    // let startDragOffset = {
-    //     x: 0,
-    //     y: 0,
-    // };
     let scale = 1.0;
     // let scale2 = 1.0;
     let isZoom = false;
 
-    // const [layers, setLayers] = useState(store.currentMap.Layers);
     let layers = [];   // store the information of layers
     let tilesets = [];  // store the information of tilesets
     let tilesetsImageObject = []; // store the image Object with its source that is corresponding to the tilesets
@@ -120,6 +111,18 @@ export default function MapScreen() {
             }
         }
     }
+    if(tilesetSelection.current && canvas.current && tilesetContainer.current && imageRef.current){
+        if(!tilesetLoad){
+            setTilesetLoad(true);
+            if(tilesets.length !== 0){
+                imageRef.current.src = tilesets[0].source;
+                if(layers.length === 0){
+                    createLayer();
+                }
+            }
+            draw();
+        }
+    }
 
     const styles = {
         display: 'flex',
@@ -152,20 +155,10 @@ export default function MapScreen() {
         // ctx.globalCompositeOperation = 'destination-over'
         // clear drawing from the canvas first
         ctx.clearRect(-10, -10, store.currentMap.width*store.currentMap.tilewidth *10, store.currentMap.height*store.currentMap.tileheight *10);
-        // ctx.fillStyle = "grey";
-        // ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
      
         var size_of_crop = 32;
 
-        // console.log(translatePos.x);
-        // console.log(translatePos.y);
-
-        
-        // ctx.translate(translatePos.x, translatePos.y);
         if(isZoom===true){
-            // console.log(translatePos.x);
-            // console.log(translatePos.y);
-            // ctx.translate(translatePos.x, translatePos.y);
             ctx.scale(scale, scale);
             isZoom=false
         }
@@ -179,6 +172,7 @@ export default function MapScreen() {
 
         ctx.beginPath();
         for (var x = 0; x <= store.currentMap.width*32; x += 32) {
+            ctx.setLineDash([2, 10]);
             ctx.moveTo(x , 0);
             ctx.lineTo(x , store.currentMap.height*32 );
         }
@@ -405,7 +399,7 @@ export default function MapScreen() {
             console.log("tabvalue: " + tabvalue);
 
             // this check if the selected tile area is out of boundary
-            if(clicked[0] >= store.currentMap.width || clicked[1] >= store.currentMap.height){
+            if(clicked[0] >= store.currentMap.width || clicked[1] >= store.currentMap.height || clicked[0] < 0 || clicked[1] < 0){
                 return;
             }
             if(erase) {
@@ -534,44 +528,6 @@ export default function MapScreen() {
                 console.log("currentGID: " + currentGID);
 
             }
-        }
-        // save the selected tile source which is the dataURL string
-        // create canvas then the tile information to the tilesetSrc
-        // let canvas2 = document.createElement('canvas');
-        // canvas2.width = 32; // 
-        // canvas2.height = 32; //
-        // let context = canvas2.getContext('2d');
-        // context.drawImage(
-        //     imageRef.current,
-        //     selection[0] * 32,
-        //     selection[1] * 32,
-        //     32,
-        //     32,
-        //     0 * 32,
-        //     0 * 32,
-        //     32,
-        //     32,
-        // );
-        // tilesetSrc = canvas2.toDataURL();
-    }
-    // image on load
-    function handleImageOnLoad(){
-        draw();
-    }
-
-
-    if(imageRef.current && tilesetSelection && canvas && tilesetContainer && store.currentMap){
-        console.log("being called");
-
-        if(!tilesetLoad){
-            setTilesetLoad(true);
-            if(tilesets.length !== 0){
-                imageRef.current.src = tilesets[0].source;
-            }
-        }
-
-        imageRef.current.onload = function() {
-            draw();
         }
     }
 
@@ -784,10 +740,7 @@ export default function MapScreen() {
                 let decode = b.toString();
                 // parsing the decode json
                 let layersArray = JSON.parse(decode);
-
-                console.log(layersArray);
-
-
+                
 
 
                 // find the imported layers
@@ -837,27 +790,17 @@ export default function MapScreen() {
                     imageRef.current.src = tilesetsImageObject[0].src;
                 }
 
+                // store.importMapJson(id, layers, source, tilesets, nextlayerid, height, width);
+                store.importMapJson(store.currentMap._id, layersArray.layers, layersArray.Previewed, layersArray.tilesets, layersArray.nextlayerid, layersArray.height, layersArray.width);
+                // lazy implementation
+                history.push('/home');
+                alert("Closed current map and reinitialized");
+                // store.loadMapPage(store.currentMap._id);
 
 
-                setRenderLayer(true);
-                setRenderTileset(true);
-                draw();
-
-                // layers.splice(0, layers.length)
-                // console.log(layers);
-                // for(let i = 0; i< layersArray.length; i++){
-                //     let currentLayerName = layersArray[i].Name;
-                //     let currentLayerOpacity = layersArray[i].Opacity;
-                //     let currentLayerLayer = layersArray[i].Layer;
-                //     let newLayer = {Name: currentLayerName, Opacity: currentLayerOpacity, Layer:currentLayerLayer};
-                //     layers.push(newLayer);
-                //     setRenderLayer(true);
-                // }
-                // console.log("jjjjj");
-                // console.log(layers);
-                
                 // setRenderLayer(true);
-                // draw();     // redraw the layers is changed
+                // setRenderTileset(true);
+                // draw();
             })
             if(event.target.files && event.target.files[0]){
                 reader.readAsDataURL(event.target.files[0]);
@@ -873,6 +816,80 @@ export default function MapScreen() {
             return;
         }
 
+        // 
+        var ctx = canvas.current.getContext("2d");
+        // ctx.globalCompositeOperation = 'destination-over'
+        // clear drawing from the canvas first
+        ctx.clearRect(-10, -10, store.currentMap.width*store.currentMap.tilewidth *10, store.currentMap.height*store.currentMap.tileheight *10);
+     
+        var size_of_crop = 32;
+
+        if(isZoom===true){
+            ctx.scale(scale, scale);
+            isZoom=false
+        }
+        // let dragCoordinate = [0, 0];
+        // let newCoordinate = [0, 0];
+        ctx.translate(newCoordinate[0]-oldCoordinate[0], newCoordinate[1]-oldCoordinate[1]);
+
+        // draw by layers
+        for(let i = 0; i < layers.length; i++){
+            let currentLayer = layers[i]; //currentLayer
+            if(currentLayer.visible){  // it is visible
+                let layerInform = currentLayer.data;  // array of the layer
+                let mapWidth = store.currentMap.width;
+                let mapHeight = store.currentMap.height;
+                let layerX = 0;
+                let layerY = 0;
+                // looping through the layer's data 
+                for(let j = 0; j < layerInform.length; j++){
+                    let thisgid = layerInform[j];
+                    // since it is empyt, don't draw
+                    if(thisgid === 0){
+                        layerX++;
+                        if(layerX === mapWidth){
+                            layerX = 0;
+                            layerY++;
+                        }
+                        continue;
+                    }
+
+
+                    ///----------------new mapping drawing O(1) method
+                    else{
+                        let wantedIndex = tilesetMap.get(thisgid.toString());
+                        let wantedIndexNum = Number(wantedIndex);
+                        let currentTilesetToDraw = tilesets[wantedIndexNum];   // tileset
+                        let firstgid = currentTilesetToDraw.firstgid; // first gid
+                        let tilesetColumns = currentTilesetToDraw.columns; // number of columns
+                        let gidPostion = thisgid - firstgid;
+                        let imgX = gidPostion % tilesetColumns;  // tileset x position
+                        let imgY = Math.floor(gidPostion / tilesetColumns);  // tileset y position
+                        ctx.drawImage(
+                            tilesetsImageObject[wantedIndexNum],
+                            imgX * 32,
+                            imgY * 32,
+                            size_of_crop,
+                            size_of_crop,
+                            layerX * 32,
+                            layerY * 32,
+                            size_of_crop,
+                            size_of_crop
+                        );
+                    }
+
+                    // keep in track of x and y coordinates of the current Layer
+                    layerX++;
+                    if(layerX === mapWidth){
+                        layerX = 0;
+                        layerY++;
+                    }
+                }
+            }
+        }
+      
+
+
         // Get name
         const link = document.createElement('a');
         if(store.currentMap){
@@ -887,6 +904,7 @@ export default function MapScreen() {
         //link.delete;
         //const w = window.open("");
         //w.document.write(image.outerHTML);
+        draw();
         return;
     }
 
