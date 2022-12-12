@@ -151,7 +151,7 @@ export default function MapScreen() {
         var ctx = canvas.current.getContext("2d");
         // ctx.globalCompositeOperation = 'destination-over'
         // clear drawing from the canvas first
-        ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+        ctx.clearRect(0, 0, store.currentMap.width*store.currentMap.tilewidth, store.currentMap.height*store.currentMap.tileheight);
         // ctx.fillStyle = "grey";
         // ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
      

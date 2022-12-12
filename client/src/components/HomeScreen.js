@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState  } from 'react'
 import { GlobalStoreContext } from '../store'
 import { Fab, Typography, Box, Button, Stack, IconButton } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -12,10 +12,13 @@ import NavigationBar from "./NavigationBar"
 //import Statusbar from "./Statusbar"
 import AuthContext from '../auth'
 import DeleteModal from './DeleteModal';
+import MapSizeModal from './MapSizeModal';
 
 export default function HomeScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
+
+    const[isCreateMap, setIsCreateMap] = useState(false);
 
     useEffect(() => {
         store.loadHomeScreen();
@@ -34,7 +37,11 @@ export default function HomeScreen() {
     })
 
     function handleCreateNewMap() {
-        store.createMap("Untitled", 20, 25);
+        setIsCreateMap(true);
+        //store.createMap("Untitled", 20, 25);
+    }
+    function cancelCreateMap(){
+        setIsCreateMap(false);
     }
 
     function handleCreateNewTileset() {
@@ -87,6 +94,10 @@ export default function HomeScreen() {
         <div className='full-screen'>
             <NavigationBar/>
             <DeleteModal/>
+            <MapSizeModal
+                isCreateMap = {isCreateMap}
+                cancelCreateMap = {cancelCreateMap}
+            />
             <div className='right-screen'>
                 <Box id='home-screen'>
                     {/* upper half screen 50% */}

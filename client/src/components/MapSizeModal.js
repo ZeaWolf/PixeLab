@@ -14,9 +14,13 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import TextField from '@mui/material/TextField';
 
-function MapSizeModal(){
+function MapSizeModal(props){
     const { store } = useContext(GlobalStoreContext);
+
+    const {isCreateMap, cancelCreateMap} = props;
+
     const [value, setValue] = React.useState('female');
 
     const handleChange = (event) => {
@@ -32,23 +36,43 @@ function MapSizeModal(){
         pb: 3,
     };
 
-    const handleCreateMap = async (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const myArray = value.split(" ");
-        console.log(myArray[0]+myArray[2])
+        cancelCreateMap();
+        //const myArray = value.split(" ");
+        const data = new FormData(event.currentTarget);
+
+        store.createMap("Untitled", Number(data.get("Height")), Number(data.get("Width")));
     }
 
     
     return(
         <Modal
-            open={true}
+            open={isCreateMap}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             style={{display:'flex',alignItems:'center',justifyContent:'center'}}
         >
             <Typography align="center">
-                <Box sx={style}>
-                <FormControl>
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={style}  autoComplete="off">
+                    <Typography> Please enter the size of your map!</Typography>
+
+                    <TextField
+                        label="Height"
+                        type="number"
+                        margin="normal"
+                        name="Height"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Width"
+                        type="number"
+                        margin="normal"
+                        name="Width"
+                        fullWidth
+                    />
+                     
+                {/* <FormControl>
                     <FormLabel id="demo-radio-buttons-group-label">Please choose the map size !!</FormLabel>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
@@ -61,24 +85,24 @@ function MapSizeModal(){
                         <FormControlLabel value="25 * 20 Tiles" control={<Radio />} label="25 * 20 Tiles" />
                         <FormControlLabel value="15 * 30 Tiles" control={<Radio />} label="15 * 30 Tiles" />
                     </RadioGroup>
-                </FormControl>
-                <Box display="flex" justifyContent="center" alignItems="center">
-                    <Stack spacing={6} direction="row" align="center">
-                        <Button
-                            variant="contained"
-                            onClick={handleCreateMap}
-                        >
-                            Confirm
-                        </Button>
+                </FormControl> */}
+                    <Box display="flex" justifyContent="center" alignItems="center">
+                        <Stack spacing={6} direction="row" align="center">
+                            <Button
+                                type="submit"
+                                variant="contained"
+                            >
+                                Confirm
+                            </Button>
 
-                        <Button
-                            variant="contained"
-                            // onClick={handleNotPublish}
-                        >
-                            Cancel
-                        </Button>
-                    </Stack>
-                </Box>
+                            <Button
+                                variant="contained"
+                                onClick={cancelCreateMap}
+                            >
+                                Cancel
+                            </Button>
+                        </Stack>
+                    </Box>
                 </Box>
             </Typography>
         </Modal>
